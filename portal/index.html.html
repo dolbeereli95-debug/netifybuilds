@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Client Portal — Netify Builds</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --navy: #0A2540; --blue: #3B82F6; --blue-dark: #2563EB;
+  --blue-pale: #EFF6FF; --white: #fff; --off: #F8FAFC;
+  --text: #0F172A; --soft: #64748B; --muted: #94A3B8;
+  --border: #E2E8F0; --green: #16a34a; --green-soft: #dcfce7; --red: #ef4444;
+  --radius: 16px;
+}
+html { scroll-behavior: smooth; }
+body { font-family: 'Inter', sans-serif; background: var(--off); color: var(--text); min-height: 100vh; }
+
+/* ── NAV ── */
+nav {
+  background: var(--navy); padding: 16px 28px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-logo { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1.1rem; font-weight: 800; color: white; text-decoration: none; }
+.nav-logo span { color: #93C5FD; }
+.nav-badge { font-size: 11px; font-weight: 600; background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.6); padding: 4px 10px; border-radius: 99px; }
+
+/* ── LOGIN ── */
+.login-wrap { display: flex; align-items: center; justify-content: center; min-height: calc(100vh - 56px); padding: 24px; }
+.login-card { background: white; border-radius: 24px; padding: 48px 40px; max-width: 400px; width: 100%; box-shadow: 0 8px 40px rgba(0,0,0,0.08); border: 1px solid var(--border); text-align: center; }
+.login-icon { width: 64px; height: 64px; border-radius: 50%; background: var(--blue-pale); display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; }
+.login-icon svg { width: 28px; height: 28px; stroke: var(--blue); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.login-card h1 { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1.5rem; font-weight: 800; margin-bottom: 8px; }
+.login-card p { font-size: 14px; color: var(--soft); margin-bottom: 28px; line-height: 1.6; }
+.login-input { width: 100%; padding: 13px 16px; border: 1.5px solid var(--border); border-radius: 12px; font-family: inherit; font-size: 15px; color: var(--text); outline: none; margin-bottom: 12px; transition: border-color 0.2s; }
+.login-input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(59,130,246,0.08); }
+.login-btn { width: 100%; padding: 14px; border-radius: 99px; background: var(--blue); color: white; border: none; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.2s; }
+.login-btn:hover { background: var(--blue-dark); transform: translateY(-1px); }
+.login-error { font-size: 13px; color: var(--red); margin-top: 8px; display: none; }
+
+/* ── PORTAL ── */
+.portal { display: none; padding: 36px 28px; max-width: 1000px; margin: 0 auto; animation: fadeIn 0.3s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.portal-header { margin-bottom: 32px; }
+.portal-biz { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1.8rem; font-weight: 800; color: var(--text); margin-bottom: 4px; }
+.portal-sub { font-size: 14px; color: var(--soft); }
+.portal-status { display: inline-flex; align-items: center; gap: 6px; background: #dbeafe; color: #1d4ed8; font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 99px; margin-top: 10px; }
+.portal-status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--blue); }
+
+/* ── STATS ── */
+.stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 28px; }
+@media (max-width: 600px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 380px) { .stats-grid { grid-template-columns: 1fr; } }
+.stat-card { background: white; border-radius: var(--radius); padding: 24px; border: 1px solid var(--border); box-shadow: 0 2px 12px rgba(0,0,0,0.04); }
+.stat-label { font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
+.stat-num { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 2.2rem; font-weight: 800; color: var(--text); line-height: 1; }
+.stat-sub { font-size: 12px; color: var(--soft); margin-top: 6px; }
+
+/* ── SECTION ── */
+.section-title { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1rem; font-weight: 700; color: var(--text); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+.section-title svg { width: 16px; height: 16px; stroke: var(--blue); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* ── LEADS TABLE ── */
+.leads-wrap { background: white; border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.04); margin-bottom: 24px; }
+.leads-table { width: 100%; border-collapse: collapse; }
+.leads-table th { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; padding: 12px 20px; text-align: left; border-bottom: 1px solid var(--border); background: var(--off); }
+.leads-table td { padding: 14px 20px; font-size: 14px; color: var(--text); border-bottom: 1px solid var(--border); }
+.leads-table tr:last-child td { border-bottom: none; }
+.leads-table tr:hover td { background: var(--off); }
+.tag { display: inline-block; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 99px; }
+.tag-urgent { background: #fee2e2; color: #dc2626; }
+.tag-new { background: #dbeafe; color: #2563eb; }
+.tag-normal { background: #f1f5f9; color: var(--soft); }
+.empty-state { text-align: center; padding: 48px 24px; color: var(--muted); font-size: 14px; }
+
+/* ── BOT STATUS ── */
+.bot-card { background: white; border-radius: var(--radius); padding: 24px; border: 1px solid var(--border); box-shadow: 0 2px 12px rgba(0,0,0,0.04); margin-bottom: 24px; display: flex; align-items: center; gap: 16px; }
+.bot-icon { width: 48px; height: 48px; border-radius: 12px; background: var(--blue-pale); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.bot-icon svg { width: 22px; height: 22px; stroke: var(--blue); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.bot-info h3 { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 15px; font-weight: 700; margin-bottom: 2px; }
+.bot-info p { font-size: 13px; color: var(--soft); }
+.bot-live { display: inline-flex; align-items: center; gap: 5px; background: #dcfce7; color: #15803d; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 99px; margin-left: auto; flex-shrink: 0; }
+.bot-live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
+
+/* ── FOOTER ── */
+.portal-footer { text-align: center; padding: 32px; font-size: 12px; color: var(--muted); border-top: 1px solid var(--border); margin-top: 20px; }
+.portal-footer a { color: var(--muted); text-decoration: none; }
+
+/* ── LOADING ── */
+.loading { text-align: center; padding: 60px; color: var(--muted); font-size: 14px; }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo">Netify <span>Builds.</span></a>
+  <span class="nav-badge">Client Portal</span>
+</nav>
+
+<!-- LOGIN -->
+<!-- Google Identity Services -->
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+
+<div class="login-wrap" id="loginWrap">
+  <div class="login-card">
+    <div class="login-icon">
+      <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+    </div>
+    <h1>Client Portal</h1>
+    <p>Sign in to view your dashboard, leads, and review stats.</p>
+
+    <!-- Google Sign In -->
+    <div style="margin-bottom:4px;">
+      <div id="g_id_onload"
+        data-client_id="YOUR_GOOGLE_CLIENT_ID"
+        data-callback="handleGoogleLogin"
+        data-auto_prompt="false">
+      </div>
+      <div class="g_id_signin"
+        data-type="standard"
+        data-size="large"
+        data-theme="outline"
+        data-text="sign_in_with"
+        data-shape="rectangular"
+        data-logo_alignment="left"
+        data-width="320">
+      </div>
+    </div>
+
+    <!-- Divider -->
+    <div style="display:flex;align-items:center;gap:12px;margin:20px 0;">
+      <div style="flex:1;height:1px;background:var(--border);"></div>
+      <span style="font-size:12px;color:var(--muted);font-weight:500;white-space:nowrap;">or use access code</span>
+      <div style="flex:1;height:1px;background:var(--border);"></div>
+    </div>
+
+    <!-- Access Code -->
+    <input class="login-input" id="bizKeyInput" type="text" placeholder="e.g. smithhvac4821" autocomplete="off" />
+    <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--soft);cursor:pointer;margin:10px 0 4px;">
+      <input type="checkbox" id="rememberMe" style="width:15px;height:15px;accent-color:#2563eb;cursor:pointer;" />
+      Remember me on this device
+    </label>
+    <button class="login-btn" onclick="login()">Sign In with Access Code →</button>
+    <div class="login-error" id="loginError"></div>
+    <p style="font-size:12px;color:var(--muted);margin-top:16px;line-height:1.6;">No account yet? <a href="mailto:netifybuilds@gmail.com" style="color:#2563eb;">Email Eli</a></p>
+  </div>
+</div>
+
+<!-- PORTAL -->
+<div class="portal" id="portal">
+  <div id="portalContent" class="loading">Loading your data...</div>
+</div>
+
+<div class="portal-footer" id="portalFooter" style="display:none;">
+  <a href="/">← Back to Netify Builds</a> &nbsp;·&nbsp; Questions? <a href="mailto:netifybuilds@gmail.com">netifybuilds@gmail.com</a>
+</div>
+
+<script>
+var BACKEND = 'https://botbuilder-backend-production.up.railway.app';
+var currentBizKey = '';
+var STORAGE_KEY = 'nb_portal_key';
+
+// ── GOOGLE LOGIN HANDLER ──
+async function handleGoogleLogin(response) {
+  document.getElementById('loginError').textContent = '';
+  try {
+    var res = await fetch(BACKEND + '/auth/google', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ credential: response.credential })
+    });
+    var data = await res.json();
+    if (!res.ok || data.error) throw new Error(data.error || 'Login failed');
+    // Save email-based login
+    localStorage.setItem(STORAGE_KEY, '__google__' + data.bizKey);
+    fetchPortalData(data.bizKey);
+  } catch(err) {
+    document.getElementById('loginError').textContent = err.message || 'Google login failed. Try your access code.';
+  }
+}
+window.handleGoogleLogin = handleGoogleLogin;
+
+// Auto-login if remembered
+(function() {
+  var saved = localStorage.getItem(STORAGE_KEY);
+  if (saved) {
+    var key = saved.startsWith('__google__') ? saved.replace('__google__', '') : saved;
+    if (!saved.startsWith('__google__')) {
+      document.getElementById('bizKeyInput').value = key;
+      document.getElementById('rememberMe').checked = true;
+    }
+    fetchPortalData(key);
+  }
+})();
+
+function login() {
+  var key = document.getElementById('bizKeyInput').value.trim().toLowerCase().replace(/\s+/g, '_');
+  if (!key) return;
+  document.getElementById('loginError').textContent = '';
+  if (document.getElementById('rememberMe').checked) {
+    localStorage.setItem(STORAGE_KEY, key);
+  } else {
+    localStorage.removeItem(STORAGE_KEY);
+  }
+  fetchPortalData(key);
+}
+
+document.getElementById('bizKeyInput').addEventListener('keypress', function(e) {
+  if (e.key === 'Enter') login();
+});
+
+async function fetchPortalData(bizKey) {
+  try {
+    var [reviewRes, analyticsRes, convRes, infoRes] = await Promise.all([
+      fetch(BACKEND + '/review-report/' + bizKey),
+      fetch(BACKEND + '/analytics/' + bizKey),
+      fetch(BACKEND + '/conversations/' + bizKey),
+      fetch(BACKEND + '/client-info/' + bizKey)
+    ]);
+    var reviewData = await reviewRes.json();
+    var analyticsData = {};
+    var convData = {};
+    var infoData = {};
+    try { analyticsData = await analyticsRes.json(); } catch(e) {}
+    try { convData = await convRes.json(); } catch(e) {}
+    try { infoData = await infoRes.json(); } catch(e) {}
+
+    if (!reviewData || reviewData.error) {
+      document.getElementById('loginError').style.display = 'block';
+      return;
+    }
+
+    currentBizKey = bizKey;
+    document.getElementById('loginWrap').style.display = 'none';
+    document.getElementById('portal').style.display = 'block';
+    document.getElementById('portalFooter').style.display = 'block';
+
+    renderPortal(bizKey, reviewData, analyticsData, convData, infoData);
+  } catch(e) {
+    document.getElementById('loginError').style.display = 'block';
+  }
+}
+
+function renderPortal(bizKey, reviewData, analyticsData, convData, infoData) {
+  // ── PARSE ACCESS CODE ──
+  var hasSMS = bizKey.endsWith('_sms');
+  var baseKey = hasSMS ? bizKey.slice(0, -4) : bizKey;
+
+  var bizName = (infoData && infoData.bizName) || baseKey.replace(/_/g, ' ').replace(/\w/g, function(l) { return l.toUpperCase(); });
+  var plan = (infoData && infoData.plan) || 'bot';
+
+  // Determine which product sections to show
+  var showBot    = plan === 'bot'    || plan === 'bundle' || plan === 'bot_review' || plan === 'bot_missed' || plan === 'all';
+  var showReview = plan === 'review' || plan === 'bundle' || plan === 'bot_review' || plan === 'review_missed' || plan === 'all';
+  var showMissed = plan === 'missed' || plan === 'bot_missed' || plan === 'review_missed' || plan === 'all';
+
+  // Plan label
+  var planParts = [];
+  if (showBot)    planParts.push('Chat Assistant');
+  if (showReview) planParts.push('Review Filter');
+  // Missed Call product removed
+  if (hasSMS)     planParts.push('SMS');
+  var planLabel = planParts.join(' + ') || 'Chat Assistant';
+  var planColor = (showBot && showReview) ? '#7c3aed' : showReview ? '#0891b2' : showMissed ? '#b45309' : '#2563eb';
+
+  var now = new Date();
+  var positiveCount = reviewData.positive || 0;
+  var negativeCount = reviewData.negative || 0;
+  var totalReviews  = reviewData.total    || 0;
+  var negativeFeedback = reviewData.negativeFeedback || [];
+  var satisfactionRate = totalReviews > 0 ? Math.round((positiveCount / totalReviews) * 100) : 0;
+  var satColor = satisfactionRate >= 90 ? '#15803d' : satisfactionRate >= 70 ? '#b45309' : '#dc2626';
+  var satBg    = satisfactionRate >= 90 ? '#dcfce7' : satisfactionRate >= 70 ? '#fef9c3' : '#fee2e2';
+
+  var urgentWords = ['lawyer','attorney','sue','refund','fraud','terrible','horrible','worst','never again','furious','scam'];
+  function isUrgent(text) {
+    if (!text) return false;
+    var lower = text.toLowerCase();
+    return urgentWords.some(function(w) { return lower.indexOf(w) !== -1; });
+  }
+
+  var html = '';
+
+  // ── HEADER ──
+  html += '<div class="portal-header" style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;">';
+  html += '<div>';
+  html += '<div class="portal-biz">' + escHtml(bizName) + '</div>';
+  html += '<div class="portal-sub">Netify Builds dashboard</div>';
+  html += '<div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap;">';
+  html += '<div class="portal-status"><div class="portal-status-dot"></div>Active</div>';
+  html += '<div style="display:inline-flex;align-items:center;gap:5px;background:' + planColor + '18;color:' + planColor + ';font-size:11px;font-weight:700;padding:4px 12px;border-radius:99px;">' + planLabel + '</div>';
+  if (hasSMS) html += '<div style="display:inline-flex;align-items:center;gap:5px;background:#f0fdf4;color:#15803d;font-size:11px;font-weight:700;padding:4px 10px;border-radius:99px;">SMS Active</div>';
+  html += '</div></div>';
+  html += '<button onclick="logout()" style="background:var(--off);border:1px solid var(--border);color:var(--soft);padding:8px 16px;border-radius:99px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;">Sign out</button>';
+  html += '</div>';
+
+  // ══════════════════════════════════════
+  // ── CHAT ASSISTANT SECTION ──
+  // ══════════════════════════════════════
+  if (showBot) {
+    var analytics = analyticsData || {};
+    var conversations = (convData && convData.conversations) || [];
+    var totalChats = analytics.conversations || 0;
+    var totalLeads = analytics.leads || 0;
+
+    html += '<div style="border-top:3px solid #2563eb;margin-top:28px;padding-top:20px;">';
+    html += '<div style="font-size:11px;font-weight:700;color:#2563eb;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:16px;">Chat Assistant</div>';
+
+    // Stats
+    html += '<div class="stats-grid">';
+    html += '<div class="stat-card"><div class="stat-label">Total chats</div><div class="stat-num">' + totalChats + '</div><div class="stat-sub">All time</div></div>';
+    html += '<div class="stat-card"><div class="stat-label">Leads captured</div><div class="stat-num" style="color:#2563eb;">' + totalLeads + '</div><div class="stat-sub">Name + number collected</div></div>';
+    if (analytics.uniqueVisitors) html += '<div class="stat-card"><div class="stat-label">Unique visitors</div><div class="stat-num">' + analytics.uniqueVisitors + '</div><div class="stat-sub">Opened the chat</div></div>';
+    html += '</div>';
+
+    // Bot status
+    html += '<div class="section-title"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Your Bot</div>';
+    html += '<div style="background:white;border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">';
+    html += '<div><div style="font-size:14px;font-weight:600;color:var(--text);">' + escHtml(bizName) + ' Assistant</div><div style="font-size:13px;color:var(--soft);margin-top:2px;">Deployed on your website · Replies instantly 24/7</div></div>';
+    html += '<div style="display:flex;align-items:center;gap:6px;background:#f0fdf4;padding:6px 14px;border-radius:99px;"><div style="width:7px;height:7px;border-radius:50%;background:#22c55e;"></div><div style="font-size:12px;font-weight:700;color:#15803d;">Online</div></div>';
+    html += '</div>';
+
+    // Recent conversations
+    html += '<div class="section-title"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Recent Conversations <span style="font-size:11px;font-weight:400;color:var(--muted);">(last 20)</span></div>';
+    if (conversations.length === 0) {
+      html += '<div class="leads-wrap" style="margin-bottom:24px;"><div class="empty-state">No conversations yet. They appear here when visitors close the chat.</div></div>';
+    } else {
+      html += '<div class="leads-wrap" style="margin-bottom:24px;">';
+      conversations.slice(0,20).forEach(function(conv) {
+        var date = conv.timestamp ? new Date(conv.timestamp).toLocaleString() : 'Unknown';
+        var msgCount = conv.messages ? conv.messages.length : 0;
+        var firstMsg = conv.messages && conv.messages.find(function(m) { return m.role === 'user'; });
+        html += '<details style="border-bottom:1px solid var(--border);">';
+        html += '<summary style="padding:14px 20px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;list-style:none;user-select:none;">';
+        html += '<div style="flex:1;min-width:0;"><div style="font-size:14px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + escHtml(firstMsg ? firstMsg.content.substring(0,60) + (firstMsg.content.length > 60 ? '...' : '') : 'No messages') + '</div>';
+        html += '<div style="font-size:12px;color:var(--muted);margin-top:2px;">' + msgCount + ' messages · ' + date + '</div></div>';
+        html += '<div style="display:flex;gap:6px;flex-shrink:0;">';
+        if (conv.leadCaptured) html += '<span class="tag tag-new">Lead</span>';
+        html += '</div></summary>';
+        if (conv.messages && conv.messages.length > 0) {
+          html += '<div style="padding:12px 20px 16px;background:var(--off);display:flex;flex-direction:column;gap:8px;">';
+          conv.messages.forEach(function(msg) {
+            var isUser = msg.role === 'user';
+            html += '<div style="display:flex;flex-direction:column;align-items:' + (isUser ? 'flex-end' : 'flex-start') + ';">';
+            html += '<div style="max-width:85%;padding:8px 12px;border-radius:12px;font-size:13px;line-height:1.5;' + (isUser ? 'background:var(--blue);color:white;border-bottom-right-radius:3px;' : 'background:white;color:var(--text);border:1px solid var(--border);border-bottom-left-radius:3px;') + '">' + escHtml(msg.content) + '</div>';
+            html += '<div style="font-size:11px;color:var(--muted);margin-top:3px;">' + (isUser ? 'Customer' : 'Bot') + '</div></div>';
+          });
+          html += '</div>';
+        }
+        html += '</details>';
+      });
+      html += '</div>';
+    }
+
+    // Update bot
+    html += '<div class="section-title"><svg viewBox="0 0 24 24"><path d="M20 7H4c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V9c0-1.1-.9-2-2-2z"/><path d="M16 3H8L4 7h16l-4-4z"/></svg>Billing</div>';
+  html += '<div style="background:white;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:24px;">';
+  html += '<div style="padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">';
+  html += '<div><div style="font-size:14px;font-weight:600;color:var(--text);">Manage your subscription</div><div style="font-size:13px;color:var(--soft);margin-top:2px;">Cancel, update payment method, or view invoices</div></div>';
+  html += '<button onclick="openBillingPortal(\'' + escHtml(baseKey) + '\')" id="billingPortalBtn" style="background:var(--navy);color:white;border:none;padding:10px 18px;border-radius:10px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;">Manage Billing →</button>';
+  html += '</div></div>';
+    html += '<div style="background:white;border-radius:var(--radius);border:1px solid var(--border);overflow:hidden;margin-bottom:28px;">';
+    html += '<div style="padding:16px 24px;border-bottom:1px solid var(--border);"><div style="font-size:13px;color:var(--soft);">Changed your hours, added a service, or updated pricing? Tell us and we will update your bot within 24 hours.</div></div>';
+    html += '<div style="padding:20px 24px;">';
+    html += '<textarea id="kb-update-text" placeholder="e.g. New hours: Mon-Fri 8am-5pm. Added pressure washing to services." style="width:100%;padding:12px 14px;border:1.5px solid var(--border);border-radius:12px;font-family:inherit;font-size:14px;color:var(--text);background:var(--off);outline:none;resize:none;min-height:90px;line-height:1.6;margin-bottom:12px;box-sizing:border-box;"></textarea>';
+    html += "<button onclick=\"submitUpdate('" + escHtml(baseKey) + "','" + escHtml(bizName) + "')\" style=\"background:var(--navy);color:white;padding:12px 20px;border-radius:99px;border:none;font-family:var(--font);font-size:14px;font-weight:700;cursor:pointer;width:100%;\">Send Update Request</button>";
+    html += '<div id="kb-success" style="display:none;text-align:center;padding:12px;background:#f0fdf4;border-radius:10px;margin-top:10px;font-size:13px;font-weight:600;color:#15803d;">Sent! We will have it live within 24 hours.</div>';
+    html += '</div></div>';
+
+    html += '</div>'; // end bot section
+  }
+
+  // ══════════════════════════════════════
+  // ── REVIEW FILTER SECTION ──
+  // ══════════════════════════════════════
+  if (showReview) {
+    html += '<div style="border-top:3px solid #0891b2;margin-top:28px;padding-top:20px;">';
+    html += '<div style="font-size:11px;font-weight:700;color:#0891b2;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:16px;">Review Filter</div>';
+
+    // Stats
+    html += '<div class="stats-grid">';
+    html += '<div class="stat-card"><div class="stat-label">Happy customers</div><div class="stat-num">' + positiveCount + '</div><div class="stat-sub">Gave positive feedback</div></div>';
+    html += '<div class="stat-card"><div class="stat-label">Private feedback</div><div class="stat-num">' + negativeCount + '</div><div class="stat-sub">Caught before going public</div></div>';
+    html += '<div class="stat-card"><div class="stat-label">Satisfaction rate</div><div class="stat-num" style="color:' + satColor + '">' + (totalReviews > 0 ? satisfactionRate + '%' : '—') + '</div><div class="stat-sub" style="background:' + satBg + ';color:' + satColor + ';display:inline-block;padding:2px 8px;border-radius:99px;font-weight:600;">' + (totalReviews > 0 ? (satisfactionRate >= 90 ? 'Excellent' : satisfactionRate >= 70 ? 'Good' : 'Needs attention') : 'No data yet') + '</div></div>';
+    var clickCount = reviewData.clicks || 0;
+    if (clickCount > 0) {
+      var convRate = totalReviews > 0 ? Math.round((totalReviews / clickCount) * 100) : 0;
+      html += '<div class="stat-card"><div class="stat-label">Link clicks</div><div class="stat-num">' + clickCount + '</div><div class="stat-sub">' + convRate + '% left a response</div></div>';
+    }
+    html += '</div>';
+
+    // Velocity chart
+    if (totalReviews > 0 && reviewData.logs && reviewData.logs.length > 0) {
+      var nowMs = Date.now();
+      var weeks = [];
+      for (var w = 7; w >= 0; w--) {
+        var ws = nowMs - (w+1)*7*24*60*60*1000;
+        var we = nowMs - w*7*24*60*60*1000;
+        var lbl = w === 0 ? 'This wk' : w === 1 ? 'Last wk' : (w + 'w ago');
+        var cnt = (reviewData.logs||[]).filter(function(r){ var d=new Date(r.date).getTime(); return d>=ws&&d<we; }).length;
+        weeks.push({label:lbl, count:cnt});
+      }
+      var maxCnt = Math.max.apply(null, weeks.map(function(wk){ return wk.count; })) || 1;
+      html += '<div class="section-title"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Review Velocity</div>';
+      html += '<div style="background:white;border:1px solid var(--border);border-radius:16px;padding:20px 24px;margin-bottom:24px;">';
+      html += '<div style="font-size:12px;color:var(--soft);margin-bottom:16px;">Responses per week — last 8 weeks</div>';
+      html += '<div style="display:flex;align-items:flex-end;gap:8px;height:80px;">';
+      weeks.forEach(function(wk) {
+        var pct = maxCnt > 0 ? Math.max(4, Math.round((wk.count/maxCnt)*80)) : 4;
+        var isNow = wk.label === 'This wk';
+        html += '<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">';
+        html += '<div style="font-size:10px;font-weight:700;color:' + (wk.count>0?'var(--ink)':'transparent') + ';">' + wk.count + '</div>';
+        html += '<div style="width:100%;height:' + pct + 'px;background:' + (isNow?'#0891b2':wk.count>0?'#a5f3fc':'var(--border)') + ';border-radius:4px 4px 0 0;"></div>';
+        html += '<div style="font-size:9px;color:var(--soft);white-space:nowrap;">' + wk.label + '</div>';
+        html += '</div>';
+      });
+      html += '</div></div>';
+    }
+
+    // SMS job logger
+    if (hasSMS) {
+      html += '<div class="section-title"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Log a Completed Job <span style="background:#f0fdf4;color:#15803d;font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;margin-left:6px;">SMS</span></div>';
+      html += '<div style="background:white;border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;margin-bottom:24px;">';
+      html += '<p style="font-size:13px;color:var(--soft);margin-bottom:16px;">Log a completed job and the review request text is sent automatically — no action needed from you.</p>';
+      html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">';
+      html += '<input id="smsJobName" placeholder="Customer name" style="padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-family:inherit;outline:none;" />';
+      html += '<input id="smsJobPhone" type="tel" placeholder="Customer phone" style="padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-family:inherit;outline:none;" />';
+      html += '</div>';
+      html += '<input id="smsJobType" placeholder="Job type (e.g. AC repair, roof inspection)" style="width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-family:inherit;outline:none;box-sizing:border-box;margin-bottom:10px;" />';
+      html += '<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">';
+      html += '<label style="font-size:13px;color:var(--soft);">Send review request in:</label>';
+      html += '<select id="smsDelay" style="padding:8px 12px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-family:inherit;outline:none;">';
+      html += '<option value="2">2 hours</option><option value="24" selected>Next day</option><option value="48">2 days</option><option value="72">3 days</option>';
+      html += '</select></div>';
+      html += "<button onclick=\"logSMSJob('" + escHtml(baseKey) + "')\" style=\"width:100%;padding:12px;background:#15803d;color:white;border:none;border-radius:10px;font-family:Plus Jakarta Sans,sans-serif;font-size:14px;font-weight:700;cursor:pointer;\">Log Job &amp; Schedule Review Text</button>";
+      html += '<div id="smsJobSuccess" style="display:none;margin-top:10px;text-align:center;font-size:13px;font-weight:600;color:#15803d;">✓ Logged! Review text will send automatically.</div>';
+      html += '</div>';
+
+      // SMS Job History
+      html += '<div class="section-title"><svg viewBox="0 0 24 24" style="stroke:var(--soft)"><path d="M3 3h18v18H3z" stroke="none"/><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 8h10M7 12h7M7 16h5"/></svg>Job Log History</div>';
+      var smsLogs = (reviewData && reviewData.smsJobs) || [];
+      if (smsLogs.length === 0) {
+        html += '<div style="background:white;border:1px solid var(--border);border-radius:var(--radius);padding:20px;text-align:center;font-size:13px;color:var(--soft);margin-bottom:24px;">No jobs logged yet. Once you log jobs above they will appear here with their send status.</div>';
+      } else {
+        html += '<div style="background:white;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:24px;">';
+        smsLogs.slice().reverse().slice(0,20).forEach(function(job) {
+          var logDate = job.loggedAt ? new Date(job.loggedAt).toLocaleDateString() : '';
+          var sendTime = job.loggedAt ? new Date(new Date(job.loggedAt).getTime() + (job.delayHours || 24)*60*60*1000) : null;
+          var sendDate = sendTime ? sendTime.toLocaleDateString() : '';
+          var isPast = sendTime && Date.now() > sendTime.getTime();
+          html += '<div style="padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">';
+          html += '<div><div style="font-size:13px;font-weight:600;color:var(--text);">' + escHtml(job.customerName || 'Unknown') + '</div>';
+          html += '<div style="font-size:12px;color:var(--soft);margin-top:2px;">' + escHtml(job.jobType || 'Job') + ' · Logged ' + logDate + '</div></div>';
+          html += '<span style="background:' + (isPast ? '#f0fdf4;color:#15803d' : '#fef9c3;color:#b45309') + ';font-size:11px;font-weight:700;padding:3px 10px;border-radius:99px;">' + (isPast ? '✓ Sent' : 'Sends ' + sendDate) + '</span>';
+          html += '</div>';
+        });
+        html += '</div>';
+      }
+    }
+
+    // Send tool
+    html += '<div class="section-title"><svg viewBox="0 0 24 24"><path d="M22 2L11 13"/><path d="M22 2L15 22 11 13 2 9l20-7z"/></svg>Quick Send Tool</div>';
+    html += '<div style="background:white;border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;margin-bottom:24px;">';
+    html += '<p style="font-size:13px;color:var(--soft);margin-bottom:14px;">Bookmark this link on your phone. After each job, open it, enter the customer name, and copy the ready-to-send review request message.</p>';
+    html += '<a href="https://botbuilder-backend-production.up.railway.app/send-page/' + escHtml(baseKey) + '" target="_blank" style="display:block;text-align:center;padding:12px;background:var(--navy);color:white;border-radius:10px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;font-weight:700;text-decoration:none;">Open Quick Send Page →</a>';
+    html += '<p style="font-size:11px;color:var(--muted);text-align:center;margin-top:8px;">Bookmark this page on your phone home screen for one-tap access after jobs</p>';
+    html += '</div>';
+    html += '<div class="section-title" style="' + (negativeFeedback.length > 0 ? 'color:#dc2626;' : '') + '"><svg viewBox="0 0 24 24" style="' + (negativeFeedback.length > 0 ? 'stroke:#dc2626;' : '') + '"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>Private Feedback' + (negativeFeedback.length > 0 ? ' <span style="background:#fee2e2;color:#dc2626;font-size:11px;padding:2px 8px;border-radius:99px;font-weight:700;">' + negativeFeedback.length + '</span>' : '') + '</div>';
+    if (negativeFeedback.length > 0) {
+      var unresolvedCnt = negativeFeedback.filter(function(fb){ return !fb.resolved; }).length;
+      var resolvedCnt   = negativeFeedback.filter(function(fb){ return fb.resolved; }).length;
+      if (resolvedCnt > 0) html += '<div style="font-size:12px;color:var(--soft);margin-bottom:12px;">' + resolvedCnt + ' resolved · ' + unresolvedCnt + ' open</div>';
+      html += '<div class="leads-wrap">';
+      negativeFeedback.forEach(function(fb) {
+        var date = fb.date ? new Date(fb.date).toLocaleDateString() : '';
+        var urgent = isUrgent(fb.feedback);
+        var isResolved = fb.resolved === true;
+        html += '<div style="padding:16px 20px;border-bottom:1px solid var(--border);display:flex;flex-direction:column;gap:8px;opacity:' + (isResolved?'0.5':'1') + ';">';
+        html += '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;">';
+        html += '<div style="display:flex;align-items:center;gap:8px;"><div style="font-size:13px;font-weight:600;color:var(--text);">' + escHtml(fb.name||'Anonymous') + '</div>';
+        if (isResolved) html += '<span style="background:#dcfce7;color:#15803d;font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;">✓ Resolved</span>';
+        if (urgent && !isResolved) html += '<span class="tag tag-urgent">⚠ Urgent</span>';
+        html += '</div>';
+        html += '<div style="display:flex;gap:8px;align-items:center;"><span style="font-size:12px;color:var(--muted);">' + date + '</span>';
+        html += '<button onclick="resolveFeedback(' + fb.index + ',' + !isResolved + ',this)" style="font-size:11px;font-weight:700;padding:4px 12px;border-radius:99px;border:1px solid ' + (isResolved?'#e2e8f0':'#bbf7d0') + ';background:' + (isResolved?'#f8fafc':'#f0fdf4') + ';color:' + (isResolved?'#64748b':'#15803d') + ';cursor:pointer;font-family:inherit;">' + (isResolved?'Reopen':'✓ Mark resolved') + '</button>';
+        html += '</div></div>';
+        html += '<div style="font-size:14px;color:var(--text);line-height:1.6;">' + escHtml(fb.feedback||'No details provided') + '</div>';
+        if (fb.contact && fb.contact !== 'Not provided') html += '<div style="font-size:12px;color:var(--soft);">Contact: ' + escHtml(fb.contact) + '</div>';
+        html += '</div>';
+      });
+      html += '</div>';
+    } else if (totalReviews === 0) {
+      html += '<div class="leads-wrap"><div class="empty-state">No review responses yet. Start texting your review link after each job.</div></div>';
+    } else {
+      html += '<div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:var(--radius);padding:20px;text-align:center;color:#15803d;font-size:14px;font-weight:600;">No negative feedback — great work!</div>';
+    }
+
+    html += '</div>'; // end review section
+  }
+
+  // ══════════════════════════════════════
+  // ── MISSED CALL TEXT-BACK SECTION ──
+  // ══════════════════════════════════════
+  if (showMissed) {
+    var missedLogs = (infoData && infoData.missedCallLogs) || [];
+    html += '<div style="border-top:3px solid #b45309;margin-top:28px;padding-top:20px;">';
+    html += '<div style="font-size:11px;font-weight:700;color:#b45309;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:16px;">Missed Call Text-Back (Legacy)</div>';
+    html += '<div class="stats-grid">';
+    html += '<div class="stat-card"><div class="stat-label">Calls caught</div><div class="stat-num" style="color:#b45309;">' + missedLogs.length + '</div><div class="stat-sub">Auto-text fired</div></div>';
+    html += '<div class="stat-card"><div class="stat-label">Response rate</div><div class="stat-num">—</div><div class="stat-sub">Coming soon</div></div>';
+    html += '</div>';
+    html += '<div style="background:white;border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;margin-bottom:24px;">';
+    html += '<div style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px;">Auto-text is active</div>';
+    html += '<div style="font-size:13px;color:var(--soft);">When a customer calls and you don't answer, they automatically receive a text within 60 seconds. No action needed from you.</div>';
+    html += '</div>';
+    html += '</div>'; // end missed section
+  }
+
+  // ── CONTACT CARD (always shown) ──
+  html += '<div style="background:white;border-radius:var(--radius);padding:20px 24px;border:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-top:28px;">';
+  html += '<div><div style="font-family:var(--font);font-size:14px;font-weight:700;margin-bottom:2px;">Need anything?</div><div style="font-size:13px;color:var(--soft);">Eli handles all updates personally — usually same day.</div></div>';
+  html += '<a href="mailto:netifybuilds@gmail.com" style="background:var(--navy);color:white;padding:10px 20px;border-radius:99px;font-size:13px;font-weight:700;text-decoration:none;font-family:var(--font);">Email Eli</a>';
+  html += '</div>';
+
+  document.getElementById('portalContent').className = '';
+  document.getElementById('portalContent').innerHTML = html;
+}
+
+async function resolveFeedback(index, resolved, btn) {
+  try {
+    btn.textContent = '...';
+    btn.disabled = true;
+    await fetch(BACKEND + '/resolve-feedback', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ bizKey: currentBizKey, index, resolved })
+    });
+    fetchPortalData(currentBizKey);
+  } catch(err) {
+    btn.textContent = 'Error';
+    btn.disabled = false;
+  }
+}
+
+function logSMSJob(bizKey) {
+  var name  = document.getElementById('smsJobName').value.trim();
+  var phone = document.getElementById('smsJobPhone').value.trim();
+  var type  = document.getElementById('smsJobType').value.trim();
+  var delay = document.getElementById('smsDelay').value;
+  if (!name || !phone) { alert('Please enter customer name and phone.'); return; }
+  fetch(BACKEND + '/log-sms-job', {
+    method: 'POST', headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({ bizKey: bizKey, customerName: name, customerPhone: phone, jobType: type, delayHours: parseInt(delay) })
+  }).then(function() {
+    document.getElementById('smsJobSuccess').style.display = 'block';
+    document.getElementById('smsJobName').value = '';
+    document.getElementById('smsJobPhone').value = '';
+    document.getElementById('smsJobType').value = '';
+  }).catch(function() { alert('Error logging job. Try again.'); });
+}
+
+async function openBillingPortal(bizKey) {
+  var btn = document.getElementById('billingPortalBtn');
+  if (btn) { btn.textContent = 'Loading...'; btn.disabled = true; }
+  try {
+    var res = await fetch(BACKEND + '/billing-portal', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ bizKey: bizKey })
+    });
+    var data = await res.json();
+    if (data.url) {
+      window.open(data.url, '_blank');
+    } else {
+      alert(data.error || 'Could not open billing portal. Email netifybuilds@gmail.com.');
+    }
+  } catch(err) {
+    alert('Could not connect. Email netifybuilds@gmail.com for billing help.');
+  }
+  if (btn) { btn.textContent = 'Manage Billing →'; btn.disabled = false; }
+}
+
+function logout() {
+  currentBizKey = '';
+  localStorage.removeItem(STORAGE_KEY);
+  document.getElementById('portal').style.display = 'none';
+  document.getElementById('portalFooter').style.display = 'none';
+  document.getElementById('loginWrap').style.display = 'flex';
+  document.getElementById('bizKeyInput').value = '';
+  document.getElementById('rememberMe').checked = false;
+  document.getElementById('loginError').textContent = '';
+  document.getElementById('portalContent').innerHTML = '';
+  if (window.google && window.google.accounts) {
+    window.google.accounts.id.disableAutoSelect();
+  }
+}
+
+async function submitUpdate(bizKey, bizName) {
+  var text = document.getElementById('kb-update-text').value.trim();
+  if (!text) { alert('Please describe what needs to be updated.'); return; }
+  var btn = event.target;
+  btn.disabled = true;
+  btn.textContent = 'Sending...';
+  try {
+    var res = await fetch(BACKEND + '/update-knowledge', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ bizKey: bizKey, bizName: bizName, update: text })
+    });
+    var data = await res.json();
+    if (data.success) {
+      document.getElementById('kb-success').style.display = 'block';
+      document.getElementById('kb-update-text').value = '';
+    } else {
+      alert('Something went wrong. Email us at netifybuilds@gmail.com');
+    }
+  } catch(e) {
+    alert('Something went wrong. Email us at netifybuilds@gmail.com');
+  }
+  btn.disabled = false;
+  btn.textContent = 'Send Update Request';
+}
+
+function escHtml(str) {
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+</script>
+
+</body>
+</html>

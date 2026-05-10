@@ -1,0 +1,18 @@
+{
+  "name": "Netify Builds",
+  "short_name": "Netify",
+  "description": "Client dashboard for Netify Builds",
+  "start_url": "/app",
+  "display": "standalone",
+  "background_color": "#0A2540",
+  "theme_color": "#0A2540",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='80' fill='%230A2540'/%3E%3Crect x='100' y='160' width='200' height='30' rx='15' fill='%233B82F6'/%3E%3Crect x='100' y='220' width='280' height='30' rx='15' fill='rgba(147,197,253,0.6)'/%3E%3Crect x='100' y='280' width='140' height='30' rx='15' fill='rgba(147,197,253,0.35)'/%3E%3Ccircle cx='380' cy='140' r='55' fill='%233B82F6'/%3E%3C/svg%3E",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

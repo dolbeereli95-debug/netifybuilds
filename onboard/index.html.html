@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Get Started — Netify Builds</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --navy: #0A2540; --blue: #3B82F6; --blue-dark: #2563EB;
+  --blue-pale: #EFF6FF; --white: #FFFFFF; --off-white: #F8FAFC;
+  --text: #0F172A; --text-soft: #64748B; --border: #E2E8F0;
+}
+html { scroll-behavior: smooth; }
+body { font-family: 'Inter', sans-serif; background: var(--off-white); color: var(--text); min-height: 100vh; }
+
+/* ── HEADER ── */
+.header { background: var(--navy); padding: 18px 24px; text-align: center; }
+.logo { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1.3rem; font-weight: 800; color: white; text-decoration: none; letter-spacing: -0.01em; }
+.logo span { color: #93C5FD; }
+
+/* ── HERO ── */
+.hero { background: var(--navy); padding: 48px 24px 56px; text-align: center; }
+.hero-badge { display: inline-flex; align-items: center; gap: 7px; background: rgba(59,130,246,0.15); border: 1px solid rgba(147,197,253,0.25); color: #93C5FD; padding: 6px 16px; border-radius: 99px; font-size: 12px; font-weight: 600; margin-bottom: 20px; letter-spacing: 0.02em; }
+.hero h1 { font-family: 'Plus Jakarta Sans', sans-serif; font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 800; color: white; line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 14px; }
+.hero h1 em { font-style: normal; color: #93C5FD; }
+.hero p { font-size: 1rem; color: rgba(255,255,255,0.6); line-height: 1.75; max-width: 480px; margin: 0 auto; }
+
+/* ── STEPS ── */
+.steps { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; padding: 28px 24px; background: white; border-bottom: 1px solid var(--border); }
+.step-pill { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-soft); font-weight: 500; }
+.step-pill .num { width: 22px; height: 22px; border-radius: 50%; background: var(--blue); color: white; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.step-pill .sep { color: var(--border); font-size: 18px; margin: 0 2px; }
+
+/* ── FORM CONTAINER ── */
+.form-wrap { max-width: 620px; margin: 0 auto; padding: 40px 24px 60px; }
+
+/* ── FORM BOX ── */
+.form-box { background: white; border-radius: 20px; padding: 40px; border: 1.5px solid var(--border); box-shadow: 0 8px 40px rgba(0,0,0,0.06); }
+@media (max-width: 480px) { .form-box { padding: 24px 18px; } }
+
+.form-divider { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-soft); margin: 28px 0 18px; display: flex; align-items: center; gap: 10px; }
+.form-divider::before, .form-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.form-divider:first-child { margin-top: 0; }
+
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+@media (max-width: 520px) { .form-row { grid-template-columns: 1fr; } }
+.form-group { margin-bottom: 14px; }
+
+label { display: block; font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+label .opt { font-weight: 400; color: var(--text-soft); }
+input, select, textarea { width: 100%; padding: 12px 15px; border: 1.5px solid var(--border); border-radius: 10px; font-family: 'Inter', sans-serif; font-size: 14px; color: var(--text); background: white; outline: none; transition: border-color 0.2s; line-height: 1.5; }
+input:focus, select:focus, textarea:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(59,130,246,0.08); }
+textarea { resize: vertical; min-height: 90px; }
+textarea.short { min-height: 70px; }
+
+.form-submit { width: 100%; padding: 16px; border-radius: 99px; background: var(--blue); color: white; border: none; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 20px rgba(59,130,246,0.35); margin-top: 10px; }
+.form-submit:hover { background: var(--blue-dark); transform: translateY(-2px); }
+.form-note { font-size: 12px; color: var(--text-soft); text-align: center; margin-top: 12px; line-height: 1.6; }
+
+/* ── SUCCESS ── */
+.success-msg { display: none; text-align: center; padding: 40px 20px; }
+.success-icon { width: 64px; height: 64px; border-radius: 50%; background: #DCFCE7; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; }
+.success-icon svg { width: 32px; height: 32px; stroke: #16a34a; fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+.success-msg h3 { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1.5rem; font-weight: 800; color: var(--text); margin-bottom: 10px; }
+.success-msg p { font-size: 14.5px; color: var(--text-soft); line-height: 1.75; }
+
+/* ── TRUST BAR ── */
+.trust-bar { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; padding: 20px 24px 0; }
+.trust-item { display: flex; align-items: center; gap: 7px; font-size: 13px; color: var(--text-soft); font-weight: 500; }
+.trust-item svg { width: 15px; height: 15px; stroke: var(--blue); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+
+/* ── FOOTER ── */
+.footer { text-align: center; padding: 32px 24px; border-top: 1px solid var(--border); margin-top: 20px; }
+.footer a { font-size: 13px; color: var(--text-soft); text-decoration: none; }
+.footer a:hover { color: var(--blue); }
+</style>
+</head>
+<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_PLACES_API_KEY&libraries=places" async defer></script>
+<body>
+
+<div class="header">
+  <a href="/" class="logo">Netify <span>Builds.</span></a>
+</div>
+
+<div class="hero">
+  <div class="hero-badge">You're one step away</div>
+  <h1>Let's build your<br><em>AI assistant.</em></h1>
+  <p>Fill out this short form and your custom bot will be live on your website within 24 hours. We'll reach out to confirm before anything goes live.</p>
+  <div class="trust-bar" style="padding-top:28px;">
+    <div class="trust-item" style="color:rgba(255,255,255,0.5)"><svg viewBox="0 0 24 24" style="stroke:#93C5FD"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Live within 24 hours</div>
+    <div class="trust-item" style="color:rgba(255,255,255,0.5)"><svg viewBox="0 0 24 24" style="stroke:#93C5FD"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> No charge until you approve</div>
+    <div class="trust-item" style="color:rgba(255,255,255,0.5)"><svg viewBox="0 0 24 24" style="stroke:#93C5FD"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg> No contracts, cancel anytime</div>
+  </div>
+</div>
+
+<div class="form-wrap">
+  <div class="form-box">
+    <form id="onboardingForm">
+
+      <!-- ① YOUR INFO -->
+      <div class="form-divider">Your Info</div>
+      <div class="form-row">
+        <div><label>Your Name</label><input type="text" name="ownerName" placeholder="John Smith" required /></div>
+        <div style="position:relative;">
+          <label>Business Name</label>
+          <input type="text" name="bizName" id="obBizNameInput" placeholder="Bright Smile Dental" required autocomplete="off" oninput="obBizSearch(this.value)" />
+          <div id="obBizSuggestions" style="display:none;position:absolute;top:100%;left:0;right:0;background:white;border:1.5px solid var(--blue);border-top:none;border-radius:0 0 12px 12px;z-index:100;box-shadow:0 8px 24px rgba(0,0,0,0.12);max-height:220px;overflow-y:auto;"></div>
+          <input type="hidden" id="obBizPlaceId" name="placeId" value="" />
+        </div>
+      </div>
+      <div id="obAutoFillBanner" style="display:none;background:#f0fdf4;border:1px solid #86efac;border-radius:10px;padding:10px 14px;margin-top:-4px;margin-bottom:8px;font-size:12px;color:#15803d;font-weight:600;">
+        ✓ Business info auto-filled from Google — review below and edit anything that looks off.
+      </div>
+      <div class="form-row">
+        <div><label>Email</label><input type="email" name="email" placeholder="john@yoursite.com" required /></div>
+        <div><label>Phone</label><input type="tel" name="phone" id="obPhoneInput" placeholder="(555) 867-5309" required /></div>
+      </div>
+      <p style="font-size:11px;color:var(--text-soft);line-height:1.6;margin-top:-8px;margin-bottom:8px;">By providing your phone number you agree to receive SMS messages from Netify Builds related to your account and services. Message and data rates may apply. Reply STOP to opt out. Reply HELP for help. See our <a href="/privacy" style="color:var(--blue);">Privacy Policy</a> and <a href="/terms" style="color:var(--blue);">Terms of Service</a>.</p>
+      <div class="form-group"><label>Website URL <span class="opt" id="websiteOptNote">optional for Reactivation Campaigns</span></label><input type="text" name="website" id="obWebsiteInput" placeholder="www.yoursite.com" /></div>
+
+      <!-- ② PICK YOUR PLAN -->
+      <div class="form-divider">Choose Your Plan</div>
+
+      <!-- Promo discount banner -->
+      <div id="obDiscountBanner" style="display:none;background:linear-gradient(135deg,#16a34a,#15803d);border-radius:14px;padding:14px 18px;margin-bottom:16px;display:flex;align-items:center;gap:12px;">
+        <div style="width:36px;height:36px;background:rgba(255,255,255,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <svg style="width:18px;height:18px;stroke:white;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div>
+          <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:800;color:white;">15% off your first month — applied automatically</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.75);margin-top:2px;">Exclusive offer because we reached out to you directly.</div>
+        </div>
+      </div>
+      <input type="hidden" name="promoDiscount" id="obPromoDiscount" value="" />
+
+      <div class="form-group">
+        <label>Which plan?</label>
+        <select name="package" id="packageSelect" onchange="handlePackageChange(this.value)">
+          <option value="">Select a plan...</option>
+          <option value="faq" id="obPkg_faq">24/7 Website Chat Assistant — $250/mo</option>
+          <option value="review" id="obPkg_review">Review Filter — $100/mo</option>
+          <option value="bundle" id="obPkg_bundle">Full Bundle (Chat + Review) — $399/mo</option>
+          <option value="campaign" id="obPkg_campaign">Reactivation Campaigns — $200/mo</option>
+        </select>
+      </div>
+      <div id="obDiscountNote" style="display:none;background:#f0fdf4;border:1px solid #86efac;border-radius:10px;padding:11px 14px;margin-top:-8px;margin-bottom:16px;font-size:13px;color:#15803d;font-weight:600;"></div>
+
+      <!-- ③ BOT FIELDS — shown for chat assistant & bundle -->
+      <div id="bot-fields" style="display:none;">
+        <div class="form-divider">Your Business</div>
+        <div class="form-group">
+          <label>Industry</label>
+          <select name="industry" id="industrySelectOnboard" onchange="highlightFeaturesOnboard(this.value)">
+            <option value="">Select your industry...</option>
+            <option value="Dental Office">Dental Office</option>
+            <option value="Medical / Healthcare">Medical / Healthcare</option>
+            <option value="Law Firm">Law Firm</option>
+            <option value="Real Estate">Real Estate</option>
+            <option value="Med Spa / Salon">Med Spa / Salon</option>
+            <option value="Restaurant / Cafe">Restaurant / Cafe</option>
+            <option value="HVAC">HVAC</option>
+            <option value="Plumbing">Plumbing</option>
+            <option value="Electrical">Electrical</option>
+            <option value="Landscaping">Landscaping</option>
+            <option value="Roofing">Roofing</option>
+            <option value="Barber Shop">Barber Shop</option>
+            <option value="Pet Grooming">Pet Grooming</option>
+            <option value="Moving Company">Moving Company</option>
+            <option value="Auto Shop">Auto Shop</option>
+            <option value="Cleaning Service">Cleaning Service</option>
+            <option value="Pest Control">Pest Control</option>
+            <option value="General Contractor">General Contractor</option>
+            <option value="Fitness / Gym">Fitness / Gym</option>
+            <option value="Veterinary">Veterinary</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <div><label>Service Area</label><input type="text" name="area" id="obAreaInput" placeholder="Columbus, OH and surrounding" /></div>
+          <div><label>Business Hours</label><input type="text" name="hours" id="obHoursInput" placeholder="Mon–Fri 8am–6pm" /></div>
+        </div>
+        <div class="form-group">
+          <label>Main services</label>
+          <textarea name="services" placeholder="e.g. Cleanings, fillings, crowns, emergency dental..."></textarea>
+        </div>
+        <div class="form-group">
+          <label>Common customer questions</label>
+          <textarea name="faqs" placeholder="e.g. Do you accept new patients? What insurance do you take? Do you offer payment plans?"></textarea>
+        </div>
+        <div class="form-divider">Optional details</div>
+        <div class="form-group">
+          <label>What sets you apart? <span class="opt">optional</span></label>
+          <textarea name="differentiators" class="short" placeholder="e.g. Family owned 20 years, same-day appointments, 5-star rated..."></textarea>
+        </div>
+        <div class="form-row">
+          <div><label>Emergency / after-hours number <span class="opt">optional</span></label><input type="text" name="emergency" placeholder="e.g. (555) 123-4567" /></div>
+          <div><label>Licensing or certifications <span class="opt">optional</span></label><input type="text" name="licensing" placeholder="e.g. Licensed &amp; insured in Ohio" /></div>
+        </div>
+        <div class="form-group">
+          <label>What should your bot collect from customers?</label>
+          <div style="display:flex;flex-direction:column;gap:10px;margin-top:8px;" id="leadCaptureOptions">
+            <label id="lc_phone_label" style="display:flex;align-items:flex-start;gap:12px;padding:14px 16px;background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:12px;cursor:pointer;transition:all 0.15s;">
+              <input type="radio" name="leadCapture" value="name_phone" id="lc_phone" style="margin-top:3px;accent-color:#2563eb;flex-shrink:0;" onchange="highlightLeadCapture(this)" />
+              <div>
+                <div style="font-size:14px;font-weight:700;color:#0f172a;margin-bottom:2px;">Name and phone number</div>
+                <div style="font-size:12px;color:#64748b;line-height:1.5;">You call them back to book or follow up.<br><span style="color:#2563eb;font-weight:600;">Recommended for:</span> HVAC, plumbing, roofing, cleaning, contractors, landscaping</div>
+              </div>
+            </label>
+            <label id="lc_email_label" style="display:flex;align-items:flex-start;gap:12px;padding:14px 16px;background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:12px;cursor:pointer;transition:all 0.15s;">
+              <input type="radio" name="leadCapture" value="name_email" id="lc_email" style="margin-top:3px;accent-color:#2563eb;flex-shrink:0;" onchange="highlightLeadCapture(this)" />
+              <div>
+                <div style="font-size:14px;font-weight:700;color:#0f172a;margin-bottom:2px;">Name and email</div>
+                <div style="font-size:12px;color:#64748b;line-height:1.5;">You follow up digitally at your own pace.<br><span style="color:#2563eb;font-weight:600;">Recommended for:</span> law firms, real estate, consultants, online businesses</div>
+              </div>
+            </label>
+            <label id="lc_date_label" style="display:flex;align-items:flex-start;gap:12px;padding:14px 16px;background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:12px;cursor:pointer;transition:all 0.15s;">
+              <input type="radio" name="leadCapture" value="name_email_date" id="lc_date" style="margin-top:3px;accent-color:#2563eb;flex-shrink:0;" onchange="highlightLeadCapture(this)" />
+              <div>
+                <div style="font-size:14px;font-weight:700;color:#0f172a;margin-bottom:2px;">Name, email, and preferred date</div>
+                <div style="font-size:12px;color:#64748b;line-height:1.5;">Collects appointment intent before you confirm.<br><span style="color:#2563eb;font-weight:600;">Recommended for:</span> dental offices, salons, med spas, gyms, veterinarians</div>
+              </div>
+            </label>
+            <label id="lc_reservation_label" style="display:flex;align-items:flex-start;gap:12px;padding:14px 16px;background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:12px;cursor:pointer;transition:all 0.15s;">
+              <input type="radio" name="leadCapture" value="reservation" id="lc_reservation" style="margin-top:3px;accent-color:#2563eb;flex-shrink:0;" onchange="highlightLeadCapture(this)" />
+              <div>
+                <div style="font-size:14px;font-weight:700;color:#0f172a;margin-bottom:2px;">Name, date, time, and party size</div>
+                <div style="font-size:12px;color:#64748b;line-height:1.5;">Full reservation details collected upfront.<br><span style="color:#2563eb;font-weight:600;">Recommended for:</span> restaurants, event spaces, catering</div>
+              </div>
+            </label>
+            <label id="lc_emailonly_label" style="display:flex;align-items:flex-start;gap:12px;padding:14px 16px;background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:12px;cursor:pointer;transition:all 0.15s;">
+              <input type="radio" name="leadCapture" value="email_only" id="lc_emailonly" style="margin-top:3px;accent-color:#2563eb;flex-shrink:0;" onchange="highlightLeadCapture(this)" />
+              <div>
+                <div style="font-size:14px;font-weight:700;color:#0f172a;margin-bottom:2px;">Email only</div>
+                <div style="font-size:12px;color:#64748b;line-height:1.5;">Captures email for discounts, newsletters, or restock alerts.<br><span style="color:#2563eb;font-weight:600;">Recommended for:</span> retail stores, product sellers, ecommerce</div>
+              </div>
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Bot tone</label>
+          <select name="tone">
+            <option value="Friendly and casual">Friendly &amp; casual — warm, approachable</option>
+            <option value="Professional and formal">Professional — polished, formal</option>
+            <option value="Warm and empathetic">Warm &amp; empathetic — caring, patient</option>
+            <option value="Straight to the point">Straight to the point — brief, direct</option>
+            <option value="Upbeat and energetic">Upbeat &amp; energetic — enthusiastic</option>
+            <option value="Trustworthy and expert">Trustworthy &amp; expert — authoritative</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <div><label>Bot name <span class="opt">optional</span></label><input type="text" name="botPersonality" placeholder="e.g. Aria, Max — or leave blank" /></div>
+          <div>
+            <label>Bot color <span class="opt">optional</span></label>
+            <input type="hidden" name="botColor" id="obBotColorValue" value="#2563eb" />
+            <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;margin-bottom:6px;">
+              <div onclick="obPickBotColor('#2563eb',this)" style="width:28px;height:28px;border-radius:8px;background:#2563eb;cursor:pointer;box-shadow:0 0 0 3px white,0 0 0 5px #2563eb;"></div>
+              <div onclick="obPickBotColor('#0A2540',this)" style="width:28px;height:28px;border-radius:8px;background:#0A2540;cursor:pointer;"></div>
+              <div onclick="obPickBotColor('#16a34a',this)" style="width:28px;height:28px;border-radius:8px;background:#16a34a;cursor:pointer;"></div>
+              <div onclick="obPickBotColor('#dc2626',this)" style="width:28px;height:28px;border-radius:8px;background:#dc2626;cursor:pointer;"></div>
+              <div onclick="obPickBotColor('#7c3aed',this)" style="width:28px;height:28px;border-radius:8px;background:#7c3aed;cursor:pointer;"></div>
+              <div onclick="obPickBotColor('#ea580c',this)" style="width:28px;height:28px;border-radius:8px;background:#ea580c;cursor:pointer;"></div>
+              <div onclick="obPickBotColor('#0891b2',this)" style="width:28px;height:28px;border-radius:8px;background:#0891b2;cursor:pointer;"></div>
+              <div onclick="obPickBotColor('#db2777',this)" style="width:28px;height:28px;border-radius:8px;background:#db2777;cursor:pointer;"></div>
+              <div onclick="obPickBotColor('#1f2937',this)" style="width:28px;height:28px;border-radius:8px;background:#1f2937;cursor:pointer;"></div>
+              <label style="width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,#f00,#ff0,#0f0,#0ff,#00f,#f0f);cursor:pointer;position:relative;" title="Custom">
+                <input type="color" style="opacity:0;position:absolute;width:100%;height:100%;cursor:pointer;" oninput="obPickBotColor(this.value,null)" />
+              </label>
+            </div>
+            <div style="font-size:11px;color:#64748b;">Selected: <span id="obBotColorPreview" style="font-weight:600;color:#2563eb;">#2563eb</span></div>
+          </div>
+        </div>
+
+        <!-- Feature add-ons -->
+        <div id="ob-features-section" style="display:none;">
+          <div class="form-divider">Add-ons for your industry <span style="font-size:11px;font-weight:400;color:#64748b;">— all free</span></div>
+          <div class="form-group">
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <label id="ob_flabel_appointment" style="display:none;align-items:flex-start;gap:12px;padding:12px;background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:12px;cursor:pointer;" for="ob_feat_appointment"><input type="checkbox" name="feature_appointment" id="ob_feat_appointment" value="yes" style="margin-top:2px;width:16px;height:16px;accent-color:#2563eb;flex-shrink:0;" onchange="this.closest('label').style.borderColor=this.checked?'#2563eb':'#e2e8f0';this.closest('label').style.background=this.checked?'#eff6ff':'#f8fafc'"><div><div style="font-size:13px;font-weight:600;color:#0f172a;margin-bottom:2px;">Appointment Request Flow <span style="font-size:11px;background:#dbeafe;color:#1d4ed8;padding:1px 7px;border-radius:99px;">Dental, salons, law</span></div><div style="font-size:12px;color:#64748b;line-height:1.5;">Bot collects preferred day, time, and reason — emails you a formatted appointment request.</div></div></label>
+              <label id="ob_flabel_emergency" style="display:none;align-items:flex-start;gap:12px;padding:12px;background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:12px;cursor:pointer;" for="ob_feat_emergency"><input type="checkbox" name="feature_emergency" id="ob_feat_emergency" value="yes" style="margin-top:2px;width:16px;height:16px;accent-color:#2563eb;flex-shrink:0;" onchange="this.closest('label').style.borderColor=this.checked?'#2563eb':'#e2e8f0';this.closest('label').style.background=this.checked?'#eff6ff':'#f8fafc'"><div><div style="font-size:13px;font-weight:600;color:#0f172a;margin-bottom:2px;">Emergency Escalation <span style="font-size:11px;background:#dbeafe;color:#1d4ed8;padding:1px 7px;border-radius:99px;">HVAC, plumbing, electrical</span></div><div style="font-size:12px;color:#64748b;line-height:1.5;">Bot immediately directs urgent situations to your emergency line.</div></div></label>
+              <label id="ob_flabel_multilang" style="display:none;align-items:flex-start;gap:12px;padding:12px;background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:12px;cursor:pointer;" for="ob_feat_multilang"><input type="checkbox" name="feature_multilang" id="ob_feat_multilang" value="yes" style="margin-top:2px;width:16px;height:16px;accent-color:#2563eb;flex-shrink:0;" onchange="this.closest('label').style.borderColor=this.checked?'#2563eb':'#e2e8f0';this.closest('label').style.background=this.checked?'#eff6ff':'#f8fafc'"><div><div style="font-size:13px;font-weight:600;color:#0f172a;margin-bottom:2px;">Multilanguage Support <span style="font-size:11px;background:#dbeafe;color:#1d4ed8;padding:1px 7px;border-radius:99px;">All businesses</span></div><div style="font-size:12px;color:#64748b;line-height:1.5;">Bot automatically responds in whatever language the customer writes in.</div></div></label>
+              <label id="ob_flabel_pricing" style="display:none;align-items:flex-start;gap:12px;padding:12px;background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:12px;cursor:pointer;" for="ob_feat_pricing"><input type="checkbox" name="feature_pricing" id="ob_feat_pricing" value="yes" style="margin-top:2px;width:16px;height:16px;accent-color:#2563eb;flex-shrink:0;" onchange="this.closest('label').style.borderColor=this.checked?'#2563eb':'#e2e8f0';this.closest('label').style.background=this.checked?'#eff6ff':'#f8fafc'"><div><div style="font-size:13px;font-weight:600;color:#0f172a;margin-bottom:2px;">Pricing Guide Mode <span style="font-size:11px;background:#dbeafe;color:#1d4ed8;padding:1px 7px;border-radius:99px;">Roofing, HVAC, contractors</span></div><div style="font-size:12px;color:#64748b;line-height:1.5;">Bot gives realistic price ranges instead of just saying "it depends."</div></div></label>
+              <label id="ob_flabel_workout" style="display:none;align-items:flex-start;gap:12px;padding:12px;background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:12px;cursor:pointer;" for="ob_feat_workout"><input type="checkbox" name="feature_workout" id="ob_feat_workout" value="yes" style="margin-top:2px;width:16px;height:16px;accent-color:#2563eb;flex-shrink:0;" onchange="this.closest('label').style.borderColor=this.checked?'#2563eb':'#e2e8f0';this.closest('label').style.background=this.checked?'#eff6ff':'#f8fafc'"><div><div style="font-size:13px;font-weight:600;color:#0f172a;margin-bottom:2px;">Workout Split Builder <span style="font-size:11px;background:#dbeafe;color:#1d4ed8;padding:1px 7px;border-radius:99px;">Gyms &amp; fitness</span></div><div style="font-size:12px;color:#64748b;line-height:1.5;">Bot builds a personalized workout split and captures the lead for your trainers.</div></div></label>
+              <label id="ob_flabel_groomer" style="display:none;align-items:flex-start;gap:12px;padding:12px;background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:12px;cursor:pointer;" for="ob_feat_groomer"><input type="checkbox" name="feature_groomer" id="ob_feat_groomer" value="yes" style="margin-top:2px;width:16px;height:16px;accent-color:#2563eb;flex-shrink:0;" onchange="this.closest('label').style.borderColor=this.checked?'#2563eb':'#e2e8f0';this.closest('label').style.background=this.checked?'#eff6ff':'#f8fafc'"><div><div style="font-size:13px;font-weight:600;color:#0f172a;margin-bottom:2px;">Pet Intake Qualifier <span style="font-size:11px;background:#dbeafe;color:#1d4ed8;padding:1px 7px;border-radius:99px;">Pet groomers</span></div><div style="font-size:12px;color:#64748b;line-height:1.5;">Bot asks breed, size, coat, and temperament — tells owners what service they need.</div></div></label>
+              <label id="ob_flabel_autosymptom" style="display:none;align-items:flex-start;gap:12px;padding:12px;background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:12px;cursor:pointer;" for="ob_feat_autosymptom"><input type="checkbox" name="feature_autosymptom" id="ob_feat_autosymptom" value="yes" style="margin-top:2px;width:16px;height:16px;accent-color:#2563eb;flex-shrink:0;" onchange="this.closest('label').style.borderColor=this.checked?'#2563eb':'#e2e8f0';this.closest('label').style.background=this.checked?'#eff6ff':'#f8fafc'"><div><div style="font-size:13px;font-weight:600;color:#0f172a;margin-bottom:2px;">Symptom Checker <span style="font-size:11px;background:#dbeafe;color:#1d4ed8;padding:1px 7px;border-radius:99px;">Auto shops</span></div><div style="font-size:12px;color:#64748b;line-height:1.5;">Customer describes the noise or warning light — bot explains it and offers a free inspection.</div></div></label>
+              <label id="ob_flabel_moving" style="display:none;align-items:flex-start;gap:12px;padding:12px;background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:12px;cursor:pointer;" for="ob_feat_moving"><input type="checkbox" name="feature_moving" id="ob_feat_moving" value="yes" style="margin-top:2px;width:16px;height:16px;accent-color:#2563eb;flex-shrink:0;" onchange="this.closest('label').style.borderColor=this.checked?'#2563eb':'#e2e8f0';this.closest('label').style.background=this.checked?'#eff6ff':'#f8fafc'"><div><div style="font-size:13px;font-weight:600;color:#0f172a;margin-bottom:2px;">Move Estimator <span style="font-size:11px;background:#dbeafe;color:#1d4ed8;padding:1px 7px;border-radius:99px;">Moving companies</span></div><div style="font-size:12px;color:#64748b;line-height:1.5;">Bot asks rooms, distance, floor, large items — gives a cost range and captures the lead.</div></div></label>
+              <label id="ob_flabel_cleaning" style="display:none;align-items:flex-start;gap:12px;padding:12px;background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:12px;cursor:pointer;" for="ob_feat_cleaning"><input type="checkbox" name="feature_cleaning" id="ob_feat_cleaning" value="yes" style="margin-top:2px;width:16px;height:16px;accent-color:#2563eb;flex-shrink:0;" onchange="this.closest('label').style.borderColor=this.checked?'#2563eb':'#e2e8f0';this.closest('label').style.background=this.checked?'#eff6ff':'#f8fafc'"><div><div style="font-size:13px;font-weight:600;color:#0f172a;margin-bottom:2px;">Quote Estimator <span style="font-size:11px;background:#dbeafe;color:#1d4ed8;padding:1px 7px;border-radius:99px;">Cleaning services</span></div><div style="font-size:12px;color:#64748b;line-height:1.5;">Bot asks sqft, type, frequency, pets — gives a price range and captures recurring leads.</div></div></label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ④ REVIEW FILTER FIELDS -->
+      <div id="review-fields" style="display:none;">
+        <div class="form-divider">Review Filter Setup</div>
+        <div class="form-group">
+          <label>Your Google Review link</label>
+          <p style="font-size:12px;color:#64748b;margin-bottom:8px;line-height:1.5;">Google Maps → search your business → Share → Copy link.</p>
+          <input type="text" name="reviewGoogleLink" placeholder="https://g.page/r/..." />
+        </div>
+        <div class="form-group">
+          <label>Alert email for private feedback</label>
+          <input type="email" name="alertEmail" placeholder="owner@yourbusiness.com" />
+        </div>
+        <div class="form-group">
+          <label>Brand color <span class="opt">optional</span></label>
+          <input type="hidden" name="reviewColor" id="obReviewColorValue" value="#2563eb" />
+          <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;margin-bottom:6px;">
+            <div onclick="obPickReviewColor('#2563eb',this)" style="width:28px;height:28px;border-radius:8px;background:#2563eb;cursor:pointer;box-shadow:0 0 0 3px white,0 0 0 5px #2563eb;"></div>
+            <div onclick="obPickReviewColor('#0A2540',this)" style="width:28px;height:28px;border-radius:8px;background:#0A2540;cursor:pointer;"></div>
+            <div onclick="obPickReviewColor('#16a34a',this)" style="width:28px;height:28px;border-radius:8px;background:#16a34a;cursor:pointer;"></div>
+            <div onclick="obPickReviewColor('#dc2626',this)" style="width:28px;height:28px;border-radius:8px;background:#dc2626;cursor:pointer;"></div>
+            <div onclick="obPickReviewColor('#7c3aed',this)" style="width:28px;height:28px;border-radius:8px;background:#7c3aed;cursor:pointer;"></div>
+            <div onclick="obPickReviewColor('#0891b2',this)" style="width:28px;height:28px;border-radius:8px;background:#0891b2;cursor:pointer;"></div>
+            <div onclick="obPickReviewColor('#1f2937',this)" style="width:28px;height:28px;border-radius:8px;background:#1f2937;cursor:pointer;"></div>
+            <label style="width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,#f00,#ff0,#0f0,#0ff,#00f,#f0f);cursor:pointer;position:relative;" title="Custom">
+              <input type="color" style="opacity:0;position:absolute;width:100%;height:100%;cursor:pointer;" oninput="obPickReviewColor(this.value,null)" />
+            </label>
+          </div>
+          <div style="font-size:11px;color:#64748b;">Selected: <span id="obReviewColorPreview" style="font-weight:600;color:#2563eb;">#2563eb</span></div>
+        </div>
+      </div>
+
+      <!-- ⑤ CAMPAIGN FIELDS -->
+      <div id="campaign-fields" style="display:none;">
+        <div class="form-divider">Reactivation Campaign Setup</div>
+        <div class="form-group">
+          <label>Approximate size of your past customer list</label>
+          <select name="campaignListSize">
+            <option value="">Select...</option>
+            <option value="Under 100">Under 100 contacts</option>
+            <option value="100-300">100–300 contacts</option>
+            <option value="300-500">300–500 contacts</option>
+            <option value="500+">500+ contacts</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>How is your customer list stored? <span class="opt">optional</span></label>
+          <select name="campaignListFormat">
+            <option value="">Select...</option>
+            <option value="Spreadsheet / Excel">Spreadsheet / Excel</option>
+            <option value="Phone contacts">Phone contacts</option>
+            <option value="CRM software">CRM software</option>
+            <option value="QuickBooks / invoices">QuickBooks / invoices</option>
+            <option value="Not sure">Not sure yet</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Additional campaigns <span class="opt">beyond the 1 included per quarter</span></label>
+          <div style="background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:12px;padding:16px 18px;margin-top:6px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+              <span style="font-size:13px;font-weight:600;color:#0f172a;">Extra campaigns</span>
+              <span style="font-size:13px;font-weight:700;color:#2563eb;">$100 each</span>
+            </div>
+            <select name="extraCampaigns" style="width:100%;">
+              <option value="0">No extra campaigns — just the quarterly one</option>
+              <option value="1">1 extra campaign per year (+$100)</option>
+              <option value="2">2 extra campaigns per year (+$200)</option>
+              <option value="3">3 extra campaigns per year (+$300)</option>
+            </select>
+            <p style="font-size:12px;color:#64748b;margin-top:10px;line-height:1.6;">Your $200/mo includes one campaign per quarter. We confirm timing and get your approval before anything sends.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ⑥ LAST BIT -->
+      <div class="form-divider">Last bit</div>
+      <div class="form-group">
+        <label>Billing preference</label>
+        <select name="billing">
+          <option value="monthly">Monthly — cancel anytime</option>
+          <option value="annual">Annual — save one month</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>How did you hear about us? <span class="opt">optional</span></label>
+        <select name="hearAbout">
+          <option value="">Select...</option>
+          <option value="Call from Eli">Call from Eli</option>
+          <option value="Google Search">Google Search</option>
+          <option value="Referral">Referral from someone</option>
+          <option value="Social media">Social media</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+
+      <!-- ⑦ REVIEW BANNER + SUBMIT -->
+      <div id="obReviewBanner" style="display:none;background:#fffbeb;border:1.5px solid #fcd34d;border-radius:12px;padding:14px 16px;margin-bottom:16px;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+          <svg style="width:16px;height:16px;stroke:#b45309;fill:none;stroke-width:2;flex-shrink:0;" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <span style="font-size:13px;font-weight:700;color:#b45309;">Please review your info before submitting</span>
+        </div>
+        <div id="obReviewSummary" style="font-size:12px;color:#78716c;line-height:1.8;"></div>
+      </div>
+      <button type="submit" class="submit-btn">Submit &amp; Get Started →</button>
+      <p style="font-size:12px;color:#64748b;text-align:center;margin-top:12px;line-height:1.6;">No charge until you approve. We reach out within 2 hours during business hours to confirm.</p>
+    </form>
+
+    <div class="success-msg" id="successMsg">
+      <div class="success-icon"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+      <h3>You're all set!</h3>
+      <p>Thanks! We'll review your info and reach out within 2 hours during business hours to confirm and send your invoice. Everything will be live within 24 hours of approval.</p>
+    </div>
+  </div>
+
+  <div class="trust-bar" style="padding-top:24px;">
+    <div class="trust-item"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Responds within 2 hours (business hours)</div>
+    <div class="trust-item"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg> Built by Eli, personally</div>
+    <div class="trust-item"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg> 24-hour guarantee</div>
+  </div>
+</div>
+
+<div class="footer">
+  <a href="/">← Back to Netify Builds</a>
+</div>
+
+<script>
+(function() {
+  var BACKEND = 'https://botbuilder-backend-production.up.railway.app';
+
+  function handlePackageChange(pkg) {
+    var botFields = document.getElementById('bot-fields');
+    var reviewFields = document.getElementById('review-fields');
+    var campaignFields = document.getElementById('campaign-fields');
+    var websiteInput = document.getElementById('obWebsiteInput');
+    var websiteNote = document.getElementById('websiteOptNote');
+    if (botFields) botFields.style.display = (pkg === 'faq' || pkg === 'bundle') ? 'block' : 'none';
+    if (reviewFields) reviewFields.style.display = (pkg === 'review' || pkg === 'bundle') ? 'block' : 'none';
+    if (campaignFields) campaignFields.style.display = (pkg === 'campaign') ? 'block' : 'none';
+    // Website not required for campaign-only plan
+    if (websiteInput) websiteInput.required = (pkg !== 'campaign');
+    if (websiteNote) websiteNote.style.display = (pkg === 'campaign') ? 'inline' : 'none';
+  }
+  var obIndustryFeatures = {
+    'Fitness / Gym':        ['ob_feat_workout','ob_feat_appointment','ob_feat_multilang'],
+    'Dental Office':        ['ob_feat_appointment','ob_feat_multilang'],
+    'Medical / Healthcare': ['ob_feat_appointment','ob_feat_multilang'],
+    'Med Spa / Salon':      ['ob_feat_appointment','ob_feat_multilang'],
+    'HVAC':                 ['ob_feat_emergency','ob_feat_pricing','ob_feat_multilang'],
+    'Plumbing':             ['ob_feat_emergency','ob_feat_multilang'],
+    'Electrical':           ['ob_feat_emergency','ob_feat_multilang'],
+    'Roofing':              ['ob_feat_pricing','ob_feat_multilang'],
+    'Landscaping':          ['ob_feat_pricing','ob_feat_multilang'],
+    'General Contractor':   ['ob_feat_pricing','ob_feat_emergency','ob_feat_multilang'],
+    'Restaurant / Cafe':    ['ob_feat_multilang'],
+    'Law Firm':             ['ob_feat_appointment','ob_feat_multilang'],
+    'Real Estate':          ['ob_feat_appointment','ob_feat_multilang'],
+    'Auto Shop':            ['ob_feat_autosymptom','ob_feat_multilang'],
+    'Barber Shop':          ['ob_feat_multilang'],
+    'Cleaning Service':     ['ob_feat_cleaning','ob_feat_pricing','ob_feat_multilang'],
+    'Pest Control':         ['ob_feat_pricing','ob_feat_multilang'],
+    'Veterinary':           ['ob_feat_appointment','ob_feat_multilang'],
+    'Pet Grooming':         ['ob_feat_groomer','ob_feat_multilang'],
+    'Moving Company':       ['ob_feat_moving','ob_feat_multilang'],
+  };
+  var obAllFeatureIds = ['ob_feat_appointment','ob_feat_emergency','ob_feat_multilang','ob_feat_pricing','ob_feat_workout','ob_feat_groomer','ob_feat_autosymptom','ob_feat_moving','ob_feat_cleaning'];
+
+  function highlightFeaturesOnboard(industry) {
+    var suggested = obIndustryFeatures[industry] || ['ob_feat_multilang'];
+    // Show the features section
+    var section = document.getElementById('ob-features-section');
+    if (section) section.style.display = 'block';
+    // Show only relevant cards
+    obAllFeatureIds.forEach(function(id) {
+      var checkbox = document.getElementById(id);
+      if (!checkbox) return;
+      var label = document.getElementById('ob_flabel_' + id.replace('ob_feat_', ''));
+      if (!label) return;
+      var isSuggested = suggested.indexOf(id) !== -1;
+      label.style.display = isSuggested ? 'flex' : 'none';
+      checkbox.checked = isSuggested;
+      label.style.borderColor = isSuggested ? '#2563eb' : '#e2e8f0';
+      label.style.background = isSuggested ? '#eff6ff' : '#f8fafc';
+    });
+  }
+  window.highlightFeaturesOnboard = highlightFeaturesOnboard;
+  // ── PROMO DISCOUNT ──
+  var OB_PROMO_PRICES = {
+    faq:    { orig: '$250', disc: '$212' },
+    review: { orig: '$100', disc: '$83' },
+    bundle: { orig: '$399', disc: '$339' }
+  };
+  function obUpdateDiscountNote() {
+    var note = document.getElementById('obDiscountNote');
+    var input = document.getElementById('obPromoDiscount');
+    if (!note || !input || !input.value) return;
+    var sel = document.getElementById('packageSelect');
+    var plan = sel ? sel.value : 'faq';
+    var p = OB_PROMO_PRICES[plan];
+    if (p) {
+      note.style.display = 'block';
+      note.innerHTML = '🎉 Your first month: <span style="text-decoration:line-through;opacity:0.6;">' + p.orig + '</span> → <strong>' + p.disc + '</strong> &nbsp;(15% off, one time)';
+    }
+  }
+  window.obUpdateDiscountNote = obUpdateDiscountNote;
+
+  // Activate on ?promo=cold-call
+  var obParams = new URLSearchParams(window.location.search);
+  if (obParams.get('promo') === 'cold-call') {
+    var banner = document.getElementById('obDiscountBanner');
+    var promoInput = document.getElementById('obPromoDiscount');
+    if (banner) banner.style.display = 'flex';
+    if (promoInput) {
+      promoInput.value = '15% first month — cold call promo';
+      // Show note immediately for the default selected plan
+      obUpdateDiscountNote();
+      // Also update whenever they change the package
+      var pkgSel = document.getElementById('packageSelect');
+      if (pkgSel) pkgSel.addEventListener('change', obUpdateDiscountNote);
+    }
+  }
+
+  // ── GOOGLE PLACES AUTOCOMPLETE ──
+  var OB_PLACES_KEY = 'YOUR_GOOGLE_PLACES_API_KEY';
+  var obBizTimer = null;
+
+  window.obBizSearch = function(val) {
+    clearTimeout(obBizTimer);
+    var box = document.getElementById('obBizSuggestions');
+    if (!val || val.length < 3) { box.style.display = 'none'; return; }
+    obBizTimer = setTimeout(async function() {
+      try {
+        var res = await fetch('https://maps.googleapis.com/maps/api/place/autocomplete/json?input=' + encodeURIComponent(val) + '&types=establishment&key=' + OB_PLACES_KEY);
+        var data = await res.json();
+        if (!data.predictions || !data.predictions.length) { box.style.display = 'none'; return; }
+        box.innerHTML = '';
+        data.predictions.slice(0,5).forEach(function(p) {
+          var el = document.createElement('div');
+          el.style.cssText = 'padding:10px 14px;cursor:pointer;font-size:13px;color:#0f172a;border-bottom:1px solid #f1f5f9;background:white;';
+          el.innerHTML = '<div style="font-weight:600;">' + p.structured_formatting.main_text + '</div><div style="font-size:11px;color:#94a3b8;">' + (p.structured_formatting.secondary_text || '') + '</div>';
+          el.onmouseenter = function(){ this.style.background = '#f8fafc'; };
+          el.onmouseleave = function(){ this.style.background = 'white'; };
+          el.onclick = function(e) { e.stopPropagation(); obSelectBusiness(p.place_id, p.structured_formatting.main_text); };
+          box.appendChild(el);
+        });
+        box.style.display = 'block';
+      } catch(e) { box.style.display = 'none'; }
+    }, 350);
+  };
+
+  async function obSelectBusiness(placeId, name) {
+    document.getElementById('obBizSuggestions').style.display = 'none';
+    document.getElementById('obBizNameInput').value = name;
+    document.getElementById('obBizPlaceId').value = placeId;
+    try {
+      var res = await fetch('https://maps.googleapis.com/maps/api/place/details/json?place_id=' + placeId + '&fields=name,formatted_phone_number,website,opening_hours,formatted_address,types&key=' + OB_PLACES_KEY);
+      var data = await res.json();
+      var r = data.result;
+      if (!r) return;
+      if (r.formatted_phone_number) { var ph = document.getElementById('obPhoneInput'); if (ph && !ph.value) ph.value = r.formatted_phone_number; }
+      if (r.website) { var wb = document.getElementById('obWebsiteInput'); if (wb) wb.value = r.website.replace(/^https?:\/\//, '').replace(/\/$/, ''); }
+      if (r.opening_hours && r.opening_hours.weekday_text) { var hr = document.getElementById('obHoursInput'); if (hr && !hr.value) hr.value = r.opening_hours.weekday_text.slice(0,3).join(', '); }
+      if (r.formatted_address) { var ar = document.getElementById('obAreaInput'); if (ar && !ar.value) { var pts = r.formatted_address.split(','); ar.value = pts.slice(-3,-1).join(',').trim(); } }
+      var typeMap = { dentist:'Dental Office', doctor:'Medical / Healthcare', lawyer:'Law Firm', real_estate_agency:'Real Estate', beauty_salon:'Med Spa / Salon', hair_care:'Barber Shop', restaurant:'Restaurant / Cafe', plumber:'Plumbing', electrician:'Electrical', roofing_contractor:'Roofing', general_contractor:'General Contractor', car_repair:'Auto Shop', gym:'Fitness / Gym', veterinary_care:'Veterinary', moving_company:'Moving Company', cleaning_services:'Cleaning Service', pest_control:'Pest Control' };
+      if (r.types) { var ind = document.getElementById('industrySelectOnboard'); if (ind && !ind.value) { for (var t of r.types) { if (typeMap[t]) { ind.value = typeMap[t]; highlightFeaturesOnboard(ind.value); break; } } } }
+      document.getElementById('obAutoFillBanner').style.display = 'block';
+      obUpdateReviewSummary();
+    } catch(e) { console.log('Places error:', e.message); }
+  }
+
+  document.addEventListener('click', function(e) {
+    var box = document.getElementById('obBizSuggestions');
+    if (box && !box.contains(e.target) && e.target.id !== 'obBizNameInput') box.style.display = 'none';
+  });
+
+  // ── REVIEW SUMMARY ──
+  function obUpdateReviewSummary() {
+    var f = document.querySelector('form');
+    if (!f) return;
+    var v = function(n) { return (f.elements[n] && f.elements[n].value.trim()) || ''; };
+    var lines = [];
+    if (v('ownerName')) lines.push('<strong>Name:</strong> ' + v('ownerName'));
+    if (v('bizName')) lines.push('<strong>Business:</strong> ' + v('bizName'));
+    if (v('email')) lines.push('<strong>Email:</strong> ' + v('email'));
+    if (v('phone')) lines.push('<strong>Phone:</strong> ' + v('phone'));
+    if (v('industry')) lines.push('<strong>Industry:</strong> ' + v('industry'));
+    var lcLabels = { name_phone: 'Name & phone', name_email: 'Name & email', name_email_date: 'Name, email & date', reservation: 'Reservation details', email_only: 'Email only' };
+    var lc = v('leadCapture');
+    if (lc) lines.push('<strong>Collect:</strong> ' + (lcLabels[lc] || lc));
+    if (v('hours')) lines.push('<strong>Hours:</strong> ' + v('hours'));
+    if (v('website')) lines.push('<strong>Website:</strong> ' + v('website'));
+    if (v('package')) lines.push('<strong>Plan:</strong> ' + v('package'));
+    var el = document.getElementById('obReviewSummary');
+    var banner = document.getElementById('obReviewBanner');
+    if (lines.length >= 2) {
+      if (banner) banner.style.display = 'block';
+      if (el) el.innerHTML = lines.join(' &nbsp;&middot;&nbsp; ');
+    } else {
+      if (banner) banner.style.display = 'none';
+    }
+  }
+  document.addEventListener('input', function(e) { if (e.target.form) obUpdateReviewSummary(); });
+  document.addEventListener('change', function(e) { if (e.target.form) obUpdateReviewSummary(); });
+
+  function obPickBotColor(hex, el) {
+    document.getElementById('obBotColorValue').value = hex;
+    var prev = document.getElementById('obBotColorPreview');
+    if (prev) { prev.textContent = hex; prev.style.color = hex; }
+    document.querySelectorAll('[onclick^="obPickBotColor"]').forEach(function(s){ s.style.boxShadow='none'; });
+    if (el) el.style.boxShadow = '0 0 0 3px white,0 0 0 5px ' + hex;
+  }
+  function obPickReviewColor(hex, el) {
+    document.getElementById('obReviewColorValue').value = hex;
+    var prev = document.getElementById('obReviewColorPreview');
+    if (prev) { prev.textContent = hex; prev.style.color = hex; }
+    document.querySelectorAll('[onclick^="obPickReviewColor"]').forEach(function(s){ s.style.boxShadow='none'; });
+    if (el) el.style.boxShadow = '0 0 0 3px white,0 0 0 5px ' + hex;
+  }
+  // ── LEAD CAPTURE SELECTOR ──
+  function highlightLeadCapture(radio) {
+    ['phone','email','date','reservation','emailonly'].forEach(function(k) {
+      var lbl = document.getElementById('lc_' + k + '_label');
+      if (lbl) { lbl.style.borderColor = '#e2e8f0'; lbl.style.background = '#f8fafc'; }
+    });
+    var id = radio.id.replace('lc_','').replace('_','').replace('label','');
+    var lbl = document.getElementById(radio.id + '_label') || radio.closest('label');
+    if (lbl) { lbl.style.borderColor = '#2563eb'; lbl.style.background = '#eff6ff'; }
+  }
+  window.highlightLeadCapture = highlightLeadCapture;
+
+  // Auto-select lead capture based on industry
+  var INDUSTRY_LEAD_MAP = {
+    'HVAC': 'lc_phone', 'Plumbing': 'lc_phone', 'Electrical': 'lc_phone',
+    'Roofing': 'lc_phone', 'Landscaping': 'lc_phone', 'General Contractor': 'lc_phone',
+    'Cleaning Service': 'lc_phone', 'Pest Control': 'lc_phone', 'Moving Company': 'lc_phone',
+    'Auto Shop': 'lc_phone',
+    'Dental Office': 'lc_date', 'Med Spa / Salon': 'lc_date', 'Barber Shop': 'lc_date',
+    'Fitness / Gym': 'lc_date', 'Veterinary': 'lc_date', 'Pet Grooming': 'lc_date',
+    'Medical / Healthcare': 'lc_date',
+    'Restaurant / Cafe': 'lc_reservation',
+    'Law Firm': 'lc_email', 'Real Estate': 'lc_email',
+  };
+
+  var origHighlightFeaturesOnboard = window.highlightFeaturesOnboard;
+  window.highlightFeaturesOnboard = function(industry) {
+    if (origHighlightFeaturesOnboard) origHighlightFeaturesOnboard(industry);
+    var radioId = INDUSTRY_LEAD_MAP[industry];
+    if (radioId) {
+      var radio = document.getElementById(radioId);
+      if (radio && !document.querySelector('[name="leadCapture"]:checked')) {
+        radio.checked = true;
+        highlightLeadCapture(radio);
+      }
+    }
+  };
+
+  window.handlePackageChange = handlePackageChange;
+  window.setOnboardBotColor = function(hex) {
+    document.getElementById('botColorPicker').value = hex;
+    document.querySelector('[name=botColor]').value = hex;
+  };
+  window.setOnboardReviewColor = function(hex) {
+    document.getElementById('reviewColorPicker').value = hex;
+    document.querySelector('[name=reviewColor]').value = hex;
+  };
+
+  document.getElementById('onboardingForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    var f = this;
+    var v = function(n) { return (f.elements[n] && f.elements[n].value.trim()) || 'Not provided'; };
+    var pkg = v('package');
+    var pkgLabel = pkg === 'bundle' ? 'Full Bundle — $399/mo' : pkg === 'review' ? 'Review Filter — $100/mo' : '24/7 Website Chat Assistant — $250/mo';
+
+    fetch(BACKEND + '/signup', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        ownerName:        v('ownerName'),
+        bizName:          v('bizName'),
+        email:            v('email'),
+        phone:            v('phone'),
+        website:          v('website'),
+        industry:         v('industry'),
+        area:             v('area'),
+        hours:            v('hours'),
+        services:         v('services'),
+        faqs:             v('faqs'),
+        tone:             v('tone'),
+          leadCapture:      v('leadCapture') || 'name_phone',
+        package:          v('package'),
+        differentiators:  v('differentiators'),
+        licensing:        v('licensing'),
+        emergency:        v('emergency'),
+        seasonal:         v('seasonal'),
+        botPersonality:   v('botPersonality'),
+        botColor:         v('botColor'),
+        billing:          v('billing'),
+        hearAbout:        v('hearAbout'),
+        promoDiscount:    v('promoDiscount') || 'None',
+        googleReviewLink: v('googleReviewLink'),
+        features: {
+          workoutSplitBuilder: f.elements['feature_workout'] && f.elements['feature_workout'].checked ? 'Yes' : 'No',
+          appointmentFlow:     f.elements['feature_appointment'] && f.elements['feature_appointment'].checked ? 'Yes' : 'No',
+          emergencyEscalation: f.elements['feature_emergency'] && f.elements['feature_emergency'].checked ? 'Yes' : 'No',
+          multilanguage:       f.elements['feature_multilang'] && f.elements['feature_multilang'].checked ? 'Yes' : 'No',
+          pricingGuide:        f.elements['feature_pricing'] && f.elements['feature_pricing'].checked ? 'Yes' : 'No',
+        }
+      })
+    }).catch(function() {});
+
+    f.style.display = 'none';
+    document.getElementById('successMsg').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Netify" />
+<meta name="theme-color" content="#0A2540" />
+<title>Netify Builds</title>
+<link rel="manifest" href="/app.webmanifest" />
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='80' fill='%230A2540'/%3E%3Crect x='100' y='160' width='200' height='30' rx='15' fill='%233B82F6'/%3E%3Crect x='100' y='220' width='280' height='30' rx='15' fill='rgba(147,197,253,0.6)'/%3E%3Crect x='100' y='280' width='140' height='30' rx='15' fill='rgba(147,197,253,0.35)'/%3E%3Ccircle cx='380' cy='140' r='55' fill='%233B82F6'/%3E%3C/svg%3E" />
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+:root {
+  --navy: #0A2540; --blue: #3B82F6; --blue-light: #93C5FD; --blue-pale: #EFF6FF;
+  --text: #0F172A; --soft: #64748B; --muted: #94A3B8; --border: #E2E8F0;
+  --off: #F8FAFC; --green: #16a34a; --red: #dc2626;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+html, body { height: 100%; background: var(--navy); font-family: -apple-system, 'SF Pro Display', sans-serif; color: white; overflow: hidden; }
+
+/* ── SPLASH / LOGIN ── */
+#splash { position: fixed; inset: 0; background: var(--navy); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 100; padding: 40px 32px; }
+.splash-logo { width: 72px; height: 72px; background: rgba(59,130,246,0.15); border: 1px solid rgba(59,130,246,0.3); border-radius: 20px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
+.splash-logo svg { width: 40px; height: 40px; }
+.splash-title { font-size: 1.5rem; font-weight: 800; color: white; letter-spacing: -0.02em; margin-bottom: 4px; }
+.splash-sub { font-size: 13px; color: rgba(255,255,255,0.45); margin-bottom: 40px; }
+.login-input { width: 100%; padding: 14px 16px; background: rgba(255,255,255,0.07); border: 1.5px solid rgba(255,255,255,0.12); border-radius: 14px; color: white; font-size: 16px; font-family: inherit; outline: none; transition: border-color 0.2s; letter-spacing: 0.05em; }
+.login-input:focus { border-color: var(--blue); }
+.login-input::placeholder { color: rgba(255,255,255,0.3); letter-spacing: 0; }
+.login-btn { width: 100%; margin-top: 12px; padding: 14px; background: var(--blue); color: white; border: none; border-radius: 14px; font-size: 15px; font-weight: 700; font-family: inherit; cursor: pointer; transition: opacity 0.2s; }
+.login-btn:active { opacity: 0.8; }
+.login-error { font-size: 13px; color: #f87171; text-align: center; margin-top: 10px; min-height: 20px; }
+.remember-row { display: flex; align-items: center; gap: 8px; margin-top: 14px; justify-content: center; }
+.remember-row label { font-size: 13px; color: rgba(255,255,255,0.5); cursor: pointer; display: flex; align-items: center; gap: 6px; }
+
+/* ── MAIN APP SHELL ── */
+#app { position: fixed; inset: 0; display: none; flex-direction: column; background: var(--off); }
+#app.visible { display: flex; }
+
+/* ── TOP NAV BAR ── */
+.app-nav { background: var(--navy); padding: calc(var(--safe-top) + 12px) 20px 12px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
+.app-nav-logo { display: flex; align-items: center; gap: 8px; }
+.app-nav-logo span { font-size: 1rem; font-weight: 800; color: white; letter-spacing: -0.02em; }
+.app-biz-name { font-size: 12px; color: var(--blue-light); font-weight: 600; }
+.nav-sign-out { background: rgba(255,255,255,0.08); border: none; color: rgba(255,255,255,0.5); font-size: 12px; font-weight: 600; padding: 6px 12px; border-radius: 99px; cursor: pointer; font-family: inherit; }
+
+/* ── SCROLL AREA ── */
+.app-scroll { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 0 0 calc(var(--safe-bottom) + 80px); }
+
+/* ── BOTTOM TAB BAR ── */
+.tab-bar { background: white; border-top: 1px solid var(--border); display: flex; padding: 8px 0 calc(var(--safe-bottom) + 8px); flex-shrink: 0; }
+.tab { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 6px 0; cursor: pointer; border: none; background: none; color: var(--muted); font-family: inherit; transition: color 0.15s; }
+.tab.active { color: var(--blue); }
+.tab svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.tab span { font-size: 10px; font-weight: 600; }
+
+/* ── TAB PANELS ── */
+.panel { display: none; }
+.panel.active { display: block; }
+
+/* ── STAT CARDS ── */
+.stats-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 16px; }
+.stat-card { background: white; border: 1px solid var(--border); border-radius: 16px; padding: 16px; }
+.stat-label { font-size: 11px; font-weight: 600; color: var(--soft); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+.stat-num { font-size: 2rem; font-weight: 800; color: var(--text); line-height: 1; }
+.stat-num.blue { color: var(--blue); }
+.stat-num.green { color: var(--green); }
+.stat-sub { font-size: 11px; color: var(--muted); margin-top: 3px; }
+
+/* ── SECTION HEADER ── */
+.section-head { display: flex; align-items: center; justify-content: space-between; padding: 4px 16px 8px; }
+.section-title { font-size: 13px; font-weight: 700; color: var(--text); }
+
+/* ── LEAD CARDS ── */
+.card-list { display: flex; flex-direction: column; gap: 0; background: white; border-radius: 16px; margin: 0 16px 16px; overflow: hidden; border: 1px solid var(--border); }
+.lead-row { padding: 14px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+.lead-row:last-child { border-bottom: none; }
+.lead-body { flex: 1; min-width: 0; }
+.lead-name { font-size: 14px; font-weight: 600; color: var(--text); }
+.lead-meta { font-size: 12px; color: var(--soft); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.lead-time { font-size: 11px; color: var(--muted); flex-shrink: 0; }
+.lead-tag { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 99px; }
+.tag-urgent { background: #fee2e2; color: var(--red); }
+.tag-lead { background: #dbeafe; color: #1d4ed8; }
+.tag-resolved { background: #dcfce7; color: var(--green); }
+
+/* ── FEEDBACK CARDS ── */
+.feedback-card { background: white; border-radius: 16px; margin: 0 16px 12px; padding: 16px; border: 1px solid var(--border); }
+.feedback-name { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+.feedback-text { font-size: 13px; color: var(--soft); line-height: 1.5; margin-bottom: 10px; }
+.feedback-contact { font-size: 12px; color: var(--muted); margin-bottom: 10px; }
+.resolve-btn { width: 100%; padding: 10px; background: var(--off); border: 1.5px solid var(--border); border-radius: 10px; color: var(--soft); font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; }
+.resolve-btn.resolved { background: #f0fdf4; border-color: #bbf7d0; color: var(--green); }
+
+/* ── REVIEW BAR CHART ── */
+.chart-wrap { background: white; border-radius: 16px; margin: 0 16px 16px; padding: 16px; border: 1px solid var(--border); }
+.chart-label { font-size: 11px; color: var(--soft); margin-bottom: 12px; }
+.bars { display: flex; align-items: flex-end; gap: 6px; height: 60px; }
+.bar-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; }
+.bar { width: 100%; border-radius: 3px 3px 0 0; min-height: 4px; }
+.bar-lbl { font-size: 8px; color: var(--muted); }
+
+/* ── UPDATE BOT ── */
+.update-card { background: white; border-radius: 16px; margin: 0 16px 16px; padding: 16px; border: 1px solid var(--border); }
+.update-card textarea { width: 100%; padding: 12px; border: 1.5px solid var(--border); border-radius: 10px; font-size: 14px; font-family: inherit; color: var(--text); resize: none; outline: none; min-height: 100px; }
+.update-card textarea:focus { border-color: var(--blue); }
+.update-submit { width: 100%; margin-top: 10px; padding: 13px; background: var(--navy); color: white; border: none; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: inherit; cursor: pointer; }
+.update-success { text-align: center; padding: 12px; background: #f0fdf4; border-radius: 10px; margin-top: 10px; font-size: 13px; font-weight: 600; color: var(--green); display: none; }
+
+/* ── SEND REVIEW SECTION ── */
+.send-card { background: white; border-radius: 16px; margin: 0 16px 16px; padding: 16px; border: 1px solid var(--border); }
+.send-card input { width: 100%; padding: 12px 14px; border: 1.5px solid var(--border); border-radius: 10px; font-size: 14px; font-family: inherit; color: var(--text); outline: none; margin-bottom: 8px; }
+.send-card input:focus { border-color: var(--blue); }
+.copy-btn { width: 100%; padding: 13px; background: var(--blue); color: white; border: none; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: inherit; cursor: pointer; }
+.copy-success { text-align: center; font-size: 13px; color: var(--green); font-weight: 600; margin-top: 8px; display: none; }
+
+/* ── PROFILE SECTION ── */
+.profile-card { background: white; border-radius: 16px; margin: 0 16px 12px; overflow: hidden; border: 1px solid var(--border); }
+.profile-row { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border-bottom: 1px solid var(--border); }
+.profile-row:last-child { border-bottom: none; }
+.profile-label { font-size: 13px; color: var(--soft); }
+.profile-value { font-size: 13px; font-weight: 600; color: var(--text); text-align: right; }
+
+/* ── EMPTY STATE ── */
+.empty { text-align: center; padding: 40px 24px; color: var(--muted); font-size: 14px; line-height: 1.6; }
+
+/* ── PLAN BADGE ── */
+.plan-badge { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 99px; }
+
+/* ── LOADING ── */
+.loading { text-align: center; padding: 60px 24px; color: rgba(255,255,255,0.3); font-size: 14px; }
+.loading-spinner { width: 24px; height: 24px; border: 2px solid rgba(255,255,255,0.1); border-top-color: var(--blue); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 12px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+
+<!-- SPLASH / LOGIN -->
+<div id="splash">
+  <div class="splash-logo">
+    <svg viewBox="0 0 48 50" fill="none">
+      <rect width="48" height="42" rx="10" fill="rgba(255,255,255,0.1)"/>
+      <rect x="8" y="10" width="20" height="3" rx="1.5" fill="#3B82F6"/>
+      <rect x="8" y="17" width="28" height="3" rx="1.5" fill="rgba(147,197,253,0.6)"/>
+      <rect x="8" y="24" width="14" height="3" rx="1.5" fill="rgba(147,197,253,0.35)"/>
+      <path d="M9 42 L4 50 L20 44" fill="rgba(255,255,255,0.1)"/>
+      <circle cx="41" cy="8" r="5" fill="#3B82F6"/>
+    </svg>
+  </div>
+  <div class="splash-title">Netify Builds</div>
+  <div class="splash-sub">Client Dashboard</div>
+  <input class="login-input" id="codeInput" type="text" placeholder="Enter your access code" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false" />
+  <button class="login-btn" id="loginBtn">Sign In →</button>
+  <div class="login-error" id="loginError"></div>
+  <div class="remember-row">
+    <label><input type="checkbox" id="rememberMe" /> Stay signed in</label>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="app">
+  <div class="app-nav">
+    <div class="app-nav-logo">
+      <svg width="28" height="26" viewBox="0 0 48 50" fill="none">
+        <rect width="48" height="42" rx="10" fill="rgba(255,255,255,0.12)"/>
+        <rect x="8" y="10" width="20" height="3" rx="1.5" fill="#3B82F6"/>
+        <rect x="8" y="17" width="28" height="3" rx="1.5" fill="rgba(147,197,253,0.6)"/>
+        <rect x="8" y="24" width="14" height="3" rx="1.5" fill="rgba(147,197,253,0.35)"/>
+        <path d="M9 42 L4 50 L20 44" fill="rgba(255,255,255,0.1)"/>
+        <circle cx="41" cy="8" r="5" fill="#3B82F6"/>
+      </svg>
+      <div>
+        <div style="display:flex;align-items:center;gap:6px;">
+          <span id="appBizName">Loading...</span>
+          <span id="appPlanBadge" class="plan-badge"></span>
+        </div>
+        <div class="app-biz-name" id="appPlanLabel"></div>
+      </div>
+    </div>
+    <button class="nav-sign-out" onclick="signOut()">Sign out</button>
+  </div>
+
+  <div class="app-scroll" id="appScroll">
+    <!-- TAB PANELS -->
+    <div id="panel-home" class="panel active"></div>
+    <div id="panel-leads" class="panel"></div>
+    <div id="panel-reviews" class="panel"></div>
+    <div id="panel-settings" class="panel"></div>
+  </div>
+
+  <div class="tab-bar">
+    <button class="tab active" onclick="switchTab('home',this)">
+      <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <span>Home</span>
+    </button>
+    <button class="tab" onclick="switchTab('leads',this)">
+      <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      <span>Leads</span>
+    </button>
+    <button class="tab" id="reviewsTab" onclick="switchTab('reviews',this)">
+      <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      <span>Reviews</span>
+    </button>
+    <button class="tab" onclick="switchTab('settings',this)">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+      <span>Settings</span>
+    </button>
+  </div>
+</div>
+
+<script>
+var BACKEND = 'https://botbuilder-backend-production.up.railway.app';
+var STORAGE_KEY = 'nb_app_key';
+var currentKey = '';
+var appData = {};
+
+// ── AUTO LOGIN ──
+var saved = localStorage.getItem(STORAGE_KEY);
+if (saved) {
+  document.getElementById('codeInput').value = saved;
+  document.getElementById('rememberMe').checked = true;
+  doLogin(saved);
+}
+
+document.getElementById('loginBtn').addEventListener('click', function() {
+  var key = document.getElementById('codeInput').value.trim().toLowerCase().replace(/\s+/g,'_');
+  if (!key) return;
+  doLogin(key);
+});
+document.getElementById('codeInput').addEventListener('keypress', function(e) {
+  if (e.key === 'Enter') document.getElementById('loginBtn').click();
+});
+
+async function doLogin(key) {
+  var btn = document.getElementById('loginBtn');
+  btn.textContent = 'Signing in...'; btn.disabled = true;
+  document.getElementById('loginError').textContent = '';
+  try {
+    var [rd, ad, cd, id] = await Promise.all([
+      fetch(BACKEND + '/review-report/' + key).then(r => r.json()),
+      fetch(BACKEND + '/analytics/' + key).then(r => r.json()).catch(() => ({})),
+      fetch(BACKEND + '/conversations/' + key).then(r => r.json()).catch(() => ({})),
+      fetch(BACKEND + '/client-info/' + key).then(r => r.json()).catch(() => ({}))
+    ]);
+    if (rd.error) throw new Error('not found');
+    currentKey = key;
+    appData = { review: rd, analytics: ad, conversations: cd, info: id };
+    if (document.getElementById('rememberMe').checked) {
+      localStorage.setItem(STORAGE_KEY, key);
+    } else {
+      localStorage.removeItem(STORAGE_KEY);
+    }
+    showApp();
+  } catch(e) {
+    document.getElementById('loginError').textContent = 'Access code not found. Check your welcome email.';
+    btn.textContent = 'Sign In →'; btn.disabled = false;
+  }
+}
+
+function showApp() {
+  document.getElementById('splash').style.display = 'none';
+  var app = document.getElementById('app');
+  app.classList.add('visible');
+  var info = appData.info || {};
+  var plan = info.plan || 'bot';
+  var bizName = info.bizName || currentKey.replace(/_/g,' ').replace(/\b\w/g,l=>l.toUpperCase());
+  document.getElementById('appBizName').textContent = bizName;
+  var planColors = { bot:'#2563eb', review:'#0891b2', bundle:'#7c3aed', all:'#7c3aed' };
+  var planLabels = { bot:'Chat Assistant', review:'Review Filter', bundle:'Chat + Reviews', all:'All Products', missed:'Missed Call' };
+  var badge = document.getElementById('appPlanBadge');
+  badge.textContent = planLabels[plan] || plan;
+  badge.style.background = (planColors[plan] || '#2563eb') + '20';
+  badge.style.color = planColors[plan] || '#2563eb';
+  // Show/hide reviews tab
+  var hasReview = plan === 'review' || plan === 'bundle' || plan === 'all';
+  document.getElementById('reviewsTab').style.display = hasReview ? 'flex' : 'none';
+  renderHome();
+  renderLeads();
+  if (hasReview) renderReviews();
+  renderSettings();
+}
+
+function signOut() {
+  localStorage.removeItem(STORAGE_KEY);
+  currentKey = ''; appData = {};
+  document.getElementById('app').classList.remove('visible');
+  document.getElementById('splash').style.display = 'flex';
+  document.getElementById('codeInput').value = '';
+  document.getElementById('rememberMe').checked = false;
+  document.getElementById('loginBtn').textContent = 'Sign In →';
+  document.getElementById('loginBtn').disabled = false;
+}
+
+function switchTab(name, el) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('panel-' + name).classList.add('active');
+  el.classList.add('active');
+  document.getElementById('appScroll').scrollTop = 0;
+}
+
+// ── HOME TAB ──
+function renderHome() {
+  var a = appData.analytics || {};
+  var r = appData.review || {};
+  var info = appData.info || {};
+  var plan = info.plan || 'bot';
+  var hasBot = plan === 'bot' || plan === 'bundle' || plan === 'all';
+  var hasReview = plan === 'review' || plan === 'bundle' || plan === 'all';
+  var html = '<div style="padding:16px 16px 0;"><div style="font-size:12px;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Overview</div></div>';
+  html += '<div class="stats-row">';
+  if (hasBot) {
+    html += '<div class="stat-card"><div class="stat-label">Bot Chats</div><div class="stat-num blue">' + (a.conversations || 0) + '</div><div class="stat-sub">All time</div></div>';
+    html += '<div class="stat-card"><div class="stat-label">Leads</div><div class="stat-num blue">' + (a.leads || 0) + '</div><div class="stat-sub">Captured</div></div>';
+  }
+  if (hasReview) {
+    var sat = r.total > 0 ? Math.round((r.positive / r.total) * 100) : null;
+    html += '<div class="stat-card"><div class="stat-label">Happy</div><div class="stat-num green">' + (r.positive || 0) + '</div><div class="stat-sub">Positive ratings</div></div>';
+    html += '<div class="stat-card"><div class="stat-label">Satisfaction</div><div class="stat-num green">' + (sat !== null ? sat + '%' : '—') + '</div><div class="stat-sub">' + (sat >= 90 ? 'Excellent' : sat >= 70 ? 'Good' : sat !== null ? 'Needs work' : 'No data') + '</div></div>';
+  }
+  html += '</div>';
+  // Bot status
+  if (hasBot) {
+    html += '<div class="section-head"><div class="section-title">Your Bot</div></div>';
+    html += '<div class="card-list"><div class="lead-row"><div class="lead-body"><div class="lead-name">' + (info.bizName || 'Your') + ' Assistant</div><div class="lead-meta">Deployed on your website · Replies 24/7</div></div><div style="display:flex;align-items:center;gap:5px;background:#f0fdf4;padding:5px 10px;border-radius:99px;"><div style="width:6px;height:6px;border-radius:50%;background:#22c55e;"></div><span style="font-size:11px;font-weight:700;color:#15803d;">Online</span></div></div></div>';
+  }
+  // Recent conversations preview
+  var convs = (appData.conversations && appData.conversations.conversations) || [];
+  if (convs.length > 0) {
+    html += '<div class="section-head"><div class="section-title">Recent Conversations</div></div>';
+    html += '<div class="card-list">';
+    convs.slice(0,3).forEach(function(c) {
+      var first = c.messages && c.messages.find(m => m.role === 'user');
+      var date = c.timestamp ? new Date(c.timestamp).toLocaleDateString() : '';
+      html += '<div class="lead-row"><div class="lead-body"><div class="lead-name" style="font-size:13px;">' + escHtml(first ? first.content.substring(0,50) + (first.content.length > 50 ? '...' : '') : 'Chat') + '</div><div class="lead-meta">' + (c.messages ? c.messages.length : 0) + ' messages · ' + date + '</div></div>' + (c.leadCaptured ? '<span class="lead-tag tag-lead">Lead</span>' : '') + '</div>';
+    });
+    html += '</div>';
+  }
+  document.getElementById('panel-home').innerHTML = html;
+}
+
+// ── LEADS TAB ──
+function renderLeads() {
+  var convs = (appData.conversations && appData.conversations.conversations) || [];
+  var leads = convs.filter(c => c.leadCaptured);
+  var html = '<div style="padding:16px 16px 0;"><div style="font-size:12px;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:16px;">' + leads.length + ' Lead' + (leads.length !== 1 ? 's' : '') + ' Captured</div></div>';
+  if (leads.length === 0) {
+    html += '<div class="empty">No leads captured yet.<br>They appear here when visitors give their name and number through your bot.</div>';
+  } else {
+    html += '<div class="card-list">';
+    leads.reverse().forEach(function(c) {
+      var msgs = c.messages || [];
+      var nameMsg = msgs.find(m => m.role === 'user' && m.content && m.content.length > 2);
+      var date = c.timestamp ? new Date(c.timestamp).toLocaleDateString() : '';
+      var msgCount = msgs.length;
+      html += '<div class="lead-row"><div class="lead-body"><div class="lead-name">' + escHtml(nameMsg ? nameMsg.content.substring(0,40) : 'Lead') + '</div><div class="lead-meta">' + msgCount + ' messages · ' + date + '</div></div><span class="lead-tag tag-lead">Lead</span></div>';
+    });
+    html += '</div>';
+  }
+  document.getElementById('panel-leads').innerHTML = html;
+}
+
+// ── REVIEWS TAB ──
+function renderReviews() {
+  var r = appData.review || {};
+  var neg = r.negativeFeedback || [];
+  var logs = r.logs || [];
+  var html = '';
+
+  // Stats
+  html += '<div class="stats-row">';
+  html += '<div class="stat-card"><div class="stat-label">Total</div><div class="stat-num">' + (r.total || 0) + '</div></div>';
+  html += '<div class="stat-card"><div class="stat-label">Private</div><div class="stat-num" style="color:var(--red);">' + (r.negative || 0) + '</div></div>';
+  html += '</div>';
+
+  // Velocity chart
+  if (logs.length > 0) {
+    var now = Date.now();
+    var weeks = [];
+    for (var w = 7; w >= 0; w--) {
+      var ws = now - (w+1)*7*24*60*60*1000, we = now - w*7*24*60*60*1000;
+      var cnt = logs.filter(function(l){ return new Date(l.date).getTime() >= ws && new Date(l.date).getTime() < we; }).length;
+      weeks.push({ cnt: cnt, lbl: w === 0 ? 'Now' : w + 'w' });
+    }
+    var max = Math.max.apply(null, weeks.map(w => w.cnt)) || 1;
+    html += '<div class="chart-wrap"><div class="chart-label">Reviews per week — 8 weeks</div><div class="bars">';
+    weeks.forEach(function(w, i) {
+      var h = Math.max(4, Math.round((w.cnt / max) * 56));
+      var bg = i === 7 ? '#0891b2' : w.cnt > 0 ? '#a5f3fc' : '#e2e8f0';
+      html += '<div class="bar-wrap"><div class="bar" style="height:' + h + 'px;background:' + bg + ';"></div><div class="bar-lbl">' + w.lbl + '</div></div>';
+    });
+    html += '</div></div>';
+  }
+
+  // Send review link tool
+  html += '<div class="section-head"><div class="section-title">Send Review Link</div></div>';
+  html += '<div class="send-card"><div style="font-size:13px;color:var(--soft);margin-bottom:10px;">After a job, copy this message and text it to your customer:</div>';
+  html += '<textarea id="reviewMsg" style="width:100%;padding:10px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-family:inherit;resize:none;outline:none;height:80px;color:var(--text);" readonly>Hi! Thanks for choosing us. If you have a moment, we\'d love to hear how we did — it means a lot to a small business like ours: [your review link]</textarea>';
+  html += '<button class="copy-btn" onclick="copyReviewMsg()" style="margin-top:8px;">Copy Message</button>';
+  html += '<div class="copy-success" id="copySuccess">Copied! Paste it into a text to your customer.</div></div>';
+
+  // Negative feedback
+  if (neg.length > 0) {
+    html += '<div class="section-head"><div class="section-title">Private Feedback <span style="background:#fee2e2;color:var(--red);font-size:10px;font-weight:700;padding:2px 7px;border-radius:99px;margin-left:4px;">' + neg.length + '</span></div></div>';
+    neg.forEach(function(fb, i) {
+      var isResolved = fb.resolved;
+      html += '<div class="feedback-card" style="opacity:' + (isResolved ? '0.55' : '1') + ';">';
+      html += '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;"><div class="feedback-name">' + escHtml(fb.name || 'Anonymous') + '</div>';
+      if (isResolved) html += '<span class="lead-tag tag-resolved">✓ Resolved</span>';
+      html += '</div>';
+      html += '<div class="feedback-text">' + escHtml(fb.feedback || 'No details') + '</div>';
+      if (fb.contact) html += '<div class="feedback-contact">Contact: ' + escHtml(fb.contact) + '</div>';
+      html += '<button class="resolve-btn ' + (isResolved ? 'resolved' : '') + '" onclick="resolveItem(' + fb.index + ',' + !isResolved + ',this)">' + (isResolved ? '✓ Resolved — tap to reopen' : 'Mark as resolved') + '</button>';
+      html += '</div>';
+    });
+  }
+
+  document.getElementById('panel-reviews').innerHTML = html;
+}
+
+// ── SETTINGS TAB ──
+function renderSettings() {
+  var info = appData.info || {};
+  var plan = info.plan || 'bot';
+  var planLabels = { bot:'Chat Assistant', review:'Review Filter', bundle:'Chat + Reviews', all:'All Products' };
+  var html = '';
+  html += '<div class="section-head" style="padding-top:16px;"><div class="section-title">Account</div></div>';
+  html += '<div class="profile-card">';
+  html += '<div class="profile-row"><div class="profile-label">Business</div><div class="profile-value">' + escHtml(info.bizName || '—') + '</div></div>';
+  html += '<div class="profile-row"><div class="profile-label">Plan</div><div class="profile-value">' + (planLabels[plan] || plan) + '</div></div>';
+  html += '<div class="profile-row"><div class="profile-label">Access code</div><div class="profile-value" style="font-family:monospace;font-size:12px;">' + currentKey + '</div></div>';
+  html += '</div>';
+
+  html += '<div class="section-head"><div class="section-title">Update Your Bot</div></div>';
+  html += '<div class="update-card"><div style="font-size:13px;color:var(--soft);margin-bottom:10px;">Changed your hours, services, or pricing? Let us know.</div>';
+  html += '<textarea id="updateText" placeholder="e.g. New Saturday hours: 9am-1pm. Added duct cleaning at $199."></textarea>';
+  html += '<button class="update-submit" onclick="sendUpdate()">Send Update Request</button>';
+  html += '<div class="update-success" id="updateSuccess">✓ Sent! We\'ll have it updated within 24 hours.</div>';
+  html += '</div>';
+
+  html += '<div class="section-head"><div class="section-title">Need Help?</div></div>';
+  html += '<div class="card-list"><div class="lead-row" onclick="window.location.href=\'mailto:netifybuilds@gmail.com\'" style="cursor:pointer;"><div class="lead-body"><div class="lead-name">Email Eli</div><div class="lead-meta">netifybuilds@gmail.com</div></div><svg style="width:16px;height:16px;stroke:#94a3b8;fill:none;stroke-width:2;" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>';
+  html += '<div class="lead-row" onclick="window.location.href=\'sms:+19373671847\'" style="cursor:pointer;"><div class="lead-body"><div class="lead-name">Text Eli</div><div class="lead-meta">(937) 367-1847</div></div><svg style="width:16px;height:16px;stroke:#94a3b8;fill:none;stroke-width:2;" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div></div>';
+
+  document.getElementById('panel-settings').innerHTML = html;
+}
+
+// ── ACTIONS ──
+async function resolveItem(index, resolved, btn) {
+  btn.disabled = true; btn.textContent = '...';
+  try {
+    await fetch(BACKEND + '/resolve-feedback', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ bizKey: currentKey, index, resolved })
+    });
+    // Refresh review data
+    var rd = await fetch(BACKEND + '/review-report/' + currentKey).then(r => r.json());
+    appData.review = rd;
+    renderReviews();
+  } catch(e) { btn.disabled = false; btn.textContent = 'Error'; }
+}
+
+function copyReviewMsg() {
+  var msg = document.getElementById('reviewMsg');
+  navigator.clipboard.writeText(msg.value).then(function() {
+    var s = document.getElementById('copySuccess');
+    s.style.display = 'block';
+    setTimeout(function() { s.style.display = 'none'; }, 3000);
+  });
+}
+
+async function sendUpdate() {
+  var text = document.getElementById('updateText').value.trim();
+  if (!text) return;
+  var btn = document.querySelector('.update-submit');
+  btn.textContent = 'Sending...'; btn.disabled = true;
+  try {
+    await fetch(BACKEND + '/update-knowledge', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ bizKey: currentKey, bizName: appData.info && appData.info.bizName, message: text })
+    });
+    document.getElementById('updateText').value = '';
+    var s = document.getElementById('updateSuccess');
+    s.style.display = 'block';
+    setTimeout(function() { s.style.display = 'none'; }, 4000);
+  } catch(e) {}
+  btn.textContent = 'Send Update Request'; btn.disabled = false;
+}
+
+function escHtml(str) {
+  if (!str) return '';
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+</script>
+</body>
+</html>

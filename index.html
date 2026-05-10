@@ -1,0 +1,2437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Netify Builds — 24/7 Website Chat Assistants for Local Businesses</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 50'%3E%3Crect width='48' height='42' rx='10' fill='%230A2540'/%3E%3Crect x='8' y='10' width='20' height='3' rx='1.5' fill='%233B82F6'/%3E%3Crect x='8' y='17' width='28' height='3' rx='1.5' fill='%2393C5FD' opacity='0.7'/%3E%3Crect x='8' y='24' width='14' height='3' rx='1.5' fill='%2393C5FD' opacity='0.4'/%3E%3Cpath d='M9 42 L4 50 L20 44' fill='%230A2540'/%3E%3Ccircle cx='41' cy='8' r='6' fill='%233B82F6'/%3E%3C/svg%3E">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --navy: #0A2540; --navy-deep: #061830;
+  --blue: #3B82F6; --blue-dark: #2563EB;
+  --blue-light: #93C5FD; --blue-pale: #EFF6FF;
+  --white: #FFFFFF; --off-white: #F8FAFC;
+  --text: #0F172A; --text-mid: #334155; --text-soft: #64748B;
+  --border: #E2E8F0; --radius: 16px;
+}
+html { scroll-behavior: smooth; }
+html { overflow-x: hidden; }
+body { font-family: 'Inter', sans-serif; background: var(--white); color: var(--text); overflow-x: hidden; line-height: 1.6; }
+
+/* ── ICON SYSTEM ── */
+.icon-box { width: 54px; height: 54px; border-radius: 14px; background: var(--blue-pale); display: flex; align-items: center; justify-content: center; margin-bottom: 22px; flex-shrink: 0; }
+.icon-box svg { width: 26px; height: 26px; stroke: var(--blue); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.icon-box-sm { width: 44px; height: 44px; border-radius: 12px; background: var(--blue-pale); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.icon-box-sm svg { width: 20px; height: 20px; stroke: var(--blue); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.for-icon-wrap { width: 52px; height: 52px; border-radius: 14px; background: var(--blue-pale); display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
+.for-icon-wrap svg { width: 24px; height: 24px; stroke: var(--blue); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.guarantee-icon-wrap { width: 56px; height: 56px; border-radius: 16px; background: rgba(59,130,246,0.15); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.guarantee-icon-wrap svg { width: 28px; height: 28px; stroke: var(--blue-light); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.feature-check { width: 16px; height: 16px; stroke: var(--blue); fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; margin-top: 2px; }
+.price-check { width: 16px; height: 16px; fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; margin-top: 2px; }
+
+/* ── PERFORMANCE ── */
+.reveal { }
+.hero::before, .hero::after { will-change: auto; }
+.chat-bubble { will-change: auto; }
+img, svg { content-visibility: auto; }
+
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+
+/* ── SECTION DIVIDERS ── */
+.divider-wave {
+  width: 100%; overflow: hidden; line-height: 0; display: block; max-width: 100vw;
+}
+.divider-wave svg { display: block; width: 100%; max-width: 100%; height: auto; }
+.divider-down { margin-bottom: -1px; }
+.divider-up { margin-top: -1px; }
+section, .hero, nav, footer { max-width: 100vw; overflow-x: hidden; }
+
+/* ── NAV ── */
+nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 0 40px; height: 68px; display: flex; align-items: center; justify-content: space-between; background: var(--navy); border-bottom: 1px solid rgba(255,255,255,0.06); backdrop-filter: blur(8px); }
+.nav-logo { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; font-size: 1.3rem; color: var(--white); text-decoration: none; letter-spacing: -0.01em; }
+.nav-logo span { color: var(--blue-light); }
+.nav-links { display: flex; gap: 28px; align-items: center; }
+.nav-links a { font-size: 14px; font-weight: 500; color: rgba(255,255,255,0.6); text-decoration: none; transition: color 0.2s; }
+.nav-links a:hover { color: white; }
+.nav-cta { background: var(--blue); color: white !important; padding: 9px 22px; border-radius: 99px; font-weight: 600 !important; transition: background 0.2s !important; }
+.nav-cta:hover { background: var(--blue-dark) !important; }
+.nav-hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 6px; background: none; border: none; }
+.nav-hamburger span { display: block; width: 22px; height: 2px; background: white; border-radius: 2px; transition: all 0.25s; }
+.nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-hamburger.open span:nth-child(2) { opacity: 0; }
+.nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+.mobile-menu { display: none; position: fixed; top: 68px; left: 0; right: 0; z-index: 99; background: var(--navy); border-top: 1px solid rgba(255,255,255,0.08); flex-direction: column; padding: 20px 24px 28px; gap: 4px; box-shadow: 0 8px 32px rgba(0,0,0,0.3); }
+.mobile-menu.open { display: flex; }
+.mobile-menu a { font-size: 15px; font-weight: 500; color: rgba(255,255,255,0.7); text-decoration: none; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.06); transition: color 0.2s; }
+.mobile-menu a:last-child { border-bottom: none; color: white; background: var(--blue); text-align: center; border-radius: 99px; padding: 13px; margin-top: 8px; font-weight: 600; }
+.mobile-menu a:hover { color: white; }
+
+/* ── STICKY MOBILE CTA ── */
+.sticky-cta { display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 98; background: var(--navy-deep); border-top: 1px solid rgba(255,255,255,0.1); padding: 12px 20px; gap: 10px; align-items: center; justify-content: space-between; height: 64px; }
+.sticky-cta p { font-size: 13px; color: rgba(255,255,255,0.7); font-weight: 500; }
+.sticky-cta a { background: var(--blue); color: white; padding: 10px 22px; border-radius: 99px; font-size: 14px; font-weight: 700; text-decoration: none; white-space: nowrap; font-family: 'Plus Jakarta Sans', sans-serif; flex-shrink: 0; }
+
+/* ── HERO — two column desktop ── */
+.hero { background: var(--navy); min-height: 100vh; display: flex; align-items: center; padding: 120px 40px 80px; position: relative; overflow: hidden; }
+.hero::before { content: ''; position: absolute; top: -200px; right: -200px; width: 500px; height: 500px; border-radius: 50%; background: radial-gradient(circle, rgba(59,130,246,0.08) 0%, transparent 65%); pointer-events: none; }
+.hero::after { content: ''; position: absolute; bottom: -100px; left: -100px; width: 350px; height: 350px; border-radius: 50%; background: radial-gradient(circle, rgba(59,130,246,0.05) 0%, transparent 65%); pointer-events: none; }
+.hero-inner { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+.hero-left { }
+.hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(59,130,246,0.12); border: 1px solid rgba(147,197,253,0.25); color: var(--blue-light); padding: 8px 20px; border-radius: 99px; font-size: 13px; font-weight: 600; margin-bottom: 28px; letter-spacing: 0.01em; animation: fadeUp 0.6s ease both; }
+.hero-badge::before { content: '●'; font-size: 7px; animation: blink 2s infinite; opacity: 0.8; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+.hero h1 { font-family: 'Plus Jakarta Sans', sans-serif; font-size: clamp(2.4rem, 4.5vw, 4rem); font-weight: 800; line-height: 1.1; letter-spacing: -0.025em; color: var(--white); margin-bottom: 20px; animation: fadeUp 0.6s 0.1s ease both; }
+.hero h1 em { font-style: normal; color: var(--blue-light); }
+.hero-sub { font-size: 1.0625rem; color: rgba(255,255,255,0.6); line-height: 1.8; margin-bottom: 36px; animation: fadeUp 0.6s 0.2s ease both; }
+.hero-btns { display: flex; gap: 12px; flex-wrap: wrap; animation: fadeUp 0.6s 0.3s ease both; }
+.btn-primary { background: var(--blue); color: white; padding: 15px 34px; border-radius: 99px; font-size: 15px; font-weight: 600; text-decoration: none; transition: all 0.2s; box-shadow: 0 4px 28px rgba(59,130,246,0.4); font-family: 'Plus Jakarta Sans', sans-serif; }
+.btn-primary:hover { background: var(--blue-dark); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(59,130,246,0.5); }
+.btn-outline { background: transparent; color: white; padding: 15px 34px; border-radius: 99px; font-size: 15px; font-weight: 600; text-decoration: none; border: 1.5px solid rgba(255,255,255,0.2); transition: all 0.2s; font-family: 'Plus Jakarta Sans', sans-serif; }
+.btn-outline:hover { border-color: rgba(255,255,255,0.5); background: rgba(255,255,255,0.05); }
+.hero-stats { display: flex; gap: 36px; flex-wrap: wrap; margin-top: 48px; padding-top: 40px; border-top: 1px solid rgba(255,255,255,0.08); animation: fadeUp 0.6s 0.4s ease both; }
+.stat-num { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1.75rem; font-weight: 800; color: white; line-height: 1; letter-spacing: -0.02em; }
+.stat-label { font-size: 12px; color: rgba(255,255,255,0.4); margin-top: 5px; }
+
+/* ── CHAT PREVIEW (hero right) ── */
+.hero-right { animation: fadeUp 0.6s 0.3s ease both; overflow: hidden; }
+.chat-preview { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.14); border-radius: 20px; padding: 20px; display: flex; flex-direction: column; overflow: hidden; min-height: 360px; }
+.chat-preview-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; padding-bottom: 14px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+.chat-avatar { width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg, var(--blue), #6366f1); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.chat-avatar svg { width: 16px; height: 16px; stroke: white; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.chat-dot { width: 8px; height: 8px; background: #22c55e; border-radius: 50%; flex-shrink: 0; box-shadow: 0 0 0 2px rgba(34,197,94,0.3); }
+.chat-preview-name { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 13px; font-weight: 700; color: white; }
+.chat-preview-status { font-size: 10px; color: rgba(255,255,255,0.4); margin-top: 1px; }
+.chat-messages { display: flex; flex-direction: column; gap: 10px; flex: 1; overflow: hidden; min-height: 0; }
+.chat-bubble { padding: 9px 13px; border-radius: 12px; font-size: 12.5px; line-height: 1.5; max-width: 85%; }
+.chat-bubble.bot { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.88); border-bottom-left-radius: 4px; }
+.chat-bubble.user { background: var(--blue); color: white; align-self: flex-end; border-bottom-right-radius: 4px; }
+.chat-input-mock { display: flex; align-items: center; gap: 8px; margin-top: 14px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.08); }
+.chat-input-field { flex: 1; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1); border-radius: 99px; padding: 9px 14px; font-size: 12px; color: rgba(255,255,255,0.4); font-family: 'Inter', sans-serif; }
+.chat-send-btn { width: 32px; height: 32px; border-radius: 50%; background: var(--blue); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.chat-send-btn svg { width: 14px; height: 14px; stroke: white; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.chat-lead-captured { background: rgba(34,197,94,0.12); border: 1px solid rgba(34,197,94,0.25); border-radius: 8px; padding: 8px 12px; margin-top: 10px; display: flex; align-items: center; gap: 8px; }
+.chat-lead-captured svg { width: 13px; height: 13px; stroke: #4ade80; fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+.chat-lead-captured span { font-size: 11px; color: #4ade80; font-weight: 600; }
+
+@keyframes fadeUp { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
+
+/* ── LOGO BAR ── */
+.logobar { background: var(--off-white); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 28px 24px; }
+.logobar-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; gap: 48px; flex-wrap: wrap; justify-content: center; }
+.logobar-label { font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-soft); white-space: nowrap; }
+.logobar-logos { display: flex; align-items: center; gap: 44px; flex-wrap: wrap; justify-content: center; }
+.logobar-logo { display: flex; align-items: center; gap: 8px; opacity: 0.45; transition: opacity 0.2s; }
+.logobar-logo:hover { opacity: 0.75; }
+
+/* ── SECTIONS ── */
+section { padding: 72px 24px; contain: layout style; }
+.inner { max-width: 1100px; margin: 0 auto; }
+.label { font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--blue); margin-bottom: 12px; }
+.title { font-family: 'Plus Jakarta Sans', sans-serif; font-size: clamp(2rem, 3.5vw, 2.75rem); font-weight: 800; line-height: 1.18; letter-spacing: -0.02em; color: var(--text); margin-bottom: 16px; }
+.sub { font-size: 1.0625rem; color: var(--text-soft); line-height: 1.8; max-width: 500px; }
+
+/* ── WHO IT'S FOR ── */
+.for-section { background: var(--off-white); }
+.for-scroll-hint { display: none; }
+.for-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-top: 64px; }
+.for-card { background: white; border: 1.5px solid var(--border); border-radius: 20px; padding: 36px; transition: all 0.25s; position: relative; overflow: hidden; }
+.for-card::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: var(--blue); transform: scaleX(0); transition: transform 0.3s; }
+.for-card:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(0,0,0,0.08); border-color: var(--blue); }
+.for-card:hover::after { transform: scaleX(1); }
+.for-card h3 { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1.125rem; font-weight: 700; color: var(--text); margin-bottom: 10px; }
+.for-card p { font-size: 14px; color: var(--text-soft); line-height: 1.75; margin-bottom: 18px; }
+.for-pain { display: flex; align-items: flex-start; gap: 10px; background: #FEF2F2; border-radius: 10px; padding: 10px 12px; }
+.for-pain svg { width: 15px; height: 15px; stroke: #DC2626; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; margin-top: 2px; }
+.for-pain p { font-size: 13px; color: #DC2626; margin: 0; font-weight: 500; line-height: 1.5; font-style: italic; }
+
+/* ── HOW IT WORKS ── */
+.how { background: var(--navy); }
+.how .title { color: white; }
+.how .sub { color: rgba(255,255,255,0.5); }
+.how .label { color: var(--blue-light); }
+.steps-grid { display: flex; flex-direction: column; gap: 0; margin-top: 56px; background: rgba(255,255,255,0.06); border-radius: 20px; overflow: hidden; }
+.step { background: var(--navy); padding: 32px 36px; display: flex; align-items: flex-start; gap: 24px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+.step:last-child { border-bottom: none; }
+.step-num { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; background: rgba(59,130,246,0.15); border: 1px solid rgba(59,130,246,0.3); font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.75rem; font-weight: 800; color: var(--blue-light); flex-shrink: 0; margin-top: 2px; }
+.step-body { flex: 1; }
+.step h3 { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1rem; font-weight: 700; color: white; margin: 0 0 6px 0; line-height: 1.3; }
+.step p { font-size: 14px; color: rgba(255,255,255,0.45); line-height: 1.75; margin: 0; }
+.step-connector { display: none; }
+
+/* ── PRODUCTS ── */
+.products-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 64px; }
+.product-card { border: 1.5px solid var(--border); border-radius: 20px; padding: 44px; position: relative; overflow: hidden; background: white; transition: transform 0.2s, box-shadow 0.2s; }
+.product-card:hover { transform: translateY(-4px); box-shadow: 0 20px 60px rgba(0,0,0,0.08); }
+.product-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--blue); }
+.product-card.coming { opacity: 0.8; }
+.product-card.coming::before { background: linear-gradient(90deg, var(--blue-light), #60A5FA); }
+.coming-badge { display: inline-block; background: var(--blue-pale); color: var(--blue); font-size: 11px; font-weight: 700; padding: 5px 13px; border-radius: 99px; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 18px; }
+.product-card h3 { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1.375rem; font-weight: 700; margin-bottom: 12px; color: var(--text); letter-spacing: -0.01em; }
+.product-card > p { font-size: 14.5px; color: var(--text-soft); line-height: 1.75; margin-bottom: 28px; }
+.feature-list { list-style: none; display: flex; flex-direction: column; gap: 11px; }
+.feature-list li { font-size: 14px; color: var(--text-mid); display: flex; gap: 10px; align-items: flex-start; line-height: 1.5; }
+
+/* ── DASHBOARD ── */
+.dashboard-section { background: white; }
+.dashboard-wrap { display: grid; grid-template-columns: 1fr 1.4fr; gap: 72px; align-items: center; }
+.dashboard-mock { background: var(--off-white); border-radius: 20px; padding: 28px; border: 1.5px solid var(--border); box-shadow: 0 20px 60px rgba(0,0,0,0.07); }
+.dash-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
+.dash-header h4 { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1rem; font-weight: 700; color: var(--text); }
+.dash-header span { font-size: 12px; color: var(--text-soft); }
+.dash-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 24px; }
+.dash-stat { background: white; border-radius: 12px; padding: 16px; text-align: center; border: 1px solid var(--border); }
+.dash-stat-num { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1.5rem; font-weight: 800; color: var(--navy); letter-spacing: -0.02em; }
+.dash-stat-label { font-size: 11px; color: var(--text-soft); margin-top: 3px; }
+.dash-leads { display: flex; flex-direction: column; gap: 10px; }
+.dash-lead { display: flex; align-items: center; justify-content: space-between; padding: 13px 16px; background: white; border-radius: 10px; border: 1px solid var(--border); }
+.dash-lead-name { font-size: 14px; font-weight: 600; color: var(--text); }
+.dash-lead-detail { font-size: 12px; color: var(--text-soft); margin-top: 2px; }
+.dash-lead-tag { font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 99px; }
+.tag-hot { background: #FEE2E2; color: #DC2626; }
+.tag-new { background: #DCFCE7; color: #16A34A; }
+.tag-warm { background: #FEF9C3; color: #CA8A04; }
+.dash-perks { display: flex; flex-direction: column; gap: 24px; margin-top: 36px; }
+.dash-perk { display: flex; gap: 18px; align-items: flex-start; }
+.dash-perk h4 { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 5px; }
+.dash-perk p { font-size: 13.5px; color: var(--text-soft); line-height: 1.65; }
+
+/* ── GUARANTEE ── */
+.guarantee-section { background: var(--navy); padding: 96px 24px; }
+.guarantee-inner { max-width: 760px; margin: 0 auto; text-align: center; }
+.guarantee-badge { display: inline-flex; align-items: center; gap: 10px; background: rgba(34,197,94,0.15); border: 1px solid rgba(34,197,94,0.3); color: #4ade80; padding: 8px 20px; border-radius: 99px; font-size: 13px; font-weight: 700; margin-bottom: 28px; }
+.guarantee-badge svg { width: 16px; height: 16px; stroke: #4ade80; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.guarantee-section .title { color: white; margin: 0 auto 16px; }
+.guarantee-section .sub { color: rgba(255,255,255,0.5); margin: 0 auto 40px; }
+.guarantee-box { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 40px; display: flex; gap: 24px; align-items: flex-start; text-align: left; }
+.guarantee-box h3 { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1.25rem; font-weight: 800; color: white; margin-bottom: 10px; letter-spacing: -0.01em; }
+.guarantee-box p { font-size: 14.5px; color: rgba(255,255,255,0.55); line-height: 1.75; }
+
+/* ── SETUP ── */
+.setup-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; margin-top: 64px; }
+.setup-card { background: white; border: 1.5px solid var(--border); border-radius: 20px; padding: 36px; transition: box-shadow 0.2s; }
+.setup-card:hover { box-shadow: 0 12px 40px rgba(0,0,0,0.07); }
+.setup-num { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1.75rem; font-weight: 800; color: var(--blue); opacity: 0.35; margin-bottom: 16px; letter-spacing: -0.02em; }
+.setup-card h3 { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1.0625rem; font-weight: 700; color: var(--text); margin-bottom: 10px; }
+.setup-card p { font-size: 14px; color: var(--text-soft); line-height: 1.75; }
+
+/* ── PRICING ── */
+.pricing-section { background: var(--navy); }
+.pricing-section .title { color: white; }
+.pricing-section .sub { color: rgba(255,255,255,0.5); }
+.pricing-section .label { color: var(--blue-light); }
+.pricing-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; margin-top: 48px; }
+.price-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.09); border-radius: 20px; padding: 40px 32px; position: relative; transition: transform 0.2s; }
+.price-card:hover { transform: translateY(-4px); }
+.price-card.featured { background: white; border-color: white; }
+.price-card.featured:hover { transform: translateY(-4px); }
+.price-badge { background: var(--blue); color: white; padding: 5px 20px; border-radius: 99px; font-size: 12px; font-weight: 700; white-space: nowrap; font-family: 'Plus Jakarta Sans', sans-serif; display: inline-block; margin-bottom: 12px; }
+.price-badge-abs { position: absolute; top: -13px; left: 50%; transform: translateX(-50%); }
+.price-nudge { display: flex; align-items: center; gap: 6px; background: rgba(34,197,94,0.12); border: 1px solid rgba(34,197,94,0.2); border-radius: 8px; padding: 7px 12px; margin-bottom: 20px; }
+.price-nudge svg { width: 13px; height: 13px; stroke: #4ade80; fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+.price-nudge span { font-size: 12px; color: #4ade80; font-weight: 600; }
+.price-name { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.9375rem; font-weight: 600; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+.price-card.featured .price-name { color: var(--text-soft); }
+.price-amount { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 3rem; font-weight: 800; color: white; line-height: 1; letter-spacing: -0.03em; }
+.price-card.featured .price-amount { color: var(--text); }
+.price-amount span { font-size: 1rem; font-weight: 400; opacity: 0.55; letter-spacing: 0; }
+.price-annual-note { font-size: 11px; color: rgba(255,255,255,0.45); margin-top: 2px; margin-bottom: 0; }
+.price-card.featured .price-annual-note { color: var(--text-soft); }
+.price-desc { font-size: 13.5px; color: rgba(255,255,255,0.45); margin: 14px 0 28px; line-height: 1.7; }
+.price-card.featured .price-desc { color: var(--text-soft); }
+.price-features { list-style: none; display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px; }
+.price-features li { font-size: 14px; color: rgba(255,255,255,0.7); display: flex; gap: 10px; line-height: 1.5; align-items: flex-start; }
+.price-card.featured .price-features li { color: var(--text-mid); }
+.price-check { width: 16px; height: 16px; flex-shrink: 0; margin-top: 1px; fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+.price-btn { display: block; text-align: center; padding: 14px; border-radius: 99px; font-size: 14px; font-weight: 700; text-decoration: none; transition: all 0.2s; font-family: 'Plus Jakarta Sans', sans-serif; }
+.price-btn-outline { border: 1.5px solid rgba(255,255,255,0.2); color: white; }
+.price-btn-outline:hover { border-color: rgba(255,255,255,0.5); background: rgba(255,255,255,0.05); }
+.price-btn-blue { background: var(--blue); color: white; box-shadow: 0 4px 20px rgba(59,130,246,0.4); }
+.price-btn-blue:hover { background: var(--blue-dark); }
+
+/* ── FAQ ACCORDION ── */
+.faq-list { display: flex; flex-direction: column; gap: 12px; margin-top: 64px; max-width: 800px; }
+.faq-item { background: white; border: 1.5px solid var(--border); border-radius: 16px; overflow: hidden; transition: border-color 0.2s, box-shadow 0.2s; }
+.faq-item.open { border-color: var(--blue); box-shadow: 0 4px 20px rgba(59,130,246,0.08); }
+.faq-question { display: flex; align-items: center; justify-content: space-between; padding: 22px 28px; cursor: pointer; user-select: none; gap: 16px; }
+.faq-question h4 { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 15px; font-weight: 700; color: var(--text); line-height: 1.4; }
+.faq-chevron { width: 20px; height: 20px; flex-shrink: 0; stroke: var(--text-soft); fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; transition: transform 0.3s ease; }
+.faq-item.open .faq-chevron { transform: rotate(180deg); stroke: var(--blue); }
+.faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
+.faq-answer-inner { padding: 0 28px 22px; }
+.faq-answer-inner p { font-size: 14.5px; color: var(--text-soft); line-height: 1.8; }
+
+/* ── ABOUT ── */
+.about-section { background: var(--navy); }
+.about-wrap { display: grid; grid-template-columns: 1fr 1.6fr; gap: 80px; align-items: center; }
+.about-avatar-wrap { display: flex; flex-direction: column; align-items: flex-start; gap: 20px; }
+.about-avatar { width: 100%; max-width: 240px; aspect-ratio: 1; border-radius: 24px; overflow: hidden; position: relative; }
+.about-avatar-bg { width: 100%; height: 100%; background: linear-gradient(145deg, #1a3a5c 0%, #0d2038 100%); display: flex; align-items: flex-end; justify-content: center; padding-top: 24px; }
+/* Illustrated person silhouette */
+.about-avatar-bg svg { width: 75%; }
+.about-location { display: inline-flex; align-items: center; gap: 7px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); border-radius: 99px; padding: 7px 14px; }
+.about-location svg { width: 13px; height: 13px; stroke: var(--blue-light); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.about-location span { font-size: 12px; color: rgba(255,255,255,0.6); font-weight: 500; }
+.about-section .label { color: var(--blue-light); }
+.about-section .title { color: white; }
+.about-text { font-size: 1.0625rem; color: rgba(255,255,255,0.6); line-height: 1.85; margin-bottom: 16px; }
+.about-name { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1.0625rem; font-weight: 700; color: white; margin-top: 28px; }
+.about-role { font-size: 13px; color: rgba(255,255,255,0.4); margin-top: 4px; }
+.about-stats { display: flex; gap: 28px; margin-top: 32px; padding-top: 28px; border-top: 1px solid rgba(255,255,255,0.08); flex-wrap: wrap; }
+.about-stat-num { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1.5rem; font-weight: 800; color: white; letter-spacing: -0.02em; }
+.about-stat-label { font-size: 12px; color: rgba(255,255,255,0.4); margin-top: 3px; }
+
+/* ── FORM ── */
+.form-section { background: var(--off-white); }
+.form-wrap { display: grid; grid-template-columns: 1fr 1.1fr; gap: 80px; align-items: start; }
+.form-left h2 { font-family: 'Plus Jakarta Sans', sans-serif; font-size: clamp(1.9rem, 3vw, 2.6rem); font-weight: 800; line-height: 1.18; letter-spacing: -0.02em; color: var(--text); margin-bottom: 16px; }
+.form-left p { font-size: 1.0625rem; color: var(--text-soft); line-height: 1.8; margin-bottom: 24px; }
+.response-time { display: inline-flex; align-items: center; gap: 8px; background: #DCFCE7; color: #15803d; padding: 8px 16px; border-radius: 99px; font-size: 13px; font-weight: 600; margin-bottom: 32px; }
+.response-time svg { width: 15px; height: 15px; stroke: #15803d; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.form-perks { display: flex; flex-direction: column; gap: 22px; }
+.perk { display: flex; gap: 16px; align-items: flex-start; }
+.perk h4 { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 14.5px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+.perk p { font-size: 13.5px; color: var(--text-soft); line-height: 1.6; }
+.form-box { background: white; border-radius: 20px; padding: 44px; border: 1.5px solid var(--border); box-shadow: 0 8px 40px rgba(0,0,0,0.06); }
+.form-divider { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-soft); margin: 28px 0 18px; display: flex; align-items: center; gap: 10px; }
+.form-divider::before, .form-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+.form-group { margin-bottom: 14px; }
+label { display: block; font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+input, select, textarea { width: 100%; padding: 12px 15px; border: 1.5px solid var(--border); border-radius: 10px; font-family: 'Inter', sans-serif; font-size: 14px; color: var(--text); background: white; outline: none; transition: border-color 0.2s; line-height: 1.5; }
+input:focus, select:focus, textarea:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(59,130,246,0.08); }
+textarea { resize: vertical; min-height: 90px; }
+.form-submit { width: 100%; padding: 16px; border-radius: 99px; background: var(--blue); color: white; border: none; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 20px rgba(59,130,246,0.35); margin-top: 10px; }
+.form-submit:hover { background: var(--blue-dark); transform: translateY(-2px); }
+.form-note { font-size: 12px; color: var(--text-soft); text-align: center; margin-top: 12px; line-height: 1.6; }
+.success-msg { display: none; text-align: center; padding: 36px 16px; }
+.success-msg h3 { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1.5rem; font-weight: 800; color: var(--text); margin-bottom: 10px; }
+.success-msg p { font-size: 14.5px; color: var(--text-soft); line-height: 1.75; margin-bottom: 20px; }
+.success-icon { width: 64px; height: 64px; border-radius: 50%; background: #DCFCE7; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; }
+.success-icon svg { width: 32px; height: 32px; stroke: #16a34a; fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+.form-teaser { background: var(--blue-pale); border: 1.5px dashed #BFDBFE; border-radius: 20px; padding: 52px 32px; text-align: center; }
+.form-teaser-icon { width: 56px; height: 56px; border-radius: 16px; background: white; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; }
+.form-teaser-icon svg { width: 26px; height: 26px; stroke: var(--blue); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.form-teaser h3 { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1.25rem; font-weight: 800; color: var(--navy); margin-bottom: 10px; }
+.form-teaser p { font-size: 14px; color: var(--text-soft); line-height: 1.7; }
+
+/* ── FOOTER ── */
+footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
+.footer-inner { max-width: 1100px; margin: 0 auto; }
+.footer-top { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 56px; }
+.footer-brand { }
+.footer-logo { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1.35rem; font-weight: 800; letter-spacing: -0.01em; margin-bottom: 12px; }
+.footer-logo span { color: var(--blue-light); }
+.footer-tagline { font-size: 14px; color: rgba(255,255,255,0.4); line-height: 1.7; max-width: 220px; }
+.footer-contact { margin-top: 20px; }
+.footer-contact a { font-size: 13px; color: rgba(255,255,255,0.5); text-decoration: none; transition: color 0.2s; }
+.footer-contact a:hover { color: white; }
+.footer-col h5 { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.35); margin-bottom: 16px; }
+.footer-col a { display: block; font-size: 14px; color: rgba(255,255,255,0.5); text-decoration: none; margin-bottom: 10px; transition: color 0.2s; }
+.footer-col a:hover { color: white; }
+.footer-bottom { border-top: 1px solid rgba(255,255,255,0.08); padding-top: 28px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+.footer-copy { font-size: 13px; color: rgba(255,255,255,0.25); }
+.footer-legal { display: flex; gap: 20px; }
+.footer-legal a { font-size: 13px; color: rgba(255,255,255,0.25); text-decoration: none; transition: color 0.2s; }
+.footer-legal a:hover { color: rgba(255,255,255,0.5); }
+
+/* ── RESPONSIVE 900px ── */
+@media (max-width: 900px) {
+  .hero-inner { grid-template-columns: 1fr; text-align: center; gap: 48px; }
+  .hero-btns { justify-content: center; }
+  .hero-stats { justify-content: center; }
+  .hero { padding: 120px 24px 80px; }
+  .footer-top { grid-template-columns: 1fr 1fr; gap: 32px; }
+}
+
+/* ── MOBILE ── */
+@media (max-width: 768px) {
+  /* Nav */
+  nav { padding: 0 20px; }
+  .nav-links { display: none; }
+  .nav-hamburger { display: flex; }
+  .sticky-cta { display: flex; }
+
+  /* Tighter section padding — biggest scrolliness fix */
+  section { padding: 52px 20px; }
+  .guarantee-section { padding: 52px 20px !important; }
+
+  /* Hide wave dividers on mobile — they just add height */
+  .divider-wave { display: none; }
+
+  /* Hero — tighter, centered */
+  .hero { padding: 100px 20px 56px; }
+  .hero h1 { font-size: 2.2rem; }
+  .hero-sub { font-size: 0.9375rem; margin-bottom: 28px; }
+  .hero-stats { gap: 20px; margin-top: 36px; padding-top: 32px; }
+  .stat-num { font-size: 1.5rem; }
+
+  /* Grids → single column */
+  .products-grid, .form-wrap, .dashboard-wrap { grid-template-columns: 1fr; } .pricing-grid { grid-template-columns: 1fr; gap: 12px; }
+  .form-row { grid-template-columns: 1fr; }
+
+  /* Who It's For — horizontal scroll carousel instead of 4 stacked cards */
+  .feat-card { display:flex; align-items:flex-start; gap:12px; padding:14px; background:var(--off-white); border:1.5px solid var(--border); border-radius:12px; cursor:pointer; transition:all 0.18s; }
+  .feat-card:hover { border-color: var(--blue-dark); }
+  .feat-card.active { border-color:var(--blue-dark); background:var(--blue-pale); }
+  .feat-card input[type="checkbox"] { margin-top:2px; width:16px; height:16px; accent-color:var(--blue-dark); flex-shrink:0; }
+  .feat-tag { font-size:11px; background:var(--blue-pale); color:var(--blue-dark); padding:1px 7px; border-radius:99px; font-weight:700; margin-left:6px; }
+  .feat-card.active .feat-tag { background:white; }
+  .month-chip { display:inline-flex; align-items:center; gap:5px; padding:6px 12px; border:1.5px solid var(--border); border-radius:99px; font-size:12px; font-weight:600; cursor:pointer; color:var(--text-mid); transition:all 0.15s; user-select:none; }
+  .month-chip input { display:none; }
+  .month-chip:has(input:checked) { background:var(--blue); color:white; border-color:var(--blue); }
+  .for-grid {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    gap: 14px;
+    margin-top: 32px;
+    padding-bottom: 12px;
+    padding-left: 4px;
+    padding-right: 24px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    /* Prevent page-level overflow */
+    max-width: 100%;
+  }
+  .for-grid::-webkit-scrollbar { display: none; }
+  .for-card {
+    flex: 0 0 82vw;
+    max-width: 300px;
+    scroll-snap-align: start;
+    padding: 24px;
+  }
+  .for-card p { font-size: 13px; }
+  /* Scroll hint pill */
+  .for-scroll-hint {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--text-soft);
+    margin-top: 10px;
+  }
+  .for-scroll-hint svg { width: 14px; height: 14px; stroke: var(--text-soft); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* Steps — condensed list style instead of big cards */
+  .steps-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    background: none;
+    border: none;
+    border-radius: 0;
+    margin-top: 32px;
+  }
+  .step {
+    padding: 20px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .step:last-child { border-bottom: none; }
+  .step-head { display: contents; } /* on mobile, step is already flex so let children flow naturally */
+  .step-num {
+    font-size: 1rem;
+    opacity: 0.4;
+    min-width: 28px;
+    margin-bottom: 0;
+    padding-top: 2px;
+  }
+  .step h3 { font-size: 0.9375rem; margin-bottom: 4px; }
+  .step p { font-size: 13px; line-height: 1.6; }
+
+  /* Setup cards — compact list */
+  .setup-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-top: 32px;
+  }
+  .setup-card {
+    border-radius: 0;
+    border: none;
+    border-bottom: 1px solid var(--border);
+    padding: 18px 0;
+    box-shadow: none;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    background: transparent;
+  }
+  .setup-card:first-child { border-top: 1px solid var(--border); }
+  .setup-num {
+    font-size: 1rem;
+    opacity: 0.3;
+    min-width: 28px;
+    margin-bottom: 0;
+    padding-top: 2px;
+    flex-shrink: 0;
+  }
+  .setup-card h3 { font-size: 0.9375rem; margin-bottom: 3px; }
+  .setup-card p { font-size: 13px; line-height: 1.6; }
+
+  /* Products — reduce padding */
+  .product-card { padding: 28px 24px; }
+  .product-card h3 { font-size: 1.2rem; }
+  .product-card > p { font-size: 13.5px; margin-bottom: 20px; }
+
+  /* Dashboard — hide mock on mobile, just show perks */
+  .dashboard-mock { display: none; }
+  .dashboard-wrap { gap: 0; }
+
+  /* Guarantee — compact */
+  .guarantee-box { flex-direction: column; gap: 16px; padding: 24px 20px; }
+  .guarantee-box h3 { font-size: 1.1rem; }
+  .guarantee-box p { font-size: 13.5px; }
+  .guarantee-inner .title { font-size: 1.7rem; }
+
+  /* Pricing — no scale transform */
+  .price-card { padding: 32px 24px; }
+  .price-card.featured { transform: scale(1); }
+  .price-card.featured:hover { transform: translateY(-4px); }
+  .pricing-grid { gap: 14px; }
+
+  /* FAQ */
+  .faq-list { max-width: 100%; margin-top: 32px; }
+  .faq-question { padding: 18px 20px; }
+  .faq-answer-inner { padding: 0 20px 18px; }
+
+  /* About — hide avatar and stats, just show text */
+  .about-wrap { grid-template-columns: 1fr !important; gap: 0 !important; }
+  .about-avatar-wrap { display: none; }
+  .founders-grid { grid-template-columns: 1fr !important; }
+  .about-stats { display: none; }
+  .about-text { font-size: 0.9375rem; }
+
+  /* Form */
+  .form-box { padding: 24px 18px; }
+  .form-wrap { gap: 36px; }
+  /* Hide form perks on mobile to save scroll */
+  .form-perks { display: none; }
+  .form-left p { margin-bottom: 16px; }
+
+  /* Footer — single column, condensed */
+  .footer-top { grid-template-columns: 1fr; gap: 0; margin-bottom: 32px; }
+  /* Hide nav columns in footer on mobile */
+  .footer-col { display: none; }
+  .footer-brand { padding-bottom: 24px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+  .footer-bottom { flex-direction: column; align-items: flex-start; gap: 8px; padding-top: 20px; }
+  footer { padding: 40px 20px 28px; }
+
+  /* Logobar — tighter */
+  .logobar-inner { gap: 16px; }
+  .logobar-logos { gap: 20px; }
+  .logobar { padding: 20px; }
+}
+</style>
+<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_PLACES_API_KEY&libraries=places" async defer></script>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo" style="display:flex;align-items:center;gap:10px;">
+    <svg width="36" height="34" viewBox="0 0 48 50" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;">
+      <rect width="48" height="42" rx="10" fill="white" fill-opacity="0.12"/>
+      <rect x="8" y="10" width="20" height="3" rx="1.5" fill="#3B82F6"/>
+      <rect x="8" y="17" width="28" height="3" rx="1.5" fill="#93C5FD" opacity="0.7"/>
+      <rect x="8" y="24" width="14" height="3" rx="1.5" fill="#93C5FD" opacity="0.4"/>
+      <path d="M9 42 L4 50 L20 44" fill="white" fill-opacity="0.12"/>
+      <circle cx="41" cy="8" r="6" fill="#3B82F6"/>
+    </svg>
+    <span style="display:flex;flex-direction:column;line-height:1;">
+      <span style="font-size:1.05rem;font-weight:800;color:white;letter-spacing:-0.02em;">Netify</span>
+      <span style="font-size:0.72rem;font-weight:700;color:var(--blue-light);letter-spacing:0.05em;">BUILDS</span>
+    </span>
+  </a>
+  <div class="nav-links">
+    <a href="#for">Who It's For</a>
+    <a href="#how">How It Works</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#try">Try the Bot</a>
+    <a href="#demo">Free Demo</a><a href="/portal" style="color:var(--blue-light);">Client Portal</a>
+    <a href="#contact" class="nav-cta">Get Started</a>
+  </div>
+  <button class="nav-hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#for" class="mobile-link">Who It's For</a>
+  <a href="#how" class="mobile-link">How It Works</a>
+  <a href="#pricing" class="mobile-link">Pricing</a>
+  <a href="#demo" class="mobile-link">Free Demo</a>
+  <a href="#try" class="mobile-link">Try the Bot</a>
+  <a href="#demo" class="mobile-link">Free Demo</a>
+  <a href="/portal" class="mobile-link">Client Portal</a>
+  <a href="#contact" class="mobile-link">Get Started</a>
+</div>
+
+<!-- STICKY MOBILE CTA -->
+<div class="sticky-cta" id="stickyCta">
+  <p>Never miss another lead.</p>
+  <a href="#contact">Get Started →</a>
+</div>
+
+<!-- HERO — two column -->
+<section class="hero">
+  <div class="hero-inner">
+
+    <!-- LEFT -->
+    <div class="hero-left">
+      <div class="hero-badge">Chat · Reviews · Reactivation</div>
+      <h1>Stop losing customers<br><em>you've already earned.</em></h1>
+      <p class="hero-sub">We build the tools that keep your business working when you're not — a 24/7 chat assistant that captures leads, a review filter that protects your reputation, and reactivation campaigns that bring old customers back.</p>
+      <div class="hero-btns">
+        <a href="#contact" class="btn-primary">Get Started Today</a>
+        <a href="#for" class="btn-outline">See Who It's For</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><div class="stat-num">24/7</div><div class="stat-label">Lead coverage</div></div>
+        <div class="stat"><div class="stat-num">&lt;24hr</div><div class="stat-label">Setup time</div></div>
+        <div class="stat"><div class="stat-num">1 line</div><div class="stat-label">To install</div></div>
+        <div class="stat"><div class="stat-num">$0</div><div class="stat-label">Setup fee</div></div>
+      </div>
+    </div>
+
+    <!-- RIGHT — Live chat demo -->
+    <div class="hero-right">
+      <!-- CAROUSEL WRAPPER -->
+      <div id="heroCarousel" style="position:relative;overflow:hidden;touch-action:pan-y;border-radius:20px;">
+
+        <!-- SLIDE TRACK -->
+        <div id="heroSlideTrack" style="display:flex;transition:transform 0.4s cubic-bezier(0.4,0,0.2,1);will-change:transform;width:200%;">
+
+          <!-- SLIDE 1: Chat Assistant — fixed height box -->
+          <div style="width:50%;flex-shrink:0;">
+            <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.14);border-radius:0;padding:20px;display:flex;flex-direction:column;height:360px;">
+              <!-- Header -->
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,0.08);flex-shrink:0;">
+                <div class="chat-avatar"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+                <div style="flex:1;">
+                  <div class="chat-preview-name">Smith HVAC Assistant</div>
+                  <div class="chat-preview-status">Online now · Replies instantly</div>
+                </div>
+                <div class="chat-dot"></div>
+              </div>
+              <!-- Messages — flex:1 fills space, overflow hidden, no expansion -->
+              <div id="chatDemo" style="display:flex;flex-direction:column;gap:8px;flex:1;overflow:hidden;min-height:0;"></div>
+              <!-- Input bar — always visible at bottom -->
+              <div class="chat-input-mock" style="flex-shrink:0;margin-top:12px;">
+                <div class="chat-input-field">Type your question...</div>
+                <div class="chat-send-btn"><svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SLIDE 2: Review Filter — fixed height, two column -->
+          <div style="width:50%;flex-shrink:0;height:360px;">
+            <div style="display:grid;grid-template-columns:1fr 1fr;height:100%;gap:1px;background:rgba(255,255,255,0.08);">
+
+              <!-- LEFT: review demo — fixed height, overflow hidden -->
+              <div style="background:rgba(255,255,255,0.08);padding:16px;display:flex;flex-direction:column;overflow:hidden;height:360px;">
+                <!-- Header -->
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,0.08);flex-shrink:0;">
+                  <div class="chat-avatar" style="background:linear-gradient(135deg,#3B82F6,#6366f1);">
+                    <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                  </div>
+                  <div>
+                    <div class="chat-preview-name" style="font-size:11px;">Review Filter</div>
+                    <div class="chat-preview-status">Private feedback portal</div>
+                  </div>
+                  <div class="chat-dot" style="margin-left:auto;"></div>
+                </div>
+
+                <!-- Demo content — fixed area, no expansion -->
+                <div style="flex:1;overflow:hidden;position:relative;">
+
+                  <!-- Step 1: Star rating -->
+                  <div id="hrdStep1" style="text-align:center;padding-top:8px;">
+                    <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:0.85rem;font-weight:800;color:white;margin-bottom:4px;">How did we do?</div>
+                    <div style="font-size:10px;color:rgba(255,255,255,0.4);margin-bottom:12px;">Tap a star to rate your experience</div>
+                    <div style="display:flex;justify-content:center;gap:4px;margin-bottom:12px;" id="hrdStars">
+                      <span onclick="hrdSelectStar(1)" class="hrd-star" style="font-size:22px;cursor:pointer;color:rgba(255,255,255,0.2);transition:color 0.15s;">★</span>
+                      <span onclick="hrdSelectStar(2)" class="hrd-star" style="font-size:22px;cursor:pointer;color:rgba(255,255,255,0.2);transition:color 0.15s;">★</span>
+                      <span onclick="hrdSelectStar(3)" class="hrd-star" style="font-size:22px;cursor:pointer;color:rgba(255,255,255,0.2);transition:color 0.15s;">★</span>
+                      <span onclick="hrdSelectStar(4)" class="hrd-star" style="font-size:22px;cursor:pointer;color:rgba(255,255,255,0.2);transition:color 0.15s;">★</span>
+                      <span onclick="hrdSelectStar(5)" class="hrd-star" style="font-size:22px;cursor:pointer;color:rgba(255,255,255,0.2);transition:color 0.15s;">★</span>
+                    </div>
+                    <button id="hrdSubmitBtn" onclick="hrdSubmit()" style="background:rgba(59,130,246,0.4);color:white;border:none;padding:7px 18px;border-radius:99px;font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;font-weight:700;cursor:default;opacity:0.5;" disabled>Select a rating</button>
+                  </div>
+
+                  <!-- Step 2: Happy (4-5 stars) — goes to Google -->
+                  <div id="hrdStep2" style="display:none;text-align:center;padding-top:12px;">
+                    <div style="width:44px;height:44px;border-radius:50%;background:rgba(34,197,94,0.15);border:1px solid rgba(34,197,94,0.3);display:flex;align-items:center;justify-content:center;margin:0 auto 10px;">
+                      <svg style="width:20px;height:20px;stroke:#4ade80;fill:none;stroke-width:2.5;" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                    </div>
+                    <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:0.85rem;font-weight:800;color:white;margin-bottom:4px;">So glad to hear it!</div>
+                    <div style="font-size:10px;color:rgba(255,255,255,0.4);margin-bottom:14px;">Mind leaving us a quick Google review?</div>
+                    <div style="display:inline-flex;align-items:center;gap:5px;background:#3B82F6;color:white;padding:8px 14px;border-radius:99px;font-size:10px;font-weight:700;cursor:pointer;">
+                      <svg style="width:11px;height:11px;fill:white;flex-shrink:0;" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+                      Leave a Google Review
+                    </div>
+                    <div style="margin-top:10px;"><button onclick="hrdShow(1)" style="font-size:9px;color:rgba(255,255,255,0.25);background:none;border:none;cursor:pointer;font-family:inherit;">← Start over</button></div>
+                  </div>
+
+                  <!-- Step 3: Unhappy (1-3 stars) — private chat -->
+                  <div id="hrdStep3" style="display:none;">
+                    <div style="display:flex;align-items:center;gap:5px;margin-bottom:8px;">
+                      <div style="width:6px;height:6px;border-radius:50%;background:#f87171;flex-shrink:0;"></div>
+                      <span style="font-size:9px;font-weight:700;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.06em;">Private feedback</span>
+                    </div>
+                    <!-- Chat messages — fixed height container -->
+                    <div id="hrdChatMsgs" style="display:flex;flex-direction:column;gap:5px;height:130px;overflow:hidden;"></div>
+                    <div id="hrdSentPill" style="display:none;margin-top:6px;align-items:center;gap:5px;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.25);border-radius:8px;padding:5px 8px;">
+                      <svg style="width:9px;height:9px;stroke:#4ade80;fill:none;stroke-width:2.5;flex-shrink:0;" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                      <span style="font-size:9px;color:#4ade80;font-weight:600;">Sent privately — owner notified</span>
+                    </div>
+                    <div style="margin-top:8px;"><button onclick="hrdShow(1)" style="font-size:9px;color:rgba(255,255,255,0.25);background:none;border:none;cursor:pointer;font-family:inherit;">← Start over</button></div>
+                  </div>
+
+                </div>
+              </div>
+
+              <!-- RIGHT: copy panel -->
+              <div style="padding:20px 18px;display:flex;flex-direction:column;justify-content:center;background:rgba(255,255,255,0.03);overflow:hidden;">
+                <div style="font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--blue-light);margin-bottom:8px;">Review Filter</div>
+                <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:0.95rem;font-weight:800;color:white;line-height:1.3;margin-bottom:10px;">Turn every job into a 5-star review.</div>
+                <div style="font-size:11px;color:rgba(255,255,255,0.45);line-height:1.6;margin-bottom:16px;">Send one link after each job. Happy customers go to Google. Unhappy ones stay private.</div>
+                <div style="display:flex;flex-direction:column;gap:8px;">
+                  <div style="display:flex;align-items:center;gap:7px;">
+                    <div style="width:20px;height:20px;border-radius:50%;background:rgba(34,197,94,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                      <svg style="width:10px;height:10px;stroke:#4ade80;fill:none;stroke-width:2.5;" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                    </div>
+                    <span style="font-size:11px;color:rgba(255,255,255,0.6);">4-5 stars → Google review</span>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:7px;">
+                    <div style="width:20px;height:20px;border-radius:50%;background:rgba(239,68,68,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                      <svg style="width:10px;height:10px;stroke:#f87171;fill:none;stroke-width:2.5;" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                    </div>
+                    <span style="font-size:11px;color:rgba(255,255,255,0.6);">1-3 stars → private, caught first</span>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:7px;">
+                    <div style="width:20px;height:20px;border-radius:50%;background:rgba(147,197,253,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                      <svg style="width:10px;height:10px;stroke:#93C5FD;fill:none;stroke-width:1.5;" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                    </div>
+                    <span style="font-size:11px;color:rgba(255,255,255,0.6);">QR code for counter or receipts</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div><!-- end slide track -->
+
+      </div><!-- end carousel -->
+
+      <!-- DOT INDICATORS — outside carousel, no background -->
+      <div style="display:flex;justify-content:center;gap:8px;margin-top:12px;">
+        <div id="heroDot0" onclick="heroGoTo(0)" style="width:7px;height:7px;border-radius:50%;background:white;opacity:1;cursor:pointer;transition:opacity 0.2s;"></div>
+        <div id="heroDot1" onclick="heroGoTo(1)" style="width:7px;height:7px;border-radius:50%;background:white;opacity:0.3;cursor:pointer;transition:opacity 0.2s;"></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- WHO IT'S FOR -->
+<section class="for-section" id="for">
+  <div class="inner">
+    <div class="label reveal">Who It's For</div>
+    <h2 class="title reveal reveal-delay-1">Built for local service businesses.<br>Any industry, any size.</h2>
+    <p class="sub reveal reveal-delay-2">If you're losing leads after hours, struggling to get Google reviews, or sitting on a list of past customers who haven't heard from you in months — we fix all three.</p>
+    <div class="for-grid">
+      <div class="for-card reveal reveal-delay-1">
+        <div class="for-icon-wrap"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+        <h3>Never miss a lead</h3>
+        <p>Customers search at night, on weekends, during jobs. Your chat assistant answers instantly 24/7, captures their name and number, and emails you the lead before they call someone else.</p>
+        <div class="for-pain"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><p>"By the time I call back from a job, they've already hired someone else."</p></div>
+      </div>
+      <div class="for-card reveal reveal-delay-2">
+        <div class="for-icon-wrap"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+        <h3>Build your Google reviews</h3>
+        <p>After each job, send one text. Happy customers get routed straight to Google. Unhappy ones go private — you hear about it before it becomes a public post. Your rating climbs, your reputation stays clean.</p>
+        <div class="for-pain"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><p>"I do great work but my competitor has 200 more Google reviews than me."</p></div>
+      </div>
+      <div class="for-card reveal reveal-delay-3">
+        <div class="for-icon-wrap"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <h3>Bring old customers back</h3>
+        <p>Every business has a list of past customers who went quiet. We send personalized SMS campaigns on your behalf — each one includes a chat link so responses are captured as leads automatically.</p>
+        <div class="for-pain"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><p>"I have hundreds of past customers I never follow up with because I don't have time."</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DIVIDER -->
+<div class="divider-wave divider-down" style="background:var(--off-white)"><svg viewBox="0 0 1200 60" preserveAspectRatio="none"><path d="M0,0 C300,60 900,60 1200,0 L1200,60 L0,60 Z" fill="#0A2540"/></svg></div>
+
+<!-- HOW IT WORKS -->
+<section class="how" id="how" style="padding-top:64px;">
+  <div class="inner">
+    <div class="label reveal">The Process</div>
+    <h2 class="title reveal reveal-delay-1">Set up in under 24 hours.</h2>
+    <p class="sub reveal reveal-delay-2">You fill out a short form. We build, install, and configure everything. You're live before your next customer walks through the door. You'll have your setup code within 24 hours — or your first month is free.</p>
+    <div class="steps-grid">
+      <div class="step reveal reveal-delay-1">
+        <div class="step-num">01</div>
+        <div class="step-body">
+          <h3>Fill out the form</h3>
+          <p>Tell us about your business — services, hours, tone, which products you want. Takes about 5 minutes.</p>
+        </div>
+      </div>
+      <div class="step reveal reveal-delay-2">
+        <div class="step-num">02</div>
+        <div class="step-body">
+          <h3>We build it</h3>
+          <p>We configure your chat assistant, review filter, and any campaigns — set up personally. No tech knowledge needed.</p>
+        </div>
+      </div>
+      <div class="step reveal reveal-delay-3">
+        <div class="step-num">03</div>
+        <div class="step-body">
+          <h3>Results hit your inbox</h3>
+          <p>New leads, review alerts, and reactivation responses — all emailed instantly and tracked in your portal.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DIVIDER -->
+<div class="divider-wave divider-up" style="background:white"><svg viewBox="0 0 1200 60" preserveAspectRatio="none"><path d="M0,60 C300,0 900,0 1200,60 L1200,0 L0,0 Z" fill="#0A2540"/></svg></div>
+
+<!-- PRODUCTS + REVIEW DEMO -->
+
+<!-- PRICING -->
+<section class="pricing-section" id="pricing" style="padding-top:64px;">
+  <div class="inner">
+    <div class="label reveal">Pricing</div>
+    <h2 class="title reveal reveal-delay-1">Simple pricing.<br>No surprises.</h2>
+    <p class="sub reveal reveal-delay-2">No setup fees. No long-term contracts. Cancel anytime. Everything goes live within 24 hours.</p>
+
+    <!-- Billing toggle -->
+    <div class="reveal" style="display:flex;align-items:center;justify-content:center;gap:14px;margin-top:32px;">
+      <span id="toggleMonthly" style="font-size:14px;font-weight:600;color:white;">Monthly</span>
+      <button id="billingToggle" onclick="toggleBilling()" style="width:52px;height:28px;border-radius:99px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.2);cursor:pointer;position:relative;transition:background 0.2s;flex-shrink:0;" aria-label="Toggle billing">
+        <span id="toggleKnob" style="position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:white;transition:transform 0.2s;display:block;"></span>
+      </button>
+      <span id="toggleAnnual" style="font-size:14px;font-weight:600;color:rgba(255,255,255,0.5);">Annual <span style="background:rgba(34,197,94,0.2);color:#4ade80;font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px;margin-left:4px;">Save 1 month</span></span>
+    </div>
+
+    <!-- Row 1: 3 main products -->
+    <div class="pricing-grid reveal reveal-delay-1">
+
+      <!-- CHAT ASSISTANT -->
+      <div class="price-card">
+        <div class="price-name">Chat Assistant</div>
+        <div class="price-amount"><span class="pm">$250</span><span class="pa" style="display:none">$229</span><span>/mo</span></div>
+        <div class="pa price-annual-note" style="display:none;">Billed $2,750/yr — save $250</div>
+        <p class="price-desc">24/7 chat assistant on your website. Answers questions, captures leads, and emails you every opportunity.</p>
+        <ul class="price-features">
+          <li><svg class="price-check" style="stroke:var(--blue-light)" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Custom bot built for your business</li>
+          <li><svg class="price-check" style="stroke:var(--blue-light)" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>24/7 lead capture & FAQ answers</li>
+          <li><svg class="price-check" style="stroke:var(--blue-light)" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Instant email lead notifications</li>
+          <li><svg class="price-check" style="stroke:var(--blue-light)" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Responds in any language</li>
+          <li><svg class="price-check" style="stroke:var(--blue-light)" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Client portal & analytics</li>
+          <li><svg class="price-check" style="stroke:var(--blue-light)" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>24-hour setup guarantee</li>
+        </ul>
+
+        <a href="#contact" class="price-btn price-btn-outline" data-plan="bot">Get Started</a>
+      </div>
+
+      <!-- REVIEW FILTER -->
+      <div class="price-card featured">
+        
+        <div class="price-name">Review Filter</div>
+        <div class="price-amount"><span class="pm">$100</span><span class="pa" style="display:none">$92</span><span>/mo</span></div>
+        <div class="pa price-annual-note" style="display:none;">Billed $1,100/yr — save $100</div>
+        <p class="price-desc">Turn every job into a 5-star review. Happy customers go to Google, unhappy ones stay private — automatically.</p>
+        <ul class="price-features">
+          <li><svg class="price-check" style="stroke:var(--blue)" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Pre-written message send tool</li>
+          <li><svg class="price-check" style="stroke:var(--blue)" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>QR code for counter or receipts</li>
+          <li><svg class="price-check" style="stroke:var(--blue)" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>4-5 stars → Google, 1-3 → private</li>
+          <li><svg class="price-check" style="stroke:var(--blue)" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Instant email alert with feedback</li>
+          <li><svg class="price-check" style="stroke:var(--blue)" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Client portal with review stats</li>
+        </ul>
+
+        <a href="#contact" class="price-btn price-btn-blue" data-plan="review">Get Started</a>
+      </div>
+
+      <!-- REACTIVATION CAMPAIGNS -->
+      <div class="price-card">
+        <div class="price-name">Reactivation Campaigns</div>
+        <div class="price-amount"><span class="pm">$200</span><span class="pa" style="display:none">$183</span><span>/mo</span></div>
+        <div class="pa price-annual-note" style="display:none;">Billed $2,200/yr — save $200</div>
+        <p class="price-desc">We actively manage your past customer list and run quarterly SMS campaigns on your behalf. Responses come back as leads automatically — you do nothing.</p>
+        <ul class="price-features">
+          <li><svg class="price-check" style="stroke:var(--blue-light)" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>One campaign per quarter included</li>
+          <li><svg class="price-check" style="stroke:var(--blue-light)" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>We write every message for you</li>
+          <li><svg class="price-check" style="stroke:var(--blue-light)" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Sent to past customers only — compliant</li>
+          <li><svg class="price-check" style="stroke:var(--blue-light)" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Chat link turns replies into leads</li>
+          <li><svg class="price-check" style="stroke:var(--blue-light)" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Results report after every campaign</li>
+          <li><svg class="price-check" style="stroke:var(--blue-light)" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Extra campaigns just $100 each</li>
+        </ul>
+<p style="font-size:13px;color:rgba(255,255,255,0.5);margin:16px 0;">You send us the list once. We handle the rest every quarter.</p>
+        <a href="#contact" class="price-btn price-btn-outline" data-plan="campaign">Get Started</a>
+      </div>
+
+    </div>
+
+    <!-- Row 2: Bundle — full width -->
+    <div class="price-card featured reveal reveal-delay-2" style="margin-top:16px;">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:24px;flex-wrap:wrap;">
+
+        <!-- LEFT: header -->
+        <div style="flex:1;min-width:200px;">
+          <div class="price-badge" style="position:static;display:inline-block;transform:none;margin-bottom:10px;">Best Value</div>
+          <div class="price-name" style="font-size:1.05rem;margin-bottom:4px;">Build Your Bundle</div>
+          <p class="price-desc" style="margin-bottom:0;font-size:13px;">Pick any two or more products and save 15% automatically.</p>
+        </div>
+
+        <!-- RIGHT: static price display -->
+        <div style="text-align:right;flex-shrink:0;">
+          <div id="bundleOriginal" style="font-size:12px;color:var(--text-soft);text-decoration:line-through;height:18px;line-height:18px;"></div>
+          <div id="bundlePrice" style="font-family:'Plus Jakarta Sans',sans-serif;font-size:2rem;font-weight:800;color:var(--text);line-height:1.1;">—</div>
+          <div id="bundleSavings" style="font-size:12px;color:#16a34a;font-weight:700;height:18px;margin-top:2px;"></div>
+          <div style="font-size:11px;color:var(--text-soft);">per month</div>
+        </div>
+
+      </div>
+
+      <!-- CHECKBOXES — horizontal pill row -->
+      <div style="display:flex;flex-direction:column;gap:8px;margin:20px 0 16px;">
+        <label id="bundleBotLabel" style="display:flex;align-items:center;justify-content:space-between;padding:11px 16px;border:1.5px solid var(--border);border-radius:10px;cursor:pointer;transition:all 0.15s;user-select:none;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <input type="checkbox" id="bundleBot" onchange="updateBundle()" style="width:16px;height:16px;accent-color:var(--blue);cursor:pointer;flex-shrink:0;">
+            <span style="font-size:13px;font-weight:600;color:var(--text);">Chat Assistant</span>
+          </div>
+          <span style="font-size:13px;color:var(--text-soft);">$250/mo</span>
+        </label>
+        <label id="bundleReviewLabel" style="display:flex;align-items:center;justify-content:space-between;padding:11px 16px;border:1.5px solid var(--border);border-radius:10px;cursor:pointer;transition:all 0.15s;user-select:none;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <input type="checkbox" id="bundleReview" onchange="updateBundle()" style="width:16px;height:16px;accent-color:var(--blue);cursor:pointer;flex-shrink:0;">
+            <span style="font-size:13px;font-weight:600;color:var(--text);">Review Filter</span>
+          </div>
+          <span style="font-size:13px;color:var(--text-soft);">$100/mo</span>
+        </label>
+        <label id="bundleCampaignLabel" style="display:flex;align-items:center;justify-content:space-between;padding:11px 16px;border:1.5px solid var(--border);border-radius:10px;cursor:pointer;transition:all 0.15s;user-select:none;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <input type="checkbox" id="bundleCampaign" onchange="updateBundle()" style="width:16px;height:16px;accent-color:var(--blue);cursor:pointer;flex-shrink:0;">
+            <span style="font-size:13px;font-weight:600;color:var(--text);">Reactivation Campaigns</span>
+          </div>
+          <span style="font-size:13px;color:var(--text-soft);">$200/mo</span>
+        </label>
+      </div>
+
+      <a href="#contact" id="bundleCta" class="price-btn price-btn-blue" data-plan="bundle" style="pointer-events:none;opacity:0.4;text-align:center;display:block;">Select products above</a>
+      <div id="bundleNote" style="font-size:11px;color:var(--text-soft);text-align:center;margin-top:10px;">Select at least 2 products to unlock 15% off.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- DIVIDER -->
+<div class="divider-wave divider-up" style="background:var(--off-white)"><svg viewBox="0 0 1200 60" preserveAspectRatio="none"><path d="M0,60 C300,0 900,0 1200,60 L1200,0 L0,0 Z" fill="#0A2540"/></svg></div>
+
+<!-- TRY THE BOT -->
+<section id="try" style="background:var(--off-white)">
+  <div class="inner">
+    <div class="label reveal">See It In Action</div>
+    <h2 class="title reveal reveal-delay-1">Try the bot yourself.</h2>
+    <p class="sub reveal reveal-delay-2">The chat assistant in the bottom right corner is the same one we'd build for your business — just trained on us instead of you. Here are some things worth trying.</p>
+    <div class="faq-list reveal reveal-delay-2">
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="event.stopPropagation();copyAndChat(this, 'How much does it cost?')">
+          <h4>How much does it cost?</h4>
+          <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
+            <span style="font-size:12px;font-weight:600;color:var(--blue);white-space:nowrap;">Try it →</span>
+            <svg class="faq-chevron" style="transform:none!important;" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="event.stopPropagation();copyAndChat(this, 'Do I need to be tech savvy to set this up?')">
+          <h4>Do I need to be tech savvy to set this up?</h4>
+          <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
+            <span style="font-size:12px;font-weight:600;color:var(--blue);white-space:nowrap;">Try it →</span>
+            <svg class="faq-chevron" style="transform:none!important;" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="event.stopPropagation();copyAndChat(this, 'Will it actually sound like my business?')">
+          <h4>Will it actually sound like my business?</h4>
+          <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
+            <span style="font-size:12px;font-weight:600;color:var(--blue);white-space:nowrap;">Try it →</span>
+            <svg class="faq-chevron" style="transform:none!important;" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="event.stopPropagation();copyAndChat(this, 'Is there a contract?')">
+          <h4>Is there a contract?</h4>
+          <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
+            <span style="font-size:12px;font-weight:600;color:var(--blue);white-space:nowrap;">Try it →</span>
+            <svg class="faq-chevron" style="transform:none!important;" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="event.stopPropagation();copyAndChat(this, 'I run a roofing company — would this work for me?')">
+          <h4>I run a roofing company — would this work for me?</h4>
+          <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
+            <span style="font-size:12px;font-weight:600;color:var(--blue);white-space:nowrap;">Try it →</span>
+            <svg class="faq-chevron" style="transform:none!important;" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="event.stopPropagation();copyAndChat(this, 'What happens when the bot captures a lead?')">
+          <h4>What happens when the bot captures a lead?</h4>
+          <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
+            <span style="font-size:12px;font-weight:600;color:var(--blue);white-space:nowrap;">Try it →</span>
+            <svg class="faq-chevron" style="transform:none!important;" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="event.stopPropagation();copyAndChat(this, 'How is this different from a basic contact form?')">
+          <h4>How is this different from a basic contact form?</h4>
+          <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
+            <span style="font-size:12px;font-weight:600;color:var(--blue);white-space:nowrap;">Try it →</span>
+            <svg class="faq-chevron" style="transform:none!important;" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="event.stopPropagation();copyAndChat(this, 'My name is John and my number is 555-1234')">
+          <h4>Try giving it your name and number</h4>
+          <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
+            <span style="font-size:12px;font-weight:600;color:var(--blue);white-space:nowrap;">Try it →</span>
+            <svg class="faq-chevron" style="transform:none!important;" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <p style="font-size:13px;color:var(--text-soft);text-align:center;margin-top:24px;">Click any question to open it in the chat — or type your own. The bot in the corner is live.</p>
+  </div>
+</section>
+
+<!-- DIVIDER -->
+<div class="divider-wave divider-down" style="background:var(--off-white)"><svg viewBox="0 0 1200 60" preserveAspectRatio="none"><path d="M0,0 C300,60 900,60 1200,0 L1200,60 L0,60 Z" fill="#0A2540"/></svg></div>
+
+<!-- DIVIDER -->
+<div class="divider-wave divider-down" style="background:var(--off-white)"><svg viewBox="0 0 1200 60" preserveAspectRatio="none"><path d="M0,0 C300,60 900,60 1200,0 L1200,60 L0,60 Z" fill="#0A2540"/></svg></div>
+
+<!-- REQUEST A DEMO -->
+<section id="demo" style="background:var(--navy);padding:72px 24px;">
+  <div class="inner" style="max-width:680px;">
+    <div style="text-align:center;margin-bottom:40px;">
+      <div class="label" style="color:var(--blue-light);justify-content:center;">No commitment</div>
+      <h2 class="title reveal" style="color:white;">Request a free demo.</h2>
+      <p class="sub reveal reveal-delay-1" style="color:rgba(255,255,255,0.5);">See a bot built for your specific business before you pay anything. Takes 24 hours. No credit card, no contract.</p>
+    </div>
+    <form id="demoForm" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:32px;display:flex;flex-direction:column;gap:16px;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div>
+          <label style="display:block;font-size:12px;font-weight:600;color:rgba(255,255,255,0.6);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.06em;">Your Name</label>
+          <input name="demoName" required placeholder="John Smith" style="width:100%;padding:11px 14px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:10px;color:white;font-size:14px;font-family:inherit;outline:none;box-sizing:border-box;" onfocus="this.style.borderColor='rgba(147,197,253,0.5)'" onblur="this.style.borderColor='rgba(255,255,255,0.12)'" />
+        </div>
+        <div>
+          <label style="display:block;font-size:12px;font-weight:600;color:rgba(255,255,255,0.6);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.06em;">Business Name</label>
+          <input name="demoBiz" required placeholder="Smith HVAC" style="width:100%;padding:11px 14px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:10px;color:white;font-size:14px;font-family:inherit;outline:none;box-sizing:border-box;" onfocus="this.style.borderColor='rgba(147,197,253,0.5)'" onblur="this.style.borderColor='rgba(255,255,255,0.12)'" />
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div>
+          <label style="display:block;font-size:12px;font-weight:600;color:rgba(255,255,255,0.6);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.06em;">Phone</label>
+          <input name="demoPhone" type="tel" required placeholder="(555) 867-5309" style="width:100%;padding:11px 14px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:10px;color:white;font-size:14px;font-family:inherit;outline:none;box-sizing:border-box;" onfocus="this.style.borderColor='rgba(147,197,253,0.5)'" onblur="this.style.borderColor='rgba(255,255,255,0.12)'" />
+        </div>
+        <div>
+          <label style="display:block;font-size:12px;font-weight:600;color:rgba(255,255,255,0.6);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.06em;">Industry</label>
+          <select name="demoIndustry" required style="width:100%;padding:11px 14px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:10px;color:white;font-size:14px;font-family:inherit;outline:none;box-sizing:border-box;-webkit-appearance:none;">
+            <option value="" style="background:#0A2540;">Select industry...</option>
+            <option style="background:#0A2540;">HVAC</option>
+            <option style="background:#0A2540;">Plumbing</option>
+            <option style="background:#0A2540;">Electrical</option>
+            <option style="background:#0A2540;">Roofing</option>
+            <option style="background:#0A2540;">Auto Shop</option>
+            <option style="background:#0A2540;">Dental Office</option>
+            <option style="background:#0A2540;">Law Firm</option>
+            <option style="background:#0A2540;">Real Estate</option>
+            <option style="background:#0A2540;">Med Spa / Salon</option>
+            <option style="background:#0A2540;">Cleaning Service</option>
+            <option style="background:#0A2540;">Landscaping</option>
+            <option style="background:#0A2540;">General Contractor</option>
+            <option style="background:#0A2540;">Fitness / Gym</option>
+            <option style="background:#0A2540;">Pet Grooming</option>
+            <option style="background:#0A2540;">Moving Company</option>
+            <option style="background:#0A2540;">Other</option>
+          </select>
+        </div>
+      </div>
+      <div>
+        <label style="display:block;font-size:12px;font-weight:600;color:rgba(255,255,255,0.6);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.06em;">Website <span style="font-weight:400;text-transform:none;letter-spacing:0;opacity:0.6;">optional</span></label>
+        <input name="demoWebsite" placeholder="www.yoursite.com" style="width:100%;padding:11px 14px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:10px;color:white;font-size:14px;font-family:inherit;outline:none;box-sizing:border-box;" onfocus="this.style.borderColor='rgba(147,197,253,0.5)'" onblur="this.style.borderColor='rgba(255,255,255,0.12)'" />
+      </div>
+      <button type="submit" id="demoSubmitBtn" style="background:var(--blue);color:white;border:none;padding:14px;border-radius:12px;font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:opacity 0.2s;margin-top:4px;">Request My Free Demo →</button>
+      <p style="text-align:center;font-size:12px;color:rgba(255,255,255,0.35);margin:0;">No credit card. No contract. You'll hear from us within 2 hours during business hours.</p>
+    </form>
+    <div id="demoSuccess" style="display:none;text-align:center;padding:48px 24px;">
+      <div style="width:64px;height:64px;border-radius:50%;background:rgba(34,197,94,0.15);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;">
+        <svg style="width:28px;height:28px;stroke:#4ade80;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:1.3rem;font-weight:800;color:white;margin-bottom:8px;">You're on the list.</div>
+      <p style="color:rgba(255,255,255,0.5);font-size:14px;line-height:1.7;">We'll reach out within 2 hours with a demo bot built for your business. Check your phone — we might just text you.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about-section" id="about" style="padding-top:64px;">
+  <div class="inner">
+    <div class="about-wrap">
+      <div class="reveal">
+        <div class="about-avatar-wrap">
+          <div class="about-avatar">
+            <div class="about-avatar-bg">
+              <svg viewBox="0 0 100 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="50" cy="28" r="20" fill="rgba(147,197,253,0.2)" stroke="rgba(147,197,253,0.4)" stroke-width="1.5"/>
+                <path d="M15 110 C15 80 85 80 85 110" fill="rgba(147,197,253,0.15)" stroke="rgba(147,197,253,0.3)" stroke-width="1.5"/>
+              </svg>
+            </div>
+          </div>
+          <div class="about-location">
+            <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <span>Dayton, Ohio</span>
+          </div>
+        </div>
+      </div>
+      <div class="reveal reveal-delay-2">
+        <div class="label">Who's Behind This</div>
+        <h2 class="title">Built and run by one person.</h2>
+        <p class="about-text">I'm Eli, based in Dayton, Ohio. I build custom chat assistants for local businesses and manage them personally — no team, no outsourcing, no support tickets.</p>
+        <p class="about-text">If something needs to be fixed or updated, you're talking directly to the person who built it. That's the whole point.</p>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-top:28px;">
+          <a href="mailto:netifybuilds@gmail.com" style="display:inline-flex;align-items:center;gap:8px;color:var(--blue-light);font-size:14px;font-weight:600;text-decoration:none;">
+            <svg style="width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            netifybuilds@gmail.com
+          </a>
+          <a href="sms:+19373671847" style="display:inline-flex;align-items:center;gap:8px;color:var(--blue-light);font-size:14px;font-weight:600;text-decoration:none;">
+            <svg style="width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            Text me directly — (937) 367-1847
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DIVIDER -->
+<div class="divider-wave divider-up" style="background:var(--off-white)"><svg viewBox="0 0 1200 60" preserveAspectRatio="none"><path d="M0,60 C300,0 900,0 1200,60 L1200,0 L0,0 Z" fill="#0A2540"/></svg></div>
+
+<!-- GET STARTED FORM -->
+<section class="form-section" id="start" style="background:var(--off-white)">
+  <div class="inner">
+    <div class="form-wrap">
+      <div class="form-left reveal">
+        <div class="label">Get Started</div>
+        <h2>Let's get you set up.</h2>
+        <p>Fill out the form and we'll have everything ready within 24 hours. We'll reach out to confirm your order and send your invoice before anything goes live.</p>
+        <div class="response-time"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> We typically respond within 2 hours during business hours</div>
+        <div class="form-perks">
+          <div class="perk"><div class="icon-box-sm"><svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div><div><h4>Live within 24 hours</h4><p>Most setups go live the same day we receive your info.</p></div></div>
+          <div class="perk"><div class="icon-box-sm"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div><div><h4>We handle setup if needed</h4><p>Install it yourself in 60 seconds, or hand us your login and we'll do it free.</p></div></div>
+          <div class="perk"><div class="icon-box-sm"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><div><h4>Built for your business</h4><p>Everything is custom built around your specific services, hours, and tone.</p></div></div>
+          <div class="perk"><div class="icon-box-sm"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg></div><div><h4>24-hour setup guarantee</h4><p>Setup code delivered within 24 hours of approval — or your first month is free.</p></div></div>
+        </div>
+      </div>
+      <div class="reveal reveal-delay-2">
+        <div id="formTeaser" class="form-teaser">
+          <div class="form-teaser-icon"><svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg></div>
+          <h3>Choose a package to get started</h3>
+          <p>Select a plan from the pricing section above and the form will appear here.</p>
+        </div>
+
+        <!-- UNIFIED SMART FORM -->
+        <div id="formReveal" style="display:none;">
+          <!-- Plan summary banner -->
+          <div id="planSummaryBanner" style="background:var(--blue-pale);border:1px solid #BFDBFE;border-radius:12px;padding:14px 16px;margin-bottom:20px;font-size:13px;color:var(--blue-dark);line-height:1.6;"></div>
+          <div class="form-box">
+            <form id="onboardingForm">
+
+              <!-- YOUR INFO — always shown -->
+              <div class="form-divider">Your Info</div>
+              <div class="form-row">
+                <div><label>Your Name</label><input type="text" name="ownerName" id="ownerNameInput" placeholder="John Smith" required /></div>
+                <div style="position:relative;">
+                  <label>Business Name</label>
+                  <input type="text" name="bizName" id="bizNameInput" placeholder="Smith HVAC" required autocomplete="off" oninput="bizNameSearch(this.value)" />
+                  <div id="bizSuggestions" style="display:none;position:absolute;top:100%;left:0;right:0;background:white;border:1.5px solid var(--blue);border-top:none;border-radius:0 0 12px 12px;z-index:100;box-shadow:0 8px 24px rgba(0,0,0,0.12);max-height:220px;overflow-y:auto;"></div>
+                  <input type="hidden" id="bizPlaceId" name="placeId" value="" />
+                </div>
+              </div>
+              <div id="autoFillBanner" style="display:none;background:#f0fdf4;border:1px solid #86efac;border-radius:10px;padding:10px 14px;margin-top:-4px;margin-bottom:8px;font-size:12px;color:#15803d;font-weight:600;">
+                ✓ Business info auto-filled from Google — review below and edit anything that looks off.
+              </div>
+              <div class="form-row">
+                <div><label>Email</label><input type="email" name="email" placeholder="john@smithhvac.com" required /></div>
+                <div><label>Phone</label><input type="tel" name="phone" id="phoneInput" placeholder="(555) 867-5309" required /></div>
+              </div>
+              <p style="font-size:11px;color:var(--text-soft);line-height:1.6;margin-top:-4px;margin-bottom:8px;">By providing your phone number you agree to receive SMS messages from Netify Builds related to your account and services. Message and data rates may apply. Reply STOP to opt out at any time. Reply HELP for help. See our <a href="/privacy" style="color:var(--blue);">Privacy Policy</a> and <a href="/terms" style="color:var(--blue);">Terms of Service</a>.</p>
+              <input type="hidden" name="selectedPlan" id="selectedPlanField" value="" />
+              <input type="hidden" name="campaignFrequency" id="campaignFreqField" value="" />
+
+              <!-- BOT FIELDS — shown when chat assistant is in bundle -->
+              <div id="botFormFields" style="display:none;">
+                <div class="form-divider">Your Business</div>
+                <div class="form-group">
+                  <label>Industry</label>
+                  <select name="industry" id="industrySelect" onchange="highlightFeatures(this.value)">
+                    <option value="">Select your industry...</option>
+                    <option>Dental Office</option><option>Medical / Healthcare</option><option>Law Firm</option>
+                    <option>Real Estate</option><option>Med Spa / Salon</option><option>Restaurant / Cafe</option>
+                    <option>HVAC</option><option>Plumbing</option><option>Electrical</option>
+                    <option>Landscaping</option><option>Roofing</option><option>Auto Shop</option>
+                    <option>Barber Shop</option><option>Pet Grooming</option><option>Moving Company</option>
+                    <option>Cleaning Service</option><option>Pest Control</option><option>General Contractor</option>
+                    <option>Fitness / Gym</option><option>Veterinary</option><option>Other</option>
+                  </select>
+                </div>
+                <div class="form-row">
+                  <div><label>Service Area</label><input type="text" name="area" id="areaInput" placeholder="Columbus, OH and surrounding" /></div>
+                  <div><label>Business Hours</label><input type="text" name="hours" id="hoursInput" placeholder="Mon–Fri 8am–6pm" /></div>
+                </div>
+                <div class="form-group"><label>Website URL</label><input type="text" name="website" id="websiteInput" placeholder="www.smithhvac.com" /></div>
+                <div class="form-group">
+                  <label>Main services</label>
+                  <textarea name="services" placeholder="e.g. AC repair, furnace installation, tune-ups, emergency service..."></textarea>
+                </div>
+                <div class="form-group">
+                  <label>Common customer questions</label>
+                  <textarea name="faqs" placeholder="e.g. Do you offer emergency service? What areas do you cover? How much does a tune-up cost?"></textarea>
+                </div>
+                <div class="form-group">
+                  <label>What sets you apart? <span class="opt">optional</span></label>
+                  <textarea name="differentiators" class="short" placeholder="e.g. Family owned 20 years, same-day service, 5-star rated..."></textarea>
+                </div>
+                <div class="form-row">
+                  <div><label>Emergency / after-hours number <span class="opt">optional</span></label><input type="text" name="emergency" placeholder="(555) 123-4567" /></div>
+                  <div><label>Licenses or certifications <span class="opt">optional</span></label><input type="text" name="licensing" placeholder="e.g. Licensed & insured in Ohio" /></div>
+                </div>
+                <div class="form-group">
+                  <label>What should your bot collect from visitors?</label>
+                  <select name="leadCapture" id="leadCaptureSelect">
+                    <option value="name_phone">Name and phone — you call them back (HVAC, plumbing, contractors)</option>
+                    <option value="name_email">Name and email — you follow up digitally (law, real estate, consulting)</option>
+                    <option value="name_email_date">Name, email, and preferred date (dental, salons, gyms, vets)</option>
+                    <option value="reservation">Name, date, time, party size (restaurants, event spaces)</option>
+                    <option value="email_only">Email only (retail, product sellers, ecommerce)</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Bot tone</label>
+                  <select name="tone">
+                    <option value="Friendly and casual">Friendly &amp; casual</option>
+                    <option value="Professional and formal">Professional &amp; formal</option>
+                    <option value="Warm and empathetic">Warm &amp; empathetic</option>
+                    <option value="Straight to the point">Straight to the point</option>
+                    <option value="Upbeat and energetic">Upbeat &amp; energetic</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Bot name <span class="opt">optional</span></label>
+                  <input type="text" name="botPersonality" placeholder="e.g. Aria, Max — or leave blank to use your business name" />
+                </div>
+                <div class="form-group">
+                  <label>Bot color <span class="opt">optional</span></label>
+                  <div style="margin-top:8px;">
+                    <input type="hidden" name="botColor" id="botColorValue" value="#2563eb" />
+                    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;">
+                      <div onclick="pickBotColor('#2563eb',this)" data-color="#2563eb" style="width:32px;height:32px;border-radius:8px;background:#2563eb;cursor:pointer;box-shadow:0 0 0 3px white,0 0 0 5px #2563eb;" title="Blue"></div>
+                      <div onclick="pickBotColor('#0A2540',this)" data-color="#0A2540" style="width:32px;height:32px;border-radius:8px;background:#0A2540;cursor:pointer;" title="Navy"></div>
+                      <div onclick="pickBotColor('#16a34a',this)" data-color="#16a34a" style="width:32px;height:32px;border-radius:8px;background:#16a34a;cursor:pointer;" title="Green"></div>
+                      <div onclick="pickBotColor('#dc2626',this)" data-color="#dc2626" style="width:32px;height:32px;border-radius:8px;background:#dc2626;cursor:pointer;" title="Red"></div>
+                      <div onclick="pickBotColor('#7c3aed',this)" data-color="#7c3aed" style="width:32px;height:32px;border-radius:8px;background:#7c3aed;cursor:pointer;" title="Purple"></div>
+                      <div onclick="pickBotColor('#ea580c',this)" data-color="#ea580c" style="width:32px;height:32px;border-radius:8px;background:#ea580c;cursor:pointer;" title="Orange"></div>
+                      <div onclick="pickBotColor('#0891b2',this)" data-color="#0891b2" style="width:32px;height:32px;border-radius:8px;background:#0891b2;cursor:pointer;" title="Teal"></div>
+                      <div onclick="pickBotColor('#b45309',this)" data-color="#b45309" style="width:32px;height:32px;border-radius:8px;background:#b45309;cursor:pointer;" title="Amber"></div>
+                      <div onclick="pickBotColor('#1f2937',this)" data-color="#1f2937" style="width:32px;height:32px;border-radius:8px;background:#1f2937;cursor:pointer;" title="Charcoal"></div>
+                      <div onclick="pickBotColor('#db2777',this)" data-color="#db2777" style="width:32px;height:32px;border-radius:8px;background:#db2777;cursor:pointer;" title="Pink"></div>
+                      <label style="width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,#f00,#ff0,#0f0,#0ff,#00f,#f0f,#f00);cursor:pointer;display:flex;align-items:center;justify-content:center;position:relative;" title="Custom color">
+                        <input type="color" id="botCustomColor" style="opacity:0;position:absolute;width:100%;height:100%;cursor:pointer;" oninput="pickBotColor(this.value,null)" />
+                        <svg style="width:14px;height:14px;stroke:white;fill:none;stroke-width:2.5;pointer-events:none;" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+                      </label>
+                    </div>
+                    <div style="font-size:12px;color:var(--text-soft);">Selected: <span id="botColorPreview" style="font-weight:600;color:#2563eb;">#2563eb</span></div>
+                  </div>
+                </div>
+                <!-- Feature add-ons -->
+                <div id="features-section" style="display:none;">
+                  <div class="form-divider">Add-ons for your industry <span style="font-size:11px;font-weight:400;color:var(--text-soft);">— all free</span></div>
+                  <div class="form-group">
+                    <div style="display:flex;flex-direction:column;gap:10px;">
+                      <label id="flabel_appointment" class="feat-card" style="display:none;"><input type="checkbox" name="feature_appointment" id="feat_appointment" value="yes" onchange="toggleFeatCard('flabel_appointment',this.checked)"><div><div style="font-size:14px;font-weight:600;margin-bottom:2px;">Appointment Request Flow <span class="feat-tag">Dental, salons, law</span></div><div style="font-size:13px;color:var(--text-soft);line-height:1.5;">Bot collects preferred day, time, and reason — emails you a formatted request to confirm.</div></div></label>
+                      <label id="flabel_emergency" class="feat-card" style="display:none;"><input type="checkbox" name="feature_emergency" id="feat_emergency" value="yes" onchange="toggleFeatCard('flabel_emergency',this.checked)"><div><div style="font-size:14px;font-weight:600;margin-bottom:2px;">Emergency Escalation <span class="feat-tag">HVAC, plumbing, electrical</span></div><div style="font-size:13px;color:var(--text-soft);line-height:1.5;">Bot immediately directs urgent situations to your emergency line.</div></div></label>
+                      <label id="flabel_multilang" class="feat-card" style="display:none;"><input type="checkbox" name="feature_multilang" id="feat_multilang" value="yes" onchange="toggleFeatCard('flabel_multilang',this.checked)"><div><div style="font-size:14px;font-weight:600;margin-bottom:2px;">Multilanguage Support <span class="feat-tag">All businesses</span></div><div style="font-size:13px;color:var(--text-soft);line-height:1.5;">Bot automatically responds in whatever language the customer writes in.</div></div></label>
+                      <label id="flabel_pricing" class="feat-card" style="display:none;"><input type="checkbox" name="feature_pricing" id="feat_pricing" value="yes" onchange="toggleFeatCard('flabel_pricing',this.checked)"><div><div style="font-size:14px;font-weight:600;margin-bottom:2px;">Pricing Guide Mode <span class="feat-tag">Roofing, HVAC, contractors</span></div><div style="font-size:13px;color:var(--text-soft);line-height:1.5;">Bot gives realistic price ranges instead of just saying "it depends."</div></div></label>
+                      <label id="flabel_workout" class="feat-card" style="display:none;"><input type="checkbox" name="feature_workout" id="feat_workout" value="yes" onchange="toggleFeatCard('flabel_workout',this.checked)"><div><div style="font-size:14px;font-weight:600;margin-bottom:2px;">Workout Split Builder <span class="feat-tag">Gyms &amp; fitness</span></div><div style="font-size:13px;color:var(--text-soft);line-height:1.5;">Bot builds a personalized workout split for visitors and captures them as a lead.</div></div></label>
+                      <label id="flabel_groomer" class="feat-card" style="display:none;"><input type="checkbox" name="feature_groomer" id="feat_groomer" value="yes" onchange="toggleFeatCard('flabel_groomer',this.checked)"><div><div style="font-size:14px;font-weight:600;margin-bottom:2px;">Pet Intake Qualifier <span class="feat-tag">Pet groomers</span></div><div style="font-size:13px;color:var(--text-soft);line-height:1.5;">Bot asks about breed, size, and temperament — tells customers what service they need.</div></div></label>
+                      <label id="flabel_autosymptom" class="feat-card" style="display:none;"><input type="checkbox" name="feature_autosymptom" id="feat_autosymptom" value="yes" onchange="toggleFeatCard('flabel_autosymptom',this.checked)"><div><div style="font-size:14px;font-weight:600;margin-bottom:2px;">Symptom Checker <span class="feat-tag">Auto shops</span></div><div style="font-size:13px;color:var(--text-soft);line-height:1.5;">Customer describes the noise or warning light — bot explains what it might be and offers a free inspection.</div></div></label>
+                      <label id="flabel_moving" class="feat-card" style="display:none;"><input type="checkbox" name="feature_moving" id="feat_moving" value="yes" onchange="toggleFeatCard('flabel_moving',this.checked)"><div><div style="font-size:14px;font-weight:600;margin-bottom:2px;">Move Estimator <span class="feat-tag">Moving companies</span></div><div style="font-size:13px;color:var(--text-soft);line-height:1.5;">Bot asks rooms, distance, and large items — gives a realistic cost range and captures the lead.</div></div></label>
+                      <label id="flabel_cleaning" class="feat-card" style="display:none;"><input type="checkbox" name="feature_cleaning" id="feat_cleaning" value="yes" onchange="toggleFeatCard('flabel_cleaning',this.checked)"><div><div style="font-size:14px;font-weight:600;margin-bottom:2px;">Quote Estimator <span class="feat-tag">Cleaning services</span></div><div style="font-size:13px;color:var(--text-soft);line-height:1.5;">Bot asks square footage, type, and frequency — gives a price range and captures recurring leads.</div></div></label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- REVIEW FIELDS — shown when review filter is in bundle -->
+              <div id="reviewFormFields" style="display:none;">
+                <div class="form-divider">Review Filter Setup</div>
+                <div class="form-group">
+                  <label>Your Google Review link</label>
+                  <input type="text" name="googleLink" placeholder="https://g.page/r/your-review-link" />
+                  <p style="font-size:12px;color:var(--text-soft);margin-top:6px;line-height:1.6;">Google your business → click your listing → scroll to Reviews → click "Get more reviews" → copy the link.</p>
+                </div>
+                <div class="form-group">
+                  <label>Email for negative feedback alerts</label>
+                  <input type="email" name="alertEmail" placeholder="john@smithhvac.com" />
+                </div>
+                <div class="form-group">
+                  <label>Brand color <span class="opt">optional</span></label>
+                  <div style="margin-top:8px;">
+                    <input type="hidden" name="brandColor" id="brandColorValue" value="#2563eb" />
+                    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;">
+                      <div onclick="pickBrandColor('#2563eb',this)" style="width:32px;height:32px;border-radius:8px;background:#2563eb;cursor:pointer;box-shadow:0 0 0 3px white,0 0 0 5px #2563eb;"></div>
+                      <div onclick="pickBrandColor('#0A2540',this)" style="width:32px;height:32px;border-radius:8px;background:#0A2540;cursor:pointer;"></div>
+                      <div onclick="pickBrandColor('#16a34a',this)" style="width:32px;height:32px;border-radius:8px;background:#16a34a;cursor:pointer;"></div>
+                      <div onclick="pickBrandColor('#dc2626',this)" style="width:32px;height:32px;border-radius:8px;background:#dc2626;cursor:pointer;"></div>
+                      <div onclick="pickBrandColor('#7c3aed',this)" style="width:32px;height:32px;border-radius:8px;background:#7c3aed;cursor:pointer;"></div>
+                      <div onclick="pickBrandColor('#ea580c',this)" style="width:32px;height:32px;border-radius:8px;background:#ea580c;cursor:pointer;"></div>
+                      <div onclick="pickBrandColor('#0891b2',this)" style="width:32px;height:32px;border-radius:8px;background:#0891b2;cursor:pointer;"></div>
+                      <div onclick="pickBrandColor('#1f2937',this)" style="width:32px;height:32px;border-radius:8px;background:#1f2937;cursor:pointer;"></div>
+                      <div onclick="pickBrandColor('#db2777',this)" style="width:32px;height:32px;border-radius:8px;background:#db2777;cursor:pointer;"></div>
+                      <label style="width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,#f00,#ff0,#0f0,#0ff,#00f,#f0f,#f00);cursor:pointer;display:flex;align-items:center;justify-content:center;position:relative;" title="Custom color">
+                        <input type="color" id="brandCustomColor" style="opacity:0;position:absolute;width:100%;height:100%;cursor:pointer;" oninput="pickBrandColor(this.value,null)" />
+                        <svg style="width:14px;height:14px;stroke:white;fill:none;stroke-width:2.5;pointer-events:none;" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+                      </label>
+                    </div>
+                    <div style="font-size:12px;color:var(--text-soft);">Selected: <span id="brandColorPreview" style="font-weight:600;color:#2563eb;">#2563eb</span></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- CAMPAIGN FIELDS — shown when reactivation campaign is in bundle -->
+              <div id="campaignFormFields" style="display:none;">
+                <div class="form-divider">Reactivation Campaign Setup</div>
+                <div class="form-group">
+                  <label>Approximate size of your past customer list</label>
+                  <select name="campaignListSize">
+                    <option value="">Select...</option>
+                    <option value="Under 100">Under 100 contacts</option>
+                    <option value="100-300">100–300 contacts</option>
+                    <option value="300-500">300–500 contacts</option>
+                    <option value="500+">500+ contacts</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>How is your customer list stored? <span class="opt">optional</span></label>
+                  <select name="campaignListFormat">
+                    <option value="">Select...</option>
+                    <option value="Spreadsheet / Excel">Spreadsheet / Excel</option>
+                    <option value="Phone contacts">Phone contacts</option>
+                    <option value="CRM software">CRM software (Housecall Pro, ServiceTitan, etc.)</option>
+                    <option value="QuickBooks / invoices">QuickBooks / invoices</option>
+                    <option value="Not sure">Not sure yet</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Additional campaigns <span class="opt">beyond the 1 included per quarter</span></label>
+                  <div style="background:var(--off-white);border:1.5px solid var(--border);border-radius:12px;padding:16px 18px;margin-top:6px;">
+                    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+                      <span style="font-size:13px;font-weight:600;color:var(--text);">Extra campaigns</span>
+                      <span style="font-size:13px;font-weight:700;color:var(--blue-dark);">$100 each</span>
+                    </div>
+                    <select name="extraCampaigns" style="width:100%;">
+                      <option value="0">No extra campaigns — just the quarterly one</option>
+                      <option value="1">1 extra campaign per year (+$100)</option>
+                      <option value="2">2 extra campaigns per year (+$200)</option>
+                      <option value="3">3 extra campaigns per year (+$300)</option>
+                    </select>
+                    <p style="font-size:12px;color:var(--text-soft);margin-top:10px;line-height:1.6;">Your $200/mo subscription includes one campaign per quarter. We'll reach out before each one to confirm timing, write the message, and get your approval before anything sends.</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- LAST BIT — always shown -->
+              <div class="form-divider">Last bit</div>
+              <div class="form-group">
+                <label>How did you hear about us? <span class="opt">optional</span></label>
+                <select name="hearAbout">
+                  <option value="">Select...</option>
+                  <option value="Call from Eli">Call from Eli</option>
+                  <option value="Google search">Google search</option>
+                  <option value="Referral">Referral from someone</option>
+                  <option value="Social media">Social media</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Billing preference</label>
+                <select name="billing">
+                  <option value="monthly">Monthly — cancel anytime</option>
+                  <option value="annual">Annual — one month free (best value)</option>
+                </select>
+              </div>
+              <p style="font-size:12px;color:var(--text-soft);line-height:1.6;margin-top:-6px;">You'll receive a Stripe payment link by email. Recurring billing — cancel anytime from your Stripe portal.</p>
+              <!-- REVIEW BEFORE SUBMITTING -->
+              <div id="reviewBanner" style="display:none;background:#fffbeb;border:1.5px solid #fcd34d;border-radius:12px;padding:14px 16px;margin-bottom:16px;">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+                  <svg style="width:16px;height:16px;stroke:#b45309;fill:none;stroke-width:2;flex-shrink:0;" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                  <span style="font-size:13px;font-weight:700;color:#b45309;">Please review your info before submitting</span>
+                </div>
+                <div id="reviewSummary" style="font-size:12px;color:#78716c;line-height:1.8;"></div>
+              </div>
+              <button type="submit" class="form-submit" id="formSubmitBtn">Submit &amp; Get Started →</button>
+              <p class="form-note">No charge until you approve. We'll reach out within 2 hours to confirm everything.</p>
+            </form>
+            <div class="success-msg" id="successMsg">
+  <div class="success-icon"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+  <h3>You're all set!</h3>
+  <p>Thanks! We'll have your setup code ready within 24 hours. Complete your payment below to get started — your subscription won't begin until your bot is live.</p>
+  <div id="stripePaymentWrap" style="margin-top:20px;">
+    <a id="stripePaymentBtn" href="#" target="_blank" style="display:inline-flex;align-items:center;gap:10px;background:#635bff;color:white;padding:14px 28px;border-radius:12px;font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:700;text-decoration:none;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+      <svg style="width:18px;height:18px;fill:white;flex-shrink:0;" viewBox="0 0 24 24"><path d="M20 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg>
+      Complete Payment with Stripe →
+    </a>
+    <p style="font-size:12px;color:var(--text-soft);margin-top:12px;line-height:1.6;">No charge until confirmed · Cancel anytime · Billing powered by Stripe</p>
+  </div>
+</div>
+          </div>
+        </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-logo" style="display:flex;align-items:center;gap:0;">
+          <svg width="36" height="34" viewBox="0 0 48 50" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;margin-right:10px;">
+      <rect width="48" height="42" rx="10" fill="white" fill-opacity="0.1"/>
+      <rect x="8" y="10" width="20" height="3" rx="1.5" fill="#3B82F6"/>
+      <rect x="8" y="17" width="28" height="3" rx="1.5" fill="#93C5FD" opacity="0.7"/>
+      <rect x="8" y="24" width="14" height="3" rx="1.5" fill="#93C5FD" opacity="0.4"/>
+      <path d="M9 42 L4 50 L20 44" fill="white" fill-opacity="0.1"/>
+      <circle cx="41" cy="8" r="6" fill="#3B82F6"/>
+    </svg>
+          <span style="display:flex;flex-direction:column;line-height:1;">
+            <span style="font-size:1.05rem;font-weight:800;color:white;letter-spacing:-0.02em;">Netify</span>
+            <span style="font-size:0.72rem;font-weight:700;color:var(--blue-light);letter-spacing:0.05em;">BUILDS</span>
+          </span>
+        </div>
+        <p class="footer-tagline">Custom web chat assistants for local service businesses. Never miss a lead again.</p>
+        <div class="footer-contact" style="display:flex;flex-direction:column;gap:6px;margin-top:16px;">
+          <a href="mailto:netifybuilds@gmail.com">netifybuilds@gmail.com</a>
+          <a href="sms:+19373671847" style="color:rgba(255,255,255,0.5);font-size:13px;text-decoration:none;">(937) 367-1847 — text anytime</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h5>Product</h5>
+        <a href="#for">Who It's For</a>
+        <a href="#how">How It Works</a>
+        <a href="#try">Try the Bot</a>
+        <a href="#pricing">Pricing</a>
+      </div>
+      <div class="footer-col">
+        <h5>Company</h5>
+        <a href="#about">About Eli</a>
+        <a href="mailto:netifybuilds@gmail.com">Email Us</a>
+        <a href="sms:+19373671847">Text Us</a>
+        <a href="/portal">Client Portal</a>
+        <a href="/onboard">Get Started</a>
+      </div>
+      <div class="footer-col">
+        <h5>Legal</h5>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/terms">Terms of Service</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2026 Netify Builds · Dayton, OH · All rights reserved.</div>
+      <div class="footer-legal">
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/terms">Terms of Service</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function() {
+  var BACKEND = 'https://botbuilder-backend-production.up.railway.app';
+
+  // ── HAMBURGER ──
+  var hamburger = document.getElementById('hamburger');
+  var mobileMenu = document.getElementById('mobileMenu');
+  hamburger.addEventListener('click', function() {
+    hamburger.classList.toggle('open');
+    mobileMenu.classList.toggle('open');
+  });
+  document.querySelectorAll('.mobile-link').forEach(function(link) {
+    link.addEventListener('click', function() {
+      hamburger.classList.remove('open');
+      mobileMenu.classList.remove('open');
+    });
+  });
+
+  // ── STICKY CTA ──
+  var stickyCta = document.getElementById('stickyCta');
+  var heroEl = document.querySelector('.hero');
+  window.addEventListener('scroll', function() {
+    if (window.innerWidth <= 768) {
+      stickyCta.style.display = heroEl.getBoundingClientRect().bottom < 0 ? 'flex' : 'none';
+    }
+  }, { passive: true });
+
+  // ── SCROLL REVEAL ──
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(function(el) { observer.observe(el); });
+
+  // ── CHAT DEMO ──
+  var demoMessages = [
+    { role: 'user', text: 'My AC stopped working, it\'s 90° in my house' },
+    { role: 'bot', text: 'Oh no — let\'s get you taken care of. Is it not turning on at all, or is it running but not cooling?' },
+    { role: 'user', text: 'Running but no cold air coming out' },
+    { role: 'bot', text: 'Likely a refrigerant or compressor issue. We can get someone out today. What\'s your name and best number?' },
+    { role: 'user', text: 'Mike Johnson, 937-555-0182' },
+    { role: 'bot', text: 'Got it Mike — someone will call you in the next 20 minutes to confirm your appointment. Hang tight!' },
+  ];
+  var demoEl = document.getElementById('chatDemo');
+  var demoIdx = 0;
+  var demoFinished = false;
+  function addDemoMsg() {
+    if (demoIdx >= demoMessages.length) {
+      // Show lead captured indicator
+      setTimeout(function() {
+        var indicator = document.createElement('div');
+        indicator.className = 'chat-lead-captured';
+        indicator.innerHTML = '<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span>Lead captured — email sent to owner</span>';
+        indicator.style.cssText = 'opacity:0;transition:opacity 0.4s ease;';
+        demoEl.appendChild(indicator);
+        setTimeout(function() { indicator.style.opacity = '1'; }, 50);
+        // Transition to review filter slide after 2.5s on desktop
+        setTimeout(function() {
+          if (window.innerWidth >= 768 && !demoFinished) {
+            demoFinished = true;
+            heroGoTo(1);
+          }
+        }, 2500);
+      }, 600);
+      return;
+    }
+    var m = demoMessages[demoIdx];
+    var b = document.createElement('div');
+    b.className = 'chat-bubble ' + m.role;
+    b.style.cssText = 'opacity:0;transform:translateY(8px);transition:all 0.35s ease;';
+    b.textContent = m.text;
+    demoEl.appendChild(b);
+    demoEl.scrollTop = 9999;
+    setTimeout(function() { b.style.opacity = '1'; b.style.transform = 'translateY(0)'; }, 50);
+    demoIdx++;
+    if (demoIdx < demoMessages.length) setTimeout(addDemoMsg, 2200);
+    else setTimeout(addDemoMsg, 800);
+  }
+  setTimeout(addDemoMsg, 1800);
+
+  // ── HERO CAROUSEL ──
+  var heroSlide = 0;
+  var heroTrack = document.getElementById('heroSlideTrack');
+  function heroGoTo(idx) {
+    heroSlide = idx;
+    // Track is 200% wide, each slide is 50% of track = 100% of viewport column
+    if (heroTrack) heroTrack.style.transform = 'translateX(-' + (idx * 50) + '%)';
+    var d0 = document.getElementById('heroDot0');
+    var d1 = document.getElementById('heroDot1');
+    if (d0) d0.style.opacity = idx === 0 ? '1' : '0.3';
+    if (d1) d1.style.opacity = idx === 1 ? '1' : '0.3';
+    if (idx === 1) {
+      setTimeout(function() {
+        if (heroSlide === 1) heroGoTo(0);
+      }, 50000);
+    }
+  }
+  window.heroGoTo = heroGoTo;
+
+  // Swipe support (mobile)
+  var hcStartX = 0;
+  var hcEl = document.getElementById('heroCarousel');
+  if (hcEl) {
+    hcEl.addEventListener('touchstart', function(e) { hcStartX = e.touches[0].clientX; }, { passive: true });
+    hcEl.addEventListener('touchend', function(e) {
+      var diff = hcStartX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 40) heroGoTo(diff > 0 ? 1 : 0);
+    }, { passive: true });
+  }
+
+  // Review demo helpers
+  var hrdSelected = 0;
+  var hrdNegMsgs = [
+    { role: 'bot', text: "We're really sorry to hear that. We genuinely want to make it right — what happened?" },
+    { role: 'user', text: "The technician arrived 2 hours late and didn't call ahead." },
+    { role: 'bot', text: "That's completely unacceptable and I'm sorry. The owner has been notified and will reach out to you personally today." },
+  ];
+  var hrdNegIdx = 0;
+  var hrdNegTimer = null;
+
+  function hrdAddNegMsg() {
+    if (hrdNegIdx >= hrdNegMsgs.length) {
+      setTimeout(function() {
+        var pill = document.getElementById('hrdSentPill');
+        if (pill) pill.style.display = 'flex';
+      }, 400);
+      return;
+    }
+    var m = hrdNegMsgs[hrdNegIdx];
+    var container = document.getElementById('hrdChatMsgs');
+    if (!container) return;
+    var el = document.createElement('div');
+    var isBot = m.role === 'bot';
+    el.style.cssText = 'padding:7px 9px;border-radius:9px;font-size:9.5px;line-height:1.5;max-width:92%;opacity:0;transform:translateY(5px);transition:all 0.3s ease;' +
+      (isBot ? 'background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.88);border-bottom-left-radius:2px;align-self:flex-start;' : 'background:rgba(59,130,246,0.7);color:white;border-bottom-right-radius:2px;align-self:flex-end;');
+    el.textContent = m.text;
+    container.appendChild(el);
+    setTimeout(function() { el.style.opacity = '1'; el.style.transform = 'translateY(0)'; }, 50);
+    hrdNegIdx++;
+    if (hrdNegIdx < hrdNegMsgs.length) {
+      hrdNegTimer = setTimeout(hrdAddNegMsg, 1800);
+    } else {
+      hrdNegTimer = setTimeout(hrdAddNegMsg, 600);
+    }
+  }
+
+  function hrdSelectStar(n) {
+    hrdSelected = n;
+    var stars = document.querySelectorAll('.hrd-star');
+    stars.forEach(function(s, i) {
+      s.style.color = i < n ? '#f59e0b' : 'rgba(255,255,255,0.25)';
+    });
+    var btn = document.getElementById('hrdSubmitBtn');
+    if (btn) {
+      btn.disabled = false;
+      btn.style.opacity = '1';
+      btn.style.cursor = 'pointer';
+      btn.style.background = 'rgba(59,130,246,0.85)';
+      btn.textContent = 'Submit →';
+    }
+  }
+  function hrdSubmit() {
+    if (!hrdSelected) return;
+    hrdShow(hrdSelected >= 4 ? 2 : 3);
+  }
+  function hrdShow(step) {
+    var s1 = document.getElementById('hrdStep1');
+    var s2 = document.getElementById('hrdStep2');
+    var s3 = document.getElementById('hrdStep3');
+    if (s1) s1.style.display = step === 1 ? 'block' : 'none';
+    if (s2) s2.style.display = step === 2 ? 'block' : 'none';
+    if (s3) s3.style.display = step === 3 ? 'block' : 'none';
+    if (step === 1) {
+      hrdSelected = 0;
+      // Reset negative animation
+      clearTimeout(hrdNegTimer);
+      hrdNegIdx = 0;
+      var msgs = document.getElementById('hrdChatMsgs');
+      if (msgs) msgs.innerHTML = '';
+      var pill = document.getElementById('hrdSentPill');
+      if (pill) pill.style.display = 'none';
+      // Reset stars
+      document.querySelectorAll('.hrd-star').forEach(function(s) { s.style.color = 'rgba(255,255,255,0.25)'; });
+      var btn = document.getElementById('hrdSubmitBtn');
+      if (btn) { btn.disabled = true; btn.style.opacity = '0.6'; btn.style.cursor = 'default'; btn.textContent = 'Select a star'; }
+    }
+    if (step === 3) {
+      // Start animated chat
+      hrdNegIdx = 0;
+      var msgs = document.getElementById('hrdChatMsgs');
+      if (msgs) msgs.innerHTML = '';
+      var pill = document.getElementById('hrdSentPill');
+      if (pill) pill.style.display = 'none';
+      setTimeout(hrdAddNegMsg, 600);
+    }
+  }
+  function hrdRate() { hrdSubmit(); }
+  window.hrdShow = hrdShow;
+  window.hrdRate = hrdRate;
+  window.hrdSelectStar = hrdSelectStar;
+  window.hrdSubmit = hrdSubmit;
+
+  // ── DEMO REQUEST FORM ──
+  var demoForm = document.getElementById('demoForm');
+  if (demoForm) {
+    demoForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      var btn = document.getElementById('demoSubmitBtn');
+      btn.textContent = 'Sending...'; btn.style.opacity = '0.6';
+      var f = e.target;
+      try {
+        await fetch(BACKEND + '/lead', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            bizKey: 'netify_demo_request',
+            name: f.demoName.value,
+            phone: f.demoPhone.value,
+            jobType: 'Demo Request — ' + f.demoIndustry.value + ' — ' + f.demoBiz.value + (f.demoWebsite.value ? ' — ' + f.demoWebsite.value : ''),
+            urgency: 'Normal',
+            email: 'netifybuilds@gmail.com',
+            ownerPhone: '+19373671847',
+            conversation: 'Demo request from ' + f.demoName.value + ' at ' + f.demoBiz.value + ' (' + f.demoIndustry.value + ')'
+          })
+        });
+      } catch(err) {}
+      demoForm.style.display = 'none';
+      document.getElementById('demoSuccess').style.display = 'block';
+    });
+  }
+
+  // ── GOOGLE PLACES BUSINESS AUTOCOMPLETE ──
+  var PLACES_API_KEY = 'YOUR_GOOGLE_PLACES_API_KEY';
+  var bizSearchTimer = null;
+
+  window.bizNameSearch = function(val) {
+    clearTimeout(bizSearchTimer);
+    var box = document.getElementById('bizSuggestions');
+    if (!val || val.length < 3) { box.style.display = 'none'; return; }
+    bizSearchTimer = setTimeout(async function() {
+      try {
+        var res = await fetch('https://maps.googleapis.com/maps/api/place/autocomplete/json?input=' + encodeURIComponent(val) + '&types=establishment&key=' + PLACES_API_KEY);
+        var data = await res.json();
+        if (!data.predictions || !data.predictions.length) { box.style.display = 'none'; return; }
+        box.innerHTML = '';
+        data.predictions.slice(0,5).forEach(function(p) {
+          var el = document.createElement('div');
+          el.style.cssText = 'padding:10px 14px;cursor:pointer;font-size:13px;color:#0f172a;border-bottom:1px solid #f1f5f9;background:white;';
+          el.innerHTML = '<div style="font-weight:600;">' + p.structured_formatting.main_text + '</div><div style="font-size:11px;color:#94a3b8;">' + (p.structured_formatting.secondary_text || '') + '</div>';
+          el.onmouseenter = function(){ this.style.background = '#f8fafc'; };
+          el.onmouseleave = function(){ this.style.background = 'white'; };
+          el.onclick = function(e) { e.stopPropagation(); selectBusiness(p.place_id, p.structured_formatting.main_text); };
+          box.appendChild(el);
+        });
+        box.style.display = 'block';
+      } catch(e) { box.style.display = 'none'; }
+    }, 350);
+  };
+
+  async function selectBusiness(placeId, name) {
+    document.getElementById('bizSuggestions').style.display = 'none';
+    document.getElementById('bizNameInput').value = name;
+    document.getElementById('bizPlaceId').value = placeId;
+    try {
+      var res = await fetch('https://maps.googleapis.com/maps/api/place/details/json?place_id=' + placeId + '&fields=name,formatted_phone_number,website,opening_hours,formatted_address,types&key=' + PLACES_API_KEY);
+      var data = await res.json();
+      var r = data.result;
+      if (!r) return;
+      if (r.formatted_phone_number) { var ph = document.getElementById('phoneInput'); if (ph && !ph.value) ph.value = r.formatted_phone_number; }
+      if (r.website) { var wb = document.getElementById('websiteInput'); if (wb) wb.value = r.website.replace(/^https?:\/\//, '').replace(/\/$/, ''); }
+      if (r.opening_hours && r.opening_hours.weekday_text) { var hr = document.getElementById('hoursInput'); if (hr && !hr.value) hr.value = r.opening_hours.weekday_text.slice(0,3).join(', '); }
+      if (r.formatted_address) { var ar = document.getElementById('areaInput'); if (ar && !ar.value) { var pts = r.formatted_address.split(','); ar.value = pts.slice(-3,-1).join(',').trim(); } }
+      var typeMap = { dentist:'Dental Office', doctor:'Medical / Healthcare', lawyer:'Law Firm', real_estate_agency:'Real Estate', beauty_salon:'Med Spa / Salon', hair_care:'Barber Shop', restaurant:'Restaurant / Cafe', plumber:'Plumbing', electrician:'Electrical', roofing_contractor:'Roofing', general_contractor:'General Contractor', car_repair:'Auto Shop', gym:'Fitness / Gym', veterinary_care:'Veterinary', moving_company:'Moving Company', lodging:'Other' };
+      if (r.types) { var ind = document.getElementById('industrySelect'); if (ind && !ind.value) { for (var t of r.types) { if (typeMap[t]) { ind.value = typeMap[t]; highlightFeatures(ind.value); break; } } } }
+      document.getElementById('autoFillBanner').style.display = 'block';
+      updateReviewSummary();
+    } catch(e) { console.log('Places error:', e.message); }
+  }
+
+  document.addEventListener('click', function(e) {
+    var box = document.getElementById('bizSuggestions');
+    if (box && !box.contains(e.target) && e.target.id !== 'bizNameInput') box.style.display = 'none';
+  });
+
+  // ── REVIEW SUMMARY ──
+  function updateReviewSummary() {
+    var f = document.getElementById('onboardingForm');
+    if (!f) return;
+    var v = function(n) { return (f.elements[n] && f.elements[n].value.trim()) || ''; };
+    var lines = [];
+    if (v('ownerName')) lines.push('<strong>Name:</strong> ' + v('ownerName'));
+    if (v('bizName')) lines.push('<strong>Business:</strong> ' + v('bizName'));
+    if (v('email')) lines.push('<strong>Email:</strong> ' + v('email'));
+    if (v('phone')) lines.push('<strong>Phone:</strong> ' + v('phone'));
+    if (v('industry')) lines.push('<strong>Industry:</strong> ' + v('industry'));
+    if (v('hours')) lines.push('<strong>Hours:</strong> ' + v('hours'));
+    if (v('website')) lines.push('<strong>Website:</strong> ' + v('website'));
+    var plan = document.getElementById('selectedPlanField');
+    if (plan && plan.value) lines.push('<strong>Plan:</strong> ' + plan.value);
+    var el = document.getElementById('reviewSummary');
+    var banner = document.getElementById('reviewBanner');
+    if (lines.length >= 2) {
+      if (banner) banner.style.display = 'block';
+      if (el) el.innerHTML = lines.join(' &nbsp;&middot;&nbsp; ');
+    } else {
+      if (banner) banner.style.display = 'none';
+    }
+  }
+  document.addEventListener('input', function(e) { if (e.target.closest && e.target.closest('#onboardingForm')) updateReviewSummary(); });
+  document.addEventListener('change', function(e) { if (e.target.closest && e.target.closest('#onboardingForm')) updateReviewSummary(); });
+
+  // ── BUNDLE CALCULATOR ──
+  var PRICES = { bot: 250, review: 100, campaign: 200 };
+  var DISCOUNT = 0.15;
+  function updateBundle() {
+    var bot = document.getElementById('bundleBot').checked;
+    var review = document.getElementById('bundleReview').checked;
+    var campaign = document.getElementById('bundleCampaign') && document.getElementById('bundleCampaign').checked;
+    // Highlight selected labels
+    var botLbl = document.getElementById('bundleBotLabel');
+    var revLbl = document.getElementById('bundleReviewLabel');
+    var camLbl = document.getElementById('bundleCampaignLabel');
+    if (botLbl) botLbl.style.borderColor = bot ? 'var(--blue)' : 'transparent';
+    if (revLbl) revLbl.style.borderColor = review ? 'var(--blue)' : 'transparent';
+    if (camLbl) camLbl.style.borderColor = campaign ? 'var(--blue)' : 'transparent';
+    var count = (bot?1:0) + (review?1:0) + (campaign?1:0);
+    var original = (bot?PRICES.bot:0) + (review?PRICES.review:0) + (campaign?PRICES.campaign:0);
+    var discounted = count >= 2 ? Math.round(original * (1 - DISCOUNT) * 100) / 100 : original;
+    var savings = Math.round((original - discounted) * 100) / 100;
+    var priceEl = document.getElementById('bundlePrice');
+    var origEl = document.getElementById('bundleOriginal');
+    var saveEl = document.getElementById('bundleSavings');
+    var noteEl = document.getElementById('bundleNote');
+    var ctaEl = document.getElementById('bundleCta');
+    if (count === 0) {
+      priceEl.textContent = '—'; origEl.textContent = ''; saveEl.textContent = '';
+      noteEl.textContent = 'Select at least 2 products to unlock the 15% bundle discount.';
+      ctaEl.style.pointerEvents = 'none'; ctaEl.style.opacity = '0.4';
+      ctaEl.textContent = 'Select products above';
+    } else if (count === 1) {
+      priceEl.textContent = '$' + original.toFixed(2) + '/mo';
+      origEl.textContent = ''; saveEl.textContent = '';
+      noteEl.textContent = 'Add one more product to unlock 15% off.';
+      ctaEl.style.pointerEvents = 'auto'; ctaEl.style.opacity = '1';
+      ctaEl.textContent = 'Get Started';
+    } else {
+      priceEl.textContent = '$' + discounted.toFixed(2) + '/mo';
+      origEl.textContent = '$' + original.toFixed(2) + '/mo';
+      saveEl.textContent = 'You save $' + savings.toFixed(2) + '/mo';
+      noteEl.textContent = '';
+      ctaEl.style.pointerEvents = 'auto'; ctaEl.style.opacity = '1';
+      ctaEl.textContent = 'Get Started';
+    }
+  }
+  window.updateBundle = updateBundle;
+
+
+  document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+    a.addEventListener('click', function(e) {
+      var href = this.getAttribute('href');
+      if (href === '#' || this.id === 'privacyLink' || this.id === 'privacyLink2') return;
+      var t = document.querySelector(href);
+      if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    });
+  });
+
+  // ── COLOR PICKERS ──
+  function pickBotColor(hex, el) {
+    document.getElementById('botColorValue').value = hex;
+    var prev = document.getElementById('botColorPreview');
+    if (prev) { prev.textContent = hex; prev.style.color = hex; }
+    document.querySelectorAll('[onclick^="pickBotColor"]').forEach(function(s){ s.style.boxShadow = 'none'; });
+    if (el) el.style.boxShadow = '0 0 0 3px white,0 0 0 5px ' + hex;
+  }
+  function pickBrandColor(hex, el) {
+    document.getElementById('brandColorValue').value = hex;
+    var prev = document.getElementById('brandColorPreview');
+    if (prev) { prev.textContent = hex; prev.style.color = hex; }
+    document.querySelectorAll('[onclick^="pickBrandColor"]').forEach(function(s){ s.style.boxShadow = 'none'; });
+    if (el) el.style.boxShadow = '0 0 0 3px white,0 0 0 5px ' + hex;
+  }
+  window.pickBotColor = pickBotColor;
+  window.pickBrandColor = pickBrandColor;
+
+  // ── BILLING TOGGLE ──
+  var isAnnual = false;
+  window.toggleFeatCard = function(labelId, checked) {
+    var label = document.getElementById(labelId);
+    if (label) label.classList.toggle('active', checked);
+  };
+
+  // ── FEATURE HIGHLIGHT ──
+  var industryFeatures = {
+    'Fitness / Gym':        ['feat_workout', 'feat_appointment', 'feat_multilang'],
+    'Dental Office':        ['feat_appointment', 'feat_multilang'],
+    'Medical / Healthcare': ['feat_appointment', 'feat_multilang'],
+    'Med Spa / Salon':      ['feat_appointment', 'feat_multilang'],
+    'HVAC':                 ['feat_emergency', 'feat_pricing', 'feat_multilang'],
+    'Plumbing':             ['feat_emergency', 'feat_multilang'],
+    'Electrical':           ['feat_emergency', 'feat_multilang'],
+    'Roofing':              ['feat_pricing', 'feat_multilang'],
+    'Landscaping':          ['feat_pricing', 'feat_multilang'],
+    'General Contractor':   ['feat_pricing', 'feat_emergency', 'feat_multilang'],
+    'Restaurant / Cafe':    ['feat_multilang'],
+    'Law Firm':             ['feat_appointment', 'feat_multilang'],
+    'Real Estate':          ['feat_appointment', 'feat_multilang'],
+    'Auto Shop':            ['feat_autosymptom', 'feat_multilang'],
+    'Cleaning Service':     ['feat_cleaning', 'feat_pricing', 'feat_multilang'],
+    'Pest Control':         ['feat_pricing', 'feat_multilang'],
+    'Veterinary':           ['feat_appointment', 'feat_multilang'],
+    'Barber Shop':          ['feat_waittime', 'feat_multilang'],
+    'Pet Grooming':         ['feat_groomer', 'feat_multilang'],
+    'Moving Company':       ['feat_moving', 'feat_multilang'],
+  };
+
+  var allFeatureIds = ['feat_appointment','feat_emergency','feat_multilang','feat_pricing','feat_workout','feat_groomer','feat_autosymptom','feat_moving','feat_cleaning'];
+
+  function highlightFeatures(industry) {
+    var suggested = industryFeatures[industry] || ['feat_multilang'];
+    var section = document.getElementById('features-section');
+    if (section) section.style.display = 'block';
+    allFeatureIds.forEach(function(id) {
+      var checkbox = document.getElementById(id);
+      if (!checkbox) return;
+      var label = document.getElementById('flabel_' + id.replace('feat_', ''));
+      if (!label) return;
+      var isSuggested = suggested.indexOf(id) !== -1;
+      label.style.display = isSuggested ? 'flex' : 'none';
+      checkbox.checked = isSuggested;
+      label.classList.toggle('active', isSuggested);
+    });
+  }
+  window.highlightFeatures = highlightFeatures;
+
+  function setBotColor(hex) {
+    document.getElementById('botColorPicker').value = hex;
+    document.querySelector('[name=botColor]').value = hex;
+  }
+
+  function setBrandColor(hex) {
+    document.getElementById('brandColorPicker').value = hex;
+    document.querySelector('[name=brandColor]').value = hex;
+  }
+
+  function toggleBilling() {
+    isAnnual = !isAnnual;
+    document.getElementById('toggleKnob').style.transform = isAnnual ? 'translateX(24px)' : 'translateX(0)';
+    document.getElementById('billingToggle').style.background = isAnnual ? '#3B82F6' : 'rgba(255,255,255,0.15)';
+    document.getElementById('toggleMonthly').style.color = isAnnual ? 'rgba(255,255,255,0.5)' : 'white';
+    document.getElementById('toggleAnnual').style.color = isAnnual ? 'white' : 'rgba(255,255,255,0.5)';
+    document.querySelectorAll('.pm').forEach(function(el) { el.style.display = isAnnual ? 'none' : 'inline'; });
+    document.querySelectorAll('.pa').forEach(function(el) { el.style.display = isAnnual ? 'inline' : 'none'; });
+  }
+  window.toggleBilling = toggleBilling;
+
+  // ── PRICING → UNIFIED SMART FORM ──
+  var activePlan = { bot: false, review: false, campaign: false, campaignFreq: '1' };
+
+  function showSmartForm(plan) {
+    activePlan = { bot: false, review: false, campaign: false, campaignFreq: '1' };
+    if (plan === 'bot') { activePlan.bot = true; }
+    else if (plan === 'review') { activePlan.review = true; }
+    else if (plan === 'campaign') { activePlan.campaign = true; }
+    else if (plan === 'bundle') {
+      activePlan.bot = document.getElementById('bundleBot') && document.getElementById('bundleBot').checked;
+      activePlan.review = document.getElementById('bundleReview') && document.getElementById('bundleReview').checked;
+      activePlan.campaign = document.getElementById('bundleCampaign') && document.getElementById('bundleCampaign').checked;
+      var freqRadio = document.querySelector('input[name="campaignFreq"]:checked');
+      activePlan.campaignFreq = freqRadio ? freqRadio.value : '1';
+      // Default to both if nothing checked
+      if (!activePlan.bot && !activePlan.review && !activePlan.campaign) {
+        activePlan.bot = true; activePlan.review = true;
+      }
+    }
+    renderSmartForm();
+  }
+
+  function renderSmartForm() {
+    document.getElementById('formTeaser').style.display = 'none';
+    document.getElementById('formReveal').style.display = 'block';
+    document.getElementById('botFormFields').style.display = activePlan.bot ? 'block' : 'none';
+    document.getElementById('reviewFormFields').style.display = activePlan.review ? 'block' : 'none';
+    document.getElementById('campaignFormFields').style.display = activePlan.campaign ? 'block' : 'none';
+    // Set hidden fields
+    var planParts = [];
+    if (activePlan.bot) planParts.push('Chat Assistant');
+    if (activePlan.review) planParts.push('Review Filter');
+    if (activePlan.campaign) planParts.push('Reactivation Campaigns — $200/mo');
+    document.getElementById('selectedPlanField').value = planParts.join(' + ');
+    document.getElementById('campaignFreqField').value = activePlan.campaignFreq;
+    // Update banner
+    var banner = document.getElementById('planSummaryBanner');
+    var prices = [];
+    if (activePlan.bot) prices.push('Chat Assistant — $250/mo');
+    if (activePlan.review) prices.push('Review Filter — $100/mo');
+    if (activePlan.campaign) {
+      prices.push('Reactivation Campaigns — $200/mo (1 campaign/quarter included, extra campaigns $100 each)');
+    }
+    banner.innerHTML = '<strong>Your selection:</strong> ' + prices.join(' &nbsp;+&nbsp; ');
+    banner.style.display = prices.length ? 'block' : 'none';
+    // Update submit button
+    var btn = document.getElementById('formSubmitBtn');
+    if (btn) btn.textContent = 'Submit & Get Started →';
+    setTimeout(function() { document.getElementById('start').scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 100);
+  }
+  window.showSmartForm = showSmartForm;
+
+  document.querySelectorAll('.price-btn, a[href="#contact"]').forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      var plan = this.getAttribute('data-plan') || 'bot';
+      showSmartForm(plan);
+    });
+  });
+
+  // ── UNIFIED FORM SUBMIT ──
+  document.getElementById('onboardingForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    var f = this;
+    var v = function(n) { return (f.elements[n] && f.elements[n].value.trim()) || 'Not provided'; };
+    var btn = document.getElementById('formSubmitBtn');
+    btn.textContent = 'Sending...'; btn.disabled = true;
+    try {
+      await fetch(BACKEND + '/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ownerName: v('ownerName'),
+          bizName: v('bizName'),
+          email: v('email'),
+          phone: v('phone'),
+          website: v('website'),
+          placeId: document.getElementById('bizPlaceId') ? document.getElementById('bizPlaceId').value : '',
+          industry: v('industry'),
+          area: v('area'),
+          hours: v('hours'),
+          services: v('services'),
+          faqs: v('faqs'),
+          differentiators: v('differentiators'),
+          emergency: v('emergency'),
+          licensing: v('licensing'),
+          tone: v('tone'),
+          botPersonality: v('botPersonality'),
+          botColor: v('botColor'),
+          googleReviewLink: v('googleLink'),
+          alertEmail: v('alertEmail'),
+          brandColor: v('brandColor'),
+          campaignListSize: v('campaignListSize'),
+          campaignListFormat: v('campaignListFormat'),
+          campaignMonths: Array.from(f.querySelectorAll('[name="campaignMonths"]:checked')).map(function(c){return c.value;}).join(', ') || 'Not specified',
+          hearAbout: v('hearAbout'),
+          billing: v('billing'),
+          package: v('selectedPlanField'),
+          campaignFrequency: v('campaignFreqField'),
+          promoDiscount: 'None',
+          features: ['Appointment Request Flow','Emergency Escalation','Multilanguage Support','Pricing Guide Mode','Workout Split Builder','Pet Intake Qualifier','Symptom Checker','Move Estimator','Quote Estimator'].filter(function(label, i) {
+            var names = ['feature_appointment','feature_emergency','feature_multilang','feature_pricing','feature_workout','feature_groomer','feature_autosymptom','feature_moving','feature_cleaning'];
+            return f.elements[names[i]] && f.elements[names[i]].checked;
+          }).join(', ') || 'None'
+        })
+      });
+      f.style.display = 'none';
+      var successEl = document.getElementById('successMsg');
+      successEl.style.display = 'block';
+      // Wire up correct Stripe payment link based on plan selected
+      var STRIPE_LINKS = {
+        'Chat Assistant':          'https://buy.stripe.com/REPLACE_CHAT',
+        'Review Filter':           'https://buy.stripe.com/REPLACE_REVIEW',
+        'Reactivation Campaigns':  'https://buy.stripe.com/REPLACE_CAMPAIGN',
+        'bundle':                  'https://buy.stripe.com/REPLACE_BUNDLE',
+      };
+      var plan = document.getElementById('selectedPlanField') ? document.getElementById('selectedPlanField').value : '';
+      var stripeBtn = document.getElementById('stripePaymentBtn');
+      if (stripeBtn) {
+        var link = STRIPE_LINKS['bundle'];
+        if (plan && plan.includes('Chat Assistant') && !plan.includes('Review') && !plan.includes('Reactivation')) link = STRIPE_LINKS['Chat Assistant'];
+        else if (plan && plan.includes('Review Filter') && !plan.includes('Chat') && !plan.includes('Reactivation')) link = STRIPE_LINKS['Review Filter'];
+        else if (plan && plan.includes('Reactivation') && !plan.includes('Chat') && !plan.includes('Review')) link = STRIPE_LINKS['Reactivation Campaigns'];
+        stripeBtn.href = link;
+      }
+      successEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } catch(err) {
+      btn.textContent = 'Submit & Get Started →'; btn.disabled = false;
+      alert('Something went wrong. Please email us at netifybuilds@gmail.com');
+    }
+  });
+
+
+
+  // ── FORM SUBMIT ──
+  document.getElementById('onboardingForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    var f = this;
+    var v = function(n) { return (f.elements[n] && f.elements[n].value.trim()) || 'Not provided'; };
+    var pkg = v('package');
+    var pkgLabel = pkg === 'bundle' ? 'Full Bundle — $399/mo' : '24/7 Website Chat Assistant — $250/mo';
+
+    // Send to /signup endpoint — sends properly formatted BotBuilder email
+    fetch(BACKEND + '/signup', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        ownerName: v('ownerName'),
+        bizName: v('bizName'),
+        email: v('email'),
+        phone: v('phone'),
+        website: v('website'),
+        industry: v('industry'),
+        area: v('area'),
+        hours: v('hours'),
+        services: v('services'),
+        faqs: v('faqs'),
+        tone: v('tone'),
+        package: v('package'),
+        differentiators: v('differentiators'),
+        licensing: v('licensing'),
+        emergency: v('emergency'),
+        seasonal: v('seasonal'),
+        botPersonality: v('botPersonality'),
+        botColor: v('botColor'),
+        billing: v('billing'),
+        hearAbout: v('hearAbout'),
+        features: [['Workout Split Builder','feature_workout'],['Appointment Request Flow','feature_appointment'],['Emergency Escalation','feature_emergency'],['Multilanguage Support','feature_multilang'],['Pricing Guide Mode','feature_pricing'],['Service Status Updates','feature_status'],['Property Info Mode','feature_property'],['Wait Time & Waitlist','feature_waittime'],['Case Type Qualifier','feature_qualifier'],['Symptom Triage','feature_triage']].filter(function(p){return f.elements[p[1]]&&f.elements[p[1]].checked;}).map(function(p){return p[0];}).join(', ') || 'None',
+        googleReviewLink: v('googleReviewLink'),
+        features: {
+          workoutSplitBuilder: f.elements['feature_workout'] && f.elements['feature_workout'].checked ? 'Yes' : 'No',
+          appointmentFlow:     f.elements['feature_appointment'] && f.elements['feature_appointment'].checked ? 'Yes' : 'No',
+          emergencyEscalation: f.elements['feature_emergency'] && f.elements['feature_emergency'].checked ? 'Yes' : 'No',
+          multilanguage:       f.elements['feature_multilang'] && f.elements['feature_multilang'].checked ? 'Yes' : 'No',
+          pricingGuide:        f.elements['feature_pricing'] && f.elements['feature_pricing'].checked ? 'Yes' : 'No',
+        }
+      })
+    }).catch(function() {});
+
+    f.style.display = 'none';
+    document.getElementById('successMsg').style.display = 'block';
+    document.getElementById('successMsg').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  });
+  // Expose to global scope for inline handlers
+  window.setBotColor = setBotColor;
+  window.setBrandColor = setBrandColor;
+  window.toggleBilling = toggleBilling;
+})();
+
+// ── FAQ ACCORDION ──
+function copyAndChat(btn, question) {
+  var item = btn.closest ? btn.closest('.faq-item') : btn.parentElement;
+  if (!item) item = btn;
+  item.style.borderColor = 'var(--blue)';
+  item.style.boxShadow = '0 4px 20px rgba(59,130,246,0.1)';
+  setTimeout(function() {
+    item.style.borderColor = '';
+    item.style.boxShadow = '';
+  }, 1200);
+
+  // Open the bot using the exposed openChat function (avoids click event bubbling)
+  var botBtn = document.getElementById('nb-widget-btn');
+  if (botBtn && !botBtn.classList.contains('open')) {
+    // Dispatch a synthetic click that won't bubble to the document close listener
+    var evt = new MouseEvent('click', { bubbles: false });
+    botBtn.dispatchEvent(evt);
+  }
+
+  setTimeout(function() {
+    var input = document.getElementById('nb-input');
+    if (input) {
+      input.value = question;
+      input.focus();
+      input.dispatchEvent(new Event('input'));
+      setTimeout(function() {
+        var sendBtn = document.getElementById('nb-send');
+        if (sendBtn) {
+          var sendEvt = new MouseEvent('click', { bubbles: false });
+          sendBtn.dispatchEvent(sendEvt);
+        }
+      }, 400);
+    }
+  }, 350);
+}
+</script>
+
+<!-- ── NETIFY BUILDS DEMO BOT ── -->
+<script>
+(function() {
+
+  var BACKEND_URL  = 'https://botbuilder-backend-production.up.railway.app';
+  var IS_LEAD_GEN  = true;
+  var LEAD_EMAIL   = 'dolbeereli95@gmail.com';
+  var BIZ_NAME     = 'Netify Builds';
+  var BOT_NAME     = 'Netify Assistant';
+  var ACCENT_COLOR = '#0A2540';
+  var EMERGENCY_PHONE = ''; // set to business phone number if available
+  var GREETING = (function() {
+    var h = new Date().getHours();
+    var t = h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening';
+    return t + '! I\'m Netify Assistant. How can I help you today?';
+  })();
+  var AUTO_OPEN_DELAY = null;
+  var HOURS = null;
+
+  var SYSTEM_PROMPT = "You are Netify Assistant, a friendly and casual 24/7 chat assistant for Netify Builds — a Dayton, Ohio-based company run personally by Eli that builds custom AI tools for small businesses. Your job is to answer questions honestly and guide visitors toward becoming leads by naturally collecting their name and phone number.\n\nKeep every response to 2-3 sentences maximum. Be conversational and warm — like a knowledgeable friend, not a salesperson. Never use markdown formatting, bullet points, bold text, or emojis in your responses. Plain conversational sentences only.\n\n---\n\nABOUT THE BUSINESS:\nNetify Builds creates 24/7 Website Chat Assistants and a Review Filter product for local service businesses. Everything is built and managed personally by Eli. Serves Dayton Ohio and surrounding areas, also works remotely nationwide.\n\n---\n\nSERVICES AND PRICING:\n24/7 Website Chat Assistant at $250 per month — a custom 24/7 chat assistant on the client website that answers questions 24/7 and captures leads automatically. No setup fees, no contracts, cancel anytime.\nReview Filter at $100 per month — a custom review page businesses send customers after every job. Happy customers get directed to Google reviews. Unhappy ones get caught privately before going public.\nFull Bundle at $399 per month — both products together.\n\n---\n\nHONEST TRAFFIC ADVICE:\nIf a visitor mentions they have low website traffic or are not running ads, be honest with them. Tell them the 24/7 Website Chat Assistant works best when there is already decent traffic coming to the site, so if traffic is low it might not do much for them yet. Suggest the Review Filter as a smarter starting point because more good Google reviews directly increases organic traffic over time — it builds the foundation that makes the bot valuable later. Never push a product on someone it would not genuinely help.\n\n---\n\nFAQS:\nHow much does it cost — 24/7 Website Chat Assistant $250 per month, Review Filter $100 per month, Full Bundle $399 per month, Reactivation Campaigns $200 per month. No setup fees, no contracts, cancel anytime.\nHow long does setup take — setup code delivered within 24 hours of approval — or your first month is free.\nDo I need to be tech savvy — not at all. Fill out a form, Eli builds and installs everything.\nWhat websites does it work on — any website, WordPress, Wix, Squarespace, GoDaddy, Webflow, Shopify, custom HTML. One line of code.\nCan I cancel anytime — yes, no contracts, no fees, cancel via Stripe portal.\nWhat happens when the bot captures a lead — owner gets an email instantly with name, phone, job type, urgency.\nHow does the Review Filter work — text the customer a link after each job. Happy ones go to Google reviews. Unhappy ones get a private chat that never goes public.\nWhat if something goes wrong — Eli handles it personally, fixed same day.\n\n---\n\nLEAD COLLECTION:\nNaturally collect the visitor name then phone number through conversation. Never ask again once collected. If someone wants to book or schedule, collect their info and tell them Eli will call to set it up.\n\nOnce you have BOTH a name AND a phone number output this trigger exactly at the very end of your response on its own line:\nLEAD_CAPTURED|[name]|[phone]|[job type or Not specified]|[urgency or Not specified]\n\nNever show this trigger to the customer. Never mention it.\n\n---\n\nOFF-TOPIC AND INAPPROPRIATE QUESTIONS:\nIf someone asks anything unrelated to the business — personal questions, political opinions, inappropriate or offensive questions, anything off-topic — redirect naturally and briefly without making a big deal of it. Vary how you redirect — do not use the same phrase every time. Keep it light, one sentence max, then offer to help with something real. Never lecture or refuse rudely.\n\nFUTURE PLANS AND UNKNOWNS:\nIf someone asks about future products, roadmap, or anything Eli has not shared publicly, just say honestly that you are not sure what is in the pipeline but Eli is always building and improving things, and they are welcome to reach out directly to ask him. Never speculate or make things up.\n\nPERSONALITY:\nVary your responses naturally — do not repeat the same phrases or sentence structures. Sound like a real person having a conversation, not a bot running through scripts. If someone seems stressed or says something like HELP, respond warmly and find out what they actually need before assuming.\n\n---\n\nCOMPETITORS: Stay neutral. Never speak negatively. Redirect warmly to Netify Builds strengths.\n\nLANGUAGE: Respond in whatever language the customer writes in.\n\nHONESTY: If you do not know something say so and offer to have Eli follow up directly.\n\nNEVER: Use markdown formatting, bold text, bullet points, or emojis. Quote unlisted prices. Confirm or schedule appointments directly. Speak negatively about competitors. Show the LEAD_CAPTURED trigger. Make up features or guarantees. Be pushy. Tell someone to check the demo on this page — they are already here.\n\nWHAT MAKES NETIFY BUILDS STAND OUT: Locally owned in Dayton Ohio. Built and managed personally by Eli — never a support ticket. 24 hour setup guarantee or first month free. No contracts ever. Responds in any language automatically. Honest pricing, zero hidden fees.";
+
+  var style = document.createElement('style');
+  style.textContent = [
+    '#nb-hours-badge { position: absolute; top: -4px; left: -4px; background: #22c55e; color: white; font-size: 9px; font-weight: 700; padding: 2px 5px; border-radius: 99px; white-space: nowrap; display: none; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; border: 1.5px solid white; line-height: 1.3; }',
+    '#nb-hours-badge.closed { background: #ef4444; }',
+    '#nb-quick-replies { padding: 0 12px 10px; display: flex; flex-wrap: wrap; gap: 6px; }',
+    '.nb-qr-btn { background: white; border: 1.5px solid ' + ACCENT_COLOR + '; color: ' + ACCENT_COLOR + '; padding: 6px 12px; border-radius: 99px; font-size: 12px; font-weight: 600; cursor: pointer; font-family: inherit; transition: all 0.15s; white-space: nowrap; }',
+    '.nb-qr-btn:hover { background: ' + ACCENT_COLOR + '; color: white; }',
+    '#nb-widget-btn { position: fixed; bottom: 24px; right: 24px; z-index: 9999; width: 60px; height: 60px; border-radius: 50%; background: ' + ACCENT_COLOR + '; border: none; cursor: pointer; box-shadow: 0 4px 20px rgba(0,0,0,0.25); display: flex; align-items: center; justify-content: center; transition: transform 0.2s; -webkit-tap-highlight-color: transparent; }',
+    '#nb-widget-btn:hover { transform: scale(1.08); }',
+    '#nb-widget-btn svg { width: 26px; height: 26px; stroke: white; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }',
+    '#nb-widget-btn .nb-close { display: none; }',
+    '#nb-widget-btn.open .nb-open { display: none; }',
+    '#nb-widget-btn.open .nb-close { display: block; }',
+    '#nb-widget-btn.open #nb-badge { display: none !important; }',
+    '#nb-badge { position: absolute; top: -3px; right: -3px; width: 18px; height: 18px; border-radius: 50%; background: #ef4444; border: 2px solid white; animation: nb-pulse 2s infinite; }',
+    '@keyframes nb-pulse { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.15);opacity:0.85} }',
+    '#nb-after-hours-pill { position: fixed; bottom: 92px; right: 16px; z-index: 9997; background: #1e293b; color: white; font-size: 11px; font-weight: 600; padding: 5px 11px; border-radius: 99px; white-space: nowrap; opacity: 0; transform: translateY(4px); transition: all 0.3s ease; pointer-events: none; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; box-shadow: 0 2px 8px rgba(0,0,0,0.25); }',
+    '#nb-after-hours-pill.visible { opacity: 1; transform: translateY(0); }',
+    '#nb-chat-box { position: fixed; bottom: 96px; right: 16px; z-index: 9998; width: calc(100vw - 32px); max-width: 380px; height: 560px; background: white; border-radius: 18px; box-shadow: 0 12px 48px rgba(0,0,0,0.18); border: 1px solid #e5e7eb; display: none; flex-direction: column; overflow: hidden; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; opacity: 0; transform: translateY(12px); transition: opacity 0.22s ease, transform 0.22s ease; }',
+    '#nb-chat-box.open { display: flex; }',
+    '#nb-chat-box.visible { opacity: 1; transform: translateY(0); }',
+    '#nb-chat-header { background: ' + ACCENT_COLOR + '; color: white; padding: 14px 16px; display: flex; align-items: center; gap: 10px; }',
+    '#nb-header-avatar { width: 34px; height: 34px; border-radius: 50%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }',
+    '#nb-header-avatar svg { width: 17px; height: 17px; stroke: white; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }',
+    '#nb-header-info { flex: 1; }',
+    '#nb-header-name { font-weight: 700; font-size: 14px; }',
+    '#nb-header-status { font-size: 11px; opacity: 0.75; margin-top: 1px; display: flex; align-items: center; gap: 5px; }',
+    '#nb-header-status::before { content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: #4ade80; }',
+    '#nb-header-status.closed::before { background: #f87171; }',
+    '#nb-close-btn { background: none; border: none; color: white; cursor: pointer; padding: 4px; opacity: 0.8; display: flex; }',
+    '#nb-close-btn svg { width: 18px; height: 18px; stroke: white; fill: none; stroke-width: 2.5; stroke-linecap: round; }',
+    '#nb-messages { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 10px; }',
+    '#nb-messages::-webkit-scrollbar { width: 4px; }',
+    '#nb-messages::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 4px; }',
+    '.nb-msg { max-width: 82%; padding: 10px 14px; border-radius: 14px; font-size: 14px; line-height: 1.55; word-wrap: break-word; white-space: pre-wrap; }',
+    '.nb-msg.bot { background: #f1f5f9; color: #0f172a; align-self: flex-start; border-bottom-left-radius: 4px; }',
+    '.nb-msg.user { background: ' + ACCENT_COLOR + '; color: white; align-self: flex-end; border-bottom-right-radius: 4px; }',
+    '.nb-typing-indicator { align-self: flex-start; background: #f1f5f9; border-radius: 14px; border-bottom-left-radius: 4px; padding: 12px 16px; display: flex; align-items: center; gap: 5px; }',
+    '.nb-typing-indicator span { width: 7px; height: 7px; border-radius: 50%; background: #94a3b8; display: inline-block; animation: nb-bounce 1.2s infinite ease-in-out; }',
+    '.nb-typing-indicator span:nth-child(1) { animation-delay: 0s; }',
+    '.nb-typing-indicator span:nth-child(2) { animation-delay: 0.2s; }',
+    '.nb-typing-indicator span:nth-child(3) { animation-delay: 0.4s; }',
+    '@keyframes nb-bounce { 0%,60%,100%{transform:translateY(0);opacity:0.4} 30%{transform:translateY(-6px);opacity:1} }',
+    '#nb-input-row { padding: 12px 14px; border-top: 1px solid #e5e7eb; display: flex; gap: 8px; align-items: center; }',
+    '#nb-input { flex: 1; padding: 10px 14px; border: 1.5px solid #e5e7eb; border-radius: 99px; font-size: 15px; outline: none; font-family: inherit; color: #0f172a; background: #f8fafc; transition: border-color 0.2s; }',
+    '#nb-input:focus { border-color: ' + ACCENT_COLOR + '; background: white; }',
+    '#nb-send { width: 38px; height: 38px; border-radius: 50%; border: none; background: ' + ACCENT_COLOR + '; cursor: pointer; flex-shrink: 0; display: flex; align-items: center; justify-content: center; -webkit-tap-highlight-color: transparent; }',
+    '#nb-send svg { width: 16px; height: 16px; stroke: white; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }',
+    '@media (max-width: 480px) { #nb-chat-box { right:0;left:0;width:100%;max-width:100%;border-radius:20px 20px 0 0;bottom:0;height:75vh;transform:none!important;transition:opacity 0.2s ease!important; } #nb-widget-btn { bottom:80px;right:16px; } }'
+  ].join(' ');
+  document.head.appendChild(style);
+
+  var btn = document.createElement('button');
+  btn.id = 'nb-widget-btn';
+  btn.setAttribute('aria-label', 'Chat with us');
+  btn.innerHTML = '<span class="nb-open"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span><span class="nb-close"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span><div id="nb-badge"></div><div id="nb-hours-badge"></div>';
+  document.body.appendChild(btn);
+
+  var box = document.createElement('div');
+  box.id = 'nb-chat-box';
+  box.innerHTML = '<div id="nb-chat-header"><div id="nb-header-avatar"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><div id="nb-header-info"><div id="nb-header-name">' + BOT_NAME + '</div><div id="nb-header-status">Online now</div></div><button id="nb-close-btn"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div><div id="nb-messages"></div><div id="nb-quick-replies"></div><div id="nb-input-row"><input id="nb-input" placeholder="Type here..." autocomplete="off" /><button id="nb-send"><svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button></div>';
+  document.body.appendChild(box);
+
+  var pill = document.createElement('div');
+  pill.id = 'nb-after-hours-pill';
+  pill.textContent = 'We\'re closed — leave a message';
+  document.body.appendChild(pill);
+
+  function isBusinessOpen() {
+    if (!HOURS) return true;
+    var now = new Date();
+    var days = ['sun','mon','tue','wed','thu','fri','sat'];
+    var day = days[now.getDay()];
+    var h = HOURS[day];
+    if (!h) return false;
+    var currentHour = now.getHours() + now.getMinutes() / 60;
+    return currentHour >= h[0] && currentHour < h[1];
+  }
+
+  function updateOpenStatus() {
+    var open = isBusinessOpen();
+    var statusEl = document.getElementById('nb-header-status');
+    if (statusEl) { statusEl.textContent = open ? 'Online now' : 'Currently closed'; statusEl.className = open ? '' : 'closed'; }
+    if (!open && !btn.classList.contains('open')) { pill.classList.add('visible'); } else { pill.classList.remove('visible'); }
+    // Hours badge on launcher
+    var hoursBadge = document.getElementById('nb-hours-badge');
+    if (hoursBadge && HOURS) {
+      hoursBadge.style.display = 'block';
+      if (open) { hoursBadge.textContent = 'Open'; hoursBadge.className = ''; }
+      else { hoursBadge.textContent = 'Closed'; hoursBadge.className = 'closed'; }
+    }
+  }
+
+  var QUICK_REPLIES = [
+    'Get a quote',
+    'How does it work?',
+    'Pricing info',
+    'Talk to someone'
+  ];
+
+  function showQuickReplies() {
+    var qr = document.getElementById('nb-quick-replies');
+    if (!qr || qr.children.length > 0) return;
+    QUICK_REPLIES.forEach(function(label) {
+      var b = document.createElement('button');
+      b.className = 'nb-qr-btn';
+      b.textContent = label;
+      b.onclick = function(e) {
+        e.stopPropagation();
+        qr.innerHTML = '';
+        document.getElementById('nb-input').value = label;
+        var sendEvt = new MouseEvent('click', { bubbles: false });
+        document.getElementById('nb-send').dispatchEvent(sendEvt);
+      };
+      qr.appendChild(b);
+    });
+  }
+
+  updateOpenStatus();
+  setInterval(updateOpenStatus, 60000);
+
+  if (AUTO_OPEN_DELAY && typeof AUTO_OPEN_DELAY === 'number') {
+    setTimeout(function() { if (!isOpen) openChat(); }, AUTO_OPEN_DELAY * 1000);
+  }
+
+  var messages = [];
+  var isOpen = false;
+  var leadCaptured = false;
+  var greetingSent = false;
+
+  function openChat() {
+    isOpen = true; btn.classList.add('open'); box.classList.add('open');
+    var badge = document.getElementById('nb-badge');
+    if (badge) badge.style.display = 'none';
+    pill.classList.remove('visible');
+    setTimeout(function(){ box.classList.add('visible'); }, 10);
+    if (!greetingSent) {
+      greetingSent = true;
+      setTimeout(function() {
+        addMsg(GREETING, 'bot');
+        setTimeout(showQuickReplies, 400);
+      }, 320);
+    }
+    setTimeout(function(){ document.getElementById('nb-input').focus(); }, 380);
+  }
+
+  function closeChat() {
+    isOpen = false; btn.classList.remove('open'); box.classList.remove('visible');
+    setTimeout(function(){ box.classList.remove('open'); }, 220);
+    setTimeout(function(){ updateOpenStatus(); }, 250);
+  }
+
+  btn.addEventListener('click', function(){ if(isOpen) closeChat(); else openChat(); });
+  document.getElementById('nb-close-btn').addEventListener('click', closeChat);
+  document.addEventListener('click', function(e){ if(isOpen && e.bubbles && !box.contains(e.target) && !btn.contains(e.target)) closeChat(); });
+
+  function addMsg(text, role) {
+    var el = document.createElement('div');
+    el.className = 'nb-msg ' + role;
+    el.textContent = text;
+    var m = document.getElementById('nb-messages');
+    m.appendChild(el); m.scrollTop = m.scrollHeight;
+    return el;
+  }
+
+  function showTyping() {
+    var el = document.createElement('div');
+    el.className = 'nb-typing-indicator';
+    el.innerHTML = '<span></span><span></span><span></span>';
+    var m = document.getElementById('nb-messages');
+    m.appendChild(el); m.scrollTop = m.scrollHeight;
+    return el;
+  }
+
+  function parseLead(reply) {
+    var match = reply.match(/LEAD[\s_]?CAPTURED[\s]*[|][\s]*([^|\n]*)[|][\s]*([^|\n]*)[|][\s]*([^|\n]*)[|][\s]*([^|\n\r]*)/i);
+    if (!match) return null;
+    var name = match[1].trim();
+    var phone = match[2].trim().replace(/[^\d\s\-\(\)\+\.]/g, '').trim();
+    if (!name && !phone) return null;
+    var triggerIdx = reply.search(/LEAD[\s_]?CAPTURED/i);
+    return { name: name||'Not provided', phone: phone||'Not provided', jobType: match[3].trim()||'Not specified', urgency: match[4].trim()||'Not specified', cleanReply: triggerIdx > 0 ? reply.substring(0, triggerIdx).trim() : '' };
+  }
+
+  async function sendMessage() {
+    var qr = document.getElementById('nb-quick-replies');
+    if (qr) qr.innerHTML = '';
+    var input = document.getElementById('nb-input');
+    var text = input.value.trim();
+    if (!text) return;
+    if (text.length > 500) { addMsg('Please keep your message under 500 characters so I can help you better.', 'bot'); return; }
+    input.value = ''; input.disabled = true;
+    addMsg(text, 'user');
+    messages.push({ role: 'user', content: text });
+    var typing = showTyping();
+    try {
+      var trimmedMessages = messages.slice(-10);
+      var res = await fetch(BACKEND_URL + '/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ messages: trimmedMessages, systemPrompt: SYSTEM_PROMPT }) });
+      var data = {};
+      try { data = await res.json(); } catch(jsonErr) { data = {}; }
+      var reply = (data && (data.reply || data.error)) || 'Sorry, something went wrong. Please try again.';
+      try { if (typeof typing.remove === 'function') typing.remove(); } catch(e2) {}
+      if (IS_LEAD_GEN && !leadCaptured && reply.includes('LEAD_CAPTURED|')) {
+        var lead = parseLead(reply);
+        if (lead && lead.phone && lead.phone !== 'Not provided') {
+          leadCaptured = true;
+          var displayReply = lead.cleanReply || "Thanks! We've got your info and someone will be reaching out soon.";
+          addMsg(displayReply, 'bot');
+          messages.push({ role: 'assistant', content: displayReply });
+          fetch(BACKEND_URL + '/lead', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: lead.name, phone: lead.phone, jobType: lead.jobType, urgency: lead.urgency, businessEmail: LEAD_EMAIL, businessName: BIZ_NAME, conversation: messages.slice(-20) }) }).catch(function(){});
+        } else {
+          var fallback = reply.replace(/LEAD_CAPTURED\|.*/g, '').trim();
+          addMsg(fallback || reply, 'bot');
+          messages.push({ role: 'assistant', content: fallback || reply });
+        }
+      } else {
+        var cleanReply = reply.replace(/LEAD_CAPTURED\|.*/g, '').trim();
+        addMsg(cleanReply || reply, 'bot');
+        messages.push({ role: 'assistant', content: cleanReply || reply });
+      }
+    } catch(e) {
+      try { if (typeof typing.remove === 'function') typing.remove(); } catch(e2) {}
+      var errMsg = 'Having a quick hiccup — try again in a moment, or reach out at netifybuilds@gmail.com.';
+      addMsg(errMsg, 'bot');
+    } finally {
+      input.disabled = false;
+      try { input.focus(); } catch(e) {}
+    }
+  }
+
+  document.getElementById('nb-send').addEventListener('click', sendMessage);
+  document.getElementById('nb-input').addEventListener('keypress', function(e){ if(e.key==='Enter') sendMessage(); });
+
+})();
+</script>
+<!-- End Netify Builds Demo Bot -->
+
+
+</body>
+</html>
