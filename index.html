@@ -68,6 +68,7 @@ nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 0 40px;
 .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
 .nav-hamburger.open span:nth-child(2) { opacity: 0; }
 .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+.nav-portal-btn { display: none; font-size: 13px; font-weight: 700; color: #93C5FD; background: rgba(147,197,253,0.12); border: 1px solid rgba(147,197,253,0.35); border-radius: 8px; padding: 8px 14px; text-decoration: none; white-space: nowrap; }
 .mobile-menu { display: none; position: fixed; top: 68px; left: 0; right: 0; z-index: 99; background: var(--navy); border-top: 1px solid rgba(255,255,255,0.08); flex-direction: column; padding: 20px 24px 28px; gap: 4px; box-shadow: 0 8px 32px rgba(0,0,0,0.3); }
 .mobile-menu.open { display: flex; }
 .mobile-menu a { font-size: 15px; font-weight: 500; color: rgba(255,255,255,0.7); text-decoration: none; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.06); transition: color 0.2s; }
@@ -357,6 +358,7 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
   nav { padding: 0 20px; }
   .nav-links { display: none; }
   .nav-hamburger { display: flex; }
+  .nav-portal-btn { display: flex; align-items: center; }
   .sticky-cta { display: flex; }
 
   /* Tighter section padding — biggest scrolliness fix */
@@ -522,10 +524,12 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
 
   /* Footer — single column, condensed */
   .footer-top { grid-template-columns: 1fr; gap: 0; margin-bottom: 32px; }
-  /* Hide nav columns in footer on mobile */
+  /* Hide nav columns in footer on mobile but keep legal col */
   .footer-col { display: none; }
+  .footer-col:last-child { display: block; }
   .footer-brand { padding-bottom: 24px; border-bottom: 1px solid rgba(255,255,255,0.08); }
   .footer-bottom { flex-direction: column; align-items: flex-start; gap: 8px; padding-top: 20px; }
+  .footer-legal a { color: rgba(255,255,255,0.55) !important; font-size: 14px !important; }
   footer { padding: 40px 20px 28px; }
 
   /* Logobar — tighter */
@@ -559,12 +563,15 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
     <a href="#how">How It Works</a>
     <a href="#pricing">Pricing</a>
     <a href="#try">Try the Bot</a>
-    <a href="#demo">Free Demo</a><a href="/netifybuilds/portal/" style="color:var(--blue-light);">Client Portal</a>
+    <a href="#demo">Free Demo</a><a href="portal/" style="color:var(--blue-light);">Client Portal</a>
     <a href="#contact" class="nav-cta">Get Started</a>
   </div>
-  <button class="nav-hamburger" id="hamburger" aria-label="Menu">
-    <span></span><span></span><span></span>
-  </button>
+  <div style="display:flex;align-items:center;gap:10px;">
+    <a href="portal/" class="nav-portal-btn">Client Portal</a>
+    <button class="nav-hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
 </nav>
 
 <!-- MOBILE MENU -->
@@ -574,8 +581,6 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
   <a href="#pricing" class="mobile-link">Pricing</a>
   <a href="#demo" class="mobile-link">Free Demo</a>
   <a href="#try" class="mobile-link">Try the Bot</a>
-  <a href="#demo" class="mobile-link">Free Demo</a>
-  <a href="/netifybuilds/portal/" class="mobile-link">Client Portal</a>
   <a href="#contact" class="mobile-link">Get Started</a>
 </div>
 
@@ -842,12 +847,12 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
         <div class="pa price-annual-note" style="display:none;">Billed $2,750/yr — save $250</div>
         <p class="price-desc">24/7 chat assistant on your website. Answers questions, captures leads, and emails you every opportunity.</p>
         <ul class="price-features">
-          <li><svg class="price-check" style="stroke:var(--blue-light)" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Custom bot built for your business</li>
-          <li><svg class="price-check" style="stroke:var(--blue-light)" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>24/7 lead capture & FAQ answers</li>
-          <li><svg class="price-check" style="stroke:var(--blue-light)" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Instant email lead notifications</li>
-          <li><svg class="price-check" style="stroke:var(--blue-light)" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Responds in any language</li>
-          <li><svg class="price-check" style="stroke:var(--blue-light)" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Client portal & analytics</li>
-          <li><svg class="price-check" style="stroke:var(--blue-light)" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>24-hour setup guarantee</li>
+          <li><svg class="price-check" style="stroke:#93C5FD" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Custom bot built for your business</li>
+          <li><svg class="price-check" style="stroke:#93C5FD" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>24/7 lead capture & FAQ answers</li>
+          <li><svg class="price-check" style="stroke:#93C5FD" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Instant email lead notifications</li>
+          <li><svg class="price-check" style="stroke:#93C5FD" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Responds in any language</li>
+          <li><svg class="price-check" style="stroke:#93C5FD" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Client portal & analytics</li>
+          <li><svg class="price-check" style="stroke:#93C5FD" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>24-hour setup guarantee</li>
         </ul>
 
         <a href="#contact" class="price-btn price-btn-outline" data-plan="bot">Get Started</a>
@@ -878,12 +883,12 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
         <div class="pa price-annual-note" style="display:none;">Billed $2,200/yr — save $200</div>
         <p class="price-desc">We actively manage your past customer list and run quarterly SMS campaigns on your behalf. Responses come back as leads automatically — you do nothing.</p>
         <ul class="price-features">
-          <li><svg class="price-check" style="stroke:var(--blue-light)" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>One campaign per quarter included</li>
-          <li><svg class="price-check" style="stroke:var(--blue-light)" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>We write every message for you</li>
-          <li><svg class="price-check" style="stroke:var(--blue-light)" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Sent to past customers only — compliant</li>
-          <li><svg class="price-check" style="stroke:var(--blue-light)" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Chat link turns replies into leads</li>
-          <li><svg class="price-check" style="stroke:var(--blue-light)" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Results report after every campaign</li>
-          <li><svg class="price-check" style="stroke:var(--blue-light)" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Extra campaigns just $100 each</li>
+          <li><svg class="price-check" style="stroke:#93C5FD" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>One campaign per quarter included</li>
+          <li><svg class="price-check" style="stroke:#93C5FD" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>We write every message for you</li>
+          <li><svg class="price-check" style="stroke:#93C5FD" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Sent to past customers only — compliant</li>
+          <li><svg class="price-check" style="stroke:#93C5FD" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Chat link turns replies into leads</li>
+          <li><svg class="price-check" style="stroke:#93C5FD" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Results report after every campaign</li>
+          <li><svg class="price-check" style="stroke:#93C5FD" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Extra campaigns just $100 each</li>
         </ul>
 <p style="font-size:13px;color:rgba(255,255,255,0.5);margin:16px 0;">You send us the list once. We handle the rest every quarter.</p>
         <a href="#contact" class="price-btn price-btn-outline" data-plan="campaign">Get Started</a>
@@ -1144,6 +1149,10 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
             <svg style="width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
             Text me directly — (937) 367-1847
           </a>
+          <a href="portal/" style="display:inline-flex;align-items:center;gap:8px;background:rgba(147,197,253,0.12);border:1px solid rgba(147,197,253,0.25);color:var(--blue-light);font-size:14px;font-weight:700;text-decoration:none;padding:10px 18px;border-radius:10px;margin-top:6px;width:fit-content;">
+            <svg style="width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            Existing client? Sign in to your portal
+          </a>
         </div>
       </div>
     </div>
@@ -1201,7 +1210,7 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
                 <div><label>Email</label><input type="email" name="email" placeholder="john@smithhvac.com" required /></div>
                 <div><label>Phone</label><input type="tel" name="phone" id="phoneInput" placeholder="(555) 867-5309" required /></div>
               </div>
-              <p style="font-size:11px;color:var(--text-soft);line-height:1.6;margin-top:-4px;margin-bottom:8px;">By providing your phone number you agree to receive SMS messages from Netify Builds related to your account and services. Message and data rates may apply. Reply STOP to opt out at any time. Reply HELP for help. See our <a href="/netifybuilds/privacy/" style="color:var(--blue);">Privacy Policy</a> and <a href="/netifybuilds/terms/" style="color:var(--blue);">Terms of Service</a>.</p>
+              <p style="font-size:11px;color:var(--text-soft);line-height:1.6;margin-top:-4px;margin-bottom:8px;">By providing your phone number you agree to receive SMS messages from Netify Builds related to your account and services. Message and data rates may apply. Reply STOP to opt out at any time. Reply HELP for help. See our <a href="privacy/" style="color:var(--blue);">Privacy Policy</a> and <a href="terms/" style="color:var(--blue);">Terms of Service</a>.</p>
               <input type="hidden" name="selectedPlan" id="selectedPlanField" value="" />
               <input type="hidden" name="campaignFrequency" id="campaignFreqField" value="" />
 
@@ -1473,20 +1482,20 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
         <a href="#about">About Eli</a>
         <a href="mailto:netifybuilds@gmail.com">Email Us</a>
         <a href="sms:+19373671847">Text Us</a>
-        <a href="/netifybuilds/portal/">Client Portal</a>
-        <a href="/netifybuilds/onboard/">Get Started</a>
+        <a href="portal/">Client Portal</a>
+        <a href="onboard/">Get Started</a>
       </div>
       <div class="footer-col">
         <h5>Legal</h5>
-        <a href="/netifybuilds/privacy/">Privacy Policy</a>
-        <a href="/netifybuilds/terms/">Terms of Service</a>
+        <a href="privacy/">Privacy Policy</a>
+        <a href="terms/">Terms of Service</a>
       </div>
     </div>
     <div class="footer-bottom">
       <div class="footer-copy">© 2026 Netify Builds · Dayton, OH · All rights reserved.</div>
       <div class="footer-legal">
-        <a href="/netifybuilds/privacy/">Privacy Policy</a>
-        <a href="/netifybuilds/terms/">Terms of Service</a>
+        <a href="privacy/">Privacy Policy</a>
+        <a href="terms/">Terms of Service</a>
       </div>
     </div>
   </div>
