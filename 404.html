@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<script>
+  var repo = '/netifybuilds';
+  var path = window.location.pathname.replace(repo, '');
+  var segments = path.split('/').filter(Boolean);
+  if (segments.length > 0) {
+    var page = segments[0];
+    var validPages = ['portal', 'privacy', 'terms', 'onboard', 'app'];
+    if (validPages.indexOf(page) !== -1) {
+      window.location.replace(repo + '/' + page + '/');
+    } else {
+      window.location.replace(repo + '/');
+    }
+  } else {
+    window.location.replace(repo + '/');
+  }
+</script>
+</head>
+<body></body>
+</html>
