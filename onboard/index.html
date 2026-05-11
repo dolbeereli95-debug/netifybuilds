@@ -99,9 +99,14 @@ textarea.short { min-height: 70px; }
           <input type="hidden" id="obBizPlaceId" name="placeId" value="" />
         </div>
       </div>
-      <div id="obAutoFillBanner" style="display:none;background:#f0fdf4;border:1px solid #86efac;border-radius:10px;padding:10px 14px;margin-top:-4px;margin-bottom:8px;font-size:12px;color:#15803d;font-weight:600;">
+      <div id="obAutoFillBanner" style="display:none;background:#f0fdf4;border:1px solid #86efac;border-radius:10px;padding:10px 14px;margin-top:-4px;margin-bottom:4px;font-size:12px;color:#15803d;font-weight:600;">
         ✓ Business info auto-filled from Google — review below and edit anything that looks off.
       </div>
+      <div id="obScanBanner" style="display:none;background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;padding:10px 14px;margin-top:4px;margin-bottom:8px;font-size:12px;color:#2563eb;font-weight:600;align-items:center;gap:8px;">
+        <svg style="width:14px;height:14px;stroke:#2563eb;fill:none;stroke-width:2;flex-shrink:0;animation:spin 1s linear infinite;" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+        <span id="obScanStatus">Scanning your website...</span>
+      </div>
+      <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
       <div class="form-row">
         <div><label>Email</label><input type="email" name="email" placeholder="john@smithhvac.com" required /></div>
         <div><label>Phone</label><input type="tel" name="phone" id="obPhoneInput" placeholder="(555) 867-5309" required /></div>
@@ -533,15 +538,143 @@ textarea.short { min-height: 70px; }
       var { Place } = await google.maps.importLibrary("places");
       var place = new Place({ id: placeId });
       await place.fetchFields({ fields: ['displayName','nationalPhoneNumber','websiteURI','regularOpeningHours','formattedAddress','types'] });
-      if (place.nationalPhoneNumber) { var ph = document.getElementById('obPhoneInput'); if (ph && !ph.value) ph.value = place.nationalPhoneNumber; }
+      // Clear previous autofill before refilling
+      var obClearIds = ['obPhoneInput','obWebsiteInput','obHoursInput','obAreaInput'];
+      obClearIds.forEach(function(id) { var el = document.getElementById(id); if (el) el.value = ''; });
+      var obClearNames = ['services','faqs','differentiators','emergency','licensing','googleReviewLink'];
+      obClearNames.forEach(function(n) { var el = document.querySelector('[name="' + n + '"]'); if (el) el.value = ''; });
+      document.getElementById('obScanBanner').style.display = 'none';
+      document.getElementById('obAutoFillBanner').style.display = 'none';
+      obScanInProgress = false;
+
+      if (place.nationalPhoneNumber) { var ph = document.getElementById('obPhoneInput'); if (ph) ph.value = place.nationalPhoneNumber; }
       if (place.websiteURI) { var wb = document.getElementById('obWebsiteInput'); if (wb) wb.value = place.websiteURI.replace(/^https?:\/\//, '').replace(/\/$/, ''); }
-      if (place.regularOpeningHours && place.regularOpeningHours.weekdayDescriptions) { var hr = document.getElementById('obHoursInput'); if (hr && !hr.value) hr.value = place.regularOpeningHours.weekdayDescriptions.slice(0,3).join(', '); }
-      if (place.formattedAddress) { var ar = document.getElementById('obAreaInput'); if (ar && !ar.value) { var pts = place.formattedAddress.split(','); ar.value = pts.slice(-3,-1).join(',').trim(); } }
+      if (place.regularOpeningHours && place.regularOpeningHours.weekdayDescriptions) { var hr = document.getElementById('obHoursInput'); if (hr) hr.value = place.regularOpeningHours.weekdayDescriptions.slice(0,3).join(', '); }
+
+      // Service area types — don't fill address as service area, leave blank for manual entry
+      var serviceAreaTypes = ['plumber','electrician','roofing_contractor','general_contractor','moving_company','cleaning_service','pest_control','locksmith','painter','landscaper','hvac_contractor'];
+      var isServiceArea = place.types && place.types.some(function(t) { return serviceAreaTypes.indexOf(t) !== -1; });
+      if (!isServiceArea && place.formattedAddress) {
+        var ar = document.getElementById('obAreaInput');
+        if (ar) { var pts = place.formattedAddress.split(','); ar.value = pts.slice(-3,-1).join(',').trim(); }
+      }
+
       var typeMap = { dentist:'Dental Office', doctor:'Medical / Healthcare', lawyer:'Law Firm', real_estate_agency:'Real Estate', beauty_salon:'Med Spa / Salon', hair_care:'Barber Shop', restaurant:'Restaurant / Cafe', plumber:'Plumbing', electrician:'Electrical', roofing_contractor:'Roofing', general_contractor:'General Contractor', car_repair:'Auto Shop', gym:'Fitness / Gym', veterinary_care:'Veterinary', moving_company:'Moving Company', cleaning_services:'Cleaning Service', pest_control:'Pest Control' };
-      if (place.types) { var ind = document.getElementById('industrySelectOnboard'); if (ind && !ind.value) { for (var t of place.types) { if (typeMap[t]) { ind.value = typeMap[t]; obHighlightFeatures(ind.value); break; } } } }
+      if (place.types) { var ind = document.getElementById('industrySelectOnboard'); if (ind) { ind.value = ''; for (var t of place.types) { if (typeMap[t]) { ind.value = typeMap[t]; obHighlightFeatures(ind.value); break; } } } }
       document.getElementById('obAutoFillBanner').style.display = 'block';
+
+      // Auto-scan website if found
+      if (place.websiteURI) {
+        obScanWebsite(place.websiteURI);
+      }
     } catch(err) { console.error('[Place details error]', err); }
   }
+
+  var obScanInProgress = false;
+  async function obScanWebsite(url) {
+    if (obScanInProgress) return;
+    obScanInProgress = true;
+
+    // Show scanning indicator
+    var banner = document.getElementById('obScanBanner');
+    var status = document.getElementById('obScanStatus');
+    if (banner) banner.style.display = 'flex';
+    if (status) status.textContent = 'Scanning your website...';
+
+    try {
+      var res = await fetch('https://botbuilder-backend-production.up.railway.app/extract-website', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url: url })
+      });
+      var json = await res.json();
+
+      if (!json.success || !json.data) {
+        if (status) status.textContent = 'Could not read website — fill in the fields below manually.';
+        obScanInProgress = false;
+        return;
+      }
+
+      var d = json.data;
+      var filled = [];
+
+      // Only fill fields that are null/empty and came back non-null
+      var servicesEl = document.querySelector('[name="services"]');
+      if (d.services && servicesEl && !servicesEl.value.trim()) {
+        servicesEl.value = Array.isArray(d.services) ? d.services.join(', ') : d.services;
+        filled.push('services');
+      }
+
+      var hoursEl = document.getElementById('obHoursInput');
+      if (d.hours && hoursEl && !hoursEl.value.trim()) {
+        hoursEl.value = d.hours;
+        filled.push('hours');
+      }
+
+      var areaEl = document.getElementById('obAreaInput');
+      if (d.area && areaEl && !areaEl.value.trim()) {
+        areaEl.value = d.area;
+        filled.push('service area');
+      }
+
+      var faqsEl = document.querySelector('[name="faqs"]');
+      if (d.faqs && faqsEl && !faqsEl.value.trim()) {
+        if (Array.isArray(d.faqs)) {
+          faqsEl.value = d.faqs.map(function(f) {
+            return (f.question || f.q || '') + '\n' + (f.answer || f.a || '');
+          }).join('\n\n');
+        } else {
+          faqsEl.value = d.faqs;
+        }
+        filled.push('FAQs');
+      }
+
+      var diffEl = document.querySelector('[name="differentiators"]');
+      if (d.differentiators && diffEl && !diffEl.value.trim()) {
+        diffEl.value = Array.isArray(d.differentiators) ? d.differentiators.join(', ') : d.differentiators;
+        filled.push('differentiators');
+      }
+
+      var emergencyEl = document.querySelector('[name="emergency"]');
+      if (d.emergency && emergencyEl && !emergencyEl.value.trim()) {
+        emergencyEl.value = d.emergency;
+        filled.push('emergency number');
+      }
+
+      var licensingEl = document.querySelector('[name="licensing"]');
+      if (d.licensing && licensingEl && !licensingEl.value.trim()) {
+        licensingEl.value = d.licensing;
+        filled.push('licensing');
+      }
+
+      var reviewEl = document.querySelector('[name="googleReviewLink"]');
+      if (d.googleReviewLink && reviewEl && !reviewEl.value.trim()) {
+        reviewEl.value = d.googleReviewLink;
+        filled.push('Google review link');
+      }
+
+      // Stop spinner
+      var spinIcon = banner ? banner.querySelector('svg') : null;
+      if (spinIcon) spinIcon.style.animation = 'none';
+
+      if (filled.length > 0) {
+        if (banner) banner.style.background = '#f0fdf4';
+        if (banner) banner.style.borderColor = '#86efac';
+        if (banner) banner.style.color = '#15803d';
+        if (spinIcon) { spinIcon.style.stroke = '#15803d'; spinIcon.innerHTML = '<polyline points="20 6 9 17 4 12"/>'; }
+        if (status) { status.style.color = '#15803d'; status.textContent = '✓ Pre-filled from your website: ' + filled.join(', ') + ' — review and edit anything that looks off.'; }
+      } else {
+        if (spinIcon) spinIcon.style.display = 'none';
+        if (status) status.textContent = 'Website scanned — not enough info found, fill in the fields below manually.';
+      }
+
+    } catch(err) {
+      console.error('[Website scan error]', err);
+      if (status) status.textContent = 'Could not scan website — fill in the fields below manually.';
+    }
+    obScanInProgress = false;
+  }
+  window.obScanWebsite = obScanWebsite;
 
   document.addEventListener('click', function(e) {
     var box = document.getElementById('obBizSuggestions');
