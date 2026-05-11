@@ -66,7 +66,7 @@ textarea.short { min-height: 70px; }
 .pkg-price { font-size: 14px; font-weight: 800; color: #2563eb; white-space: nowrap; }
 </style>
 </head>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDNIUxHy7t3IBSnsBHE8Y6VSmbOVkA_kUE&libraries=places&callback=initObPlaces" async defer></script>
+<script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDNIUxHy7t3IBSnsBHE8Y6VSmbOVkA_kUE&v=weekly&loading=async&libraries=places"></script>
 <body>
 
 <div class="header">
@@ -492,14 +492,11 @@ textarea.short { min-height: 70px; }
   window.obPickBotColor = obPickBotColor;
   window.obPickReviewColor = obPickReviewColor;
 
-  // ── GOOGLE PLACES ──
-  // Called by Google Maps when SDK is ready
+  // ── GOOGLE PLACES (New API 2025) ──
   var obBizTimer = null;
+
   function initObPlaces() {
-    if (window.google && window.google.maps && window.google.maps.places) {
-      window.obAutocompleteService = new google.maps.places.AutocompleteService();
-      window.obPlacesService = new google.maps.places.PlacesService(document.createElement('div'));
-    }
+    // New API loads via importLibrary — nothing to init here
   }
   window.initObPlaces = initObPlaces;
 
@@ -507,45 +504,43 @@ textarea.short { min-height: 70px; }
     clearTimeout(obBizTimer);
     var box = document.getElementById('obBizSuggestions');
     if (!val || val.length < 3) { if(box) box.style.display = 'none'; return; }
-    if (!window.obAutocompleteService) {
-      if (window.google && window.google.maps && window.google.maps.places) {
-        window.obAutocompleteService = new google.maps.places.AutocompleteService();
-        window.obPlacesService = new google.maps.places.PlacesService(document.createElement('div'));
-      } else { return; }
-    }
-    obBizTimer = setTimeout(function() {
-      window.obAutocompleteService.getPlacePredictions({ input: val, types: ['establishment'] }, function(predictions, status) {
-        if (status !== google.maps.places.PlacesServiceStatus.OK || !predictions) { if(box) box.style.display = 'none'; return; }
+    obBizTimer = setTimeout(async function() {
+      try {
+        var { AutocompleteSuggestion } = await google.maps.importLibrary("places");
+        var { suggestions } = await AutocompleteSuggestion.fetchAutocompleteSuggestions({ input: val, includedPrimaryTypes: ['establishment'] });
+        if (!suggestions || suggestions.length === 0) { if(box) box.style.display = 'none'; return; }
         box.innerHTML = '';
-        predictions.slice(0,5).forEach(function(p) {
+        suggestions.slice(0,5).forEach(function(s) {
+          var p = s.placePrediction;
           var el = document.createElement('div');
           el.style.cssText = 'padding:10px 14px;cursor:pointer;font-size:13px;color:#0f172a;border-bottom:1px solid #f1f5f9;background:white;';
-          el.innerHTML = '<div style="font-weight:600;">' + p.structured_formatting.main_text + '</div><div style="font-size:11px;color:#94a3b8;">' + (p.structured_formatting.secondary_text || '') + '</div>';
+          el.innerHTML = '<div style="font-weight:600;">' + p.mainText + '</div><div style="font-size:11px;color:#94a3b8;">' + (p.secondaryText || '') + '</div>';
           el.onmouseenter = function(){ this.style.background = '#f8fafc'; };
           el.onmouseleave = function(){ this.style.background = 'white'; };
-          el.onclick = function(e) { e.stopPropagation(); obSelectBusiness(p.place_id, p.structured_formatting.main_text); };
+          el.onclick = (function(pid, pname) { return function(e) { e.stopPropagation(); obSelectBusiness(pid, pname); }; })(p.placeId, p.mainText.toString());
           box.appendChild(el);
         });
         box.style.display = 'block';
-      });
+      } catch(err) { console.error('[Places search error]', err); }
     }, 350);
   };
 
-  function obSelectBusiness(placeId, name) {
+  async function obSelectBusiness(placeId, name) {
     document.getElementById('obBizSuggestions').style.display = 'none';
     document.getElementById('obBizNameInput').value = name;
     document.getElementById('obBizPlaceId').value = placeId;
-    if (!window.obPlacesService) return;
-    window.obPlacesService.getDetails({ placeId: placeId, fields: ['name','formatted_phone_number','website','opening_hours','formatted_address','types'] }, function(r, status) {
-      if (status !== google.maps.places.PlacesServiceStatus.OK || !r) return;
-      if (r.formatted_phone_number) { var ph = document.getElementById('obPhoneInput'); if (ph && !ph.value) ph.value = r.formatted_phone_number; }
-      if (r.website) { var wb = document.getElementById('obWebsiteInput'); if (wb) wb.value = r.website.replace(/^https?:\/\//, '').replace(/\/$/, ''); }
-      if (r.opening_hours && r.opening_hours.weekday_text) { var hr = document.getElementById('obHoursInput'); if (hr && !hr.value) hr.value = r.opening_hours.weekday_text.slice(0,3).join(', '); }
-      if (r.formatted_address) { var ar = document.getElementById('obAreaInput'); if (ar && !ar.value) { var pts = r.formatted_address.split(','); ar.value = pts.slice(-3,-1).join(',').trim(); } }
+    try {
+      var { Place } = await google.maps.importLibrary("places");
+      var place = new Place({ id: placeId });
+      await place.fetchFields({ fields: ['displayName','nationalPhoneNumber','websiteURI','regularOpeningHours','formattedAddress','types'] });
+      if (place.nationalPhoneNumber) { var ph = document.getElementById('obPhoneInput'); if (ph && !ph.value) ph.value = place.nationalPhoneNumber; }
+      if (place.websiteURI) { var wb = document.getElementById('obWebsiteInput'); if (wb) wb.value = place.websiteURI.replace(/^https?:\/\//, '').replace(/\/$/, ''); }
+      if (place.regularOpeningHours && place.regularOpeningHours.weekdayDescriptions) { var hr = document.getElementById('obHoursInput'); if (hr && !hr.value) hr.value = place.regularOpeningHours.weekdayDescriptions.slice(0,3).join(', '); }
+      if (place.formattedAddress) { var ar = document.getElementById('obAreaInput'); if (ar && !ar.value) { var pts = place.formattedAddress.split(','); ar.value = pts.slice(-3,-1).join(',').trim(); } }
       var typeMap = { dentist:'Dental Office', doctor:'Medical / Healthcare', lawyer:'Law Firm', real_estate_agency:'Real Estate', beauty_salon:'Med Spa / Salon', hair_care:'Barber Shop', restaurant:'Restaurant / Cafe', plumber:'Plumbing', electrician:'Electrical', roofing_contractor:'Roofing', general_contractor:'General Contractor', car_repair:'Auto Shop', gym:'Fitness / Gym', veterinary_care:'Veterinary', moving_company:'Moving Company', cleaning_services:'Cleaning Service', pest_control:'Pest Control' };
-      if (r.types) { var ind = document.getElementById('industrySelectOnboard'); if (ind && !ind.value) { for (var t of r.types) { if (typeMap[t]) { ind.value = typeMap[t]; obHighlightFeatures(ind.value); break; } } } }
+      if (place.types) { var ind = document.getElementById('industrySelectOnboard'); if (ind && !ind.value) { for (var t of place.types) { if (typeMap[t]) { ind.value = typeMap[t]; obHighlightFeatures(ind.value); break; } } } }
       document.getElementById('obAutoFillBanner').style.display = 'block';
-    });
+    } catch(err) { console.error('[Place details error]', err); }
   }
 
   document.addEventListener('click', function(e) {
