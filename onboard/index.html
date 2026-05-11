@@ -185,7 +185,7 @@ textarea.short { min-height: 70px; }
           <div><label>Service Area</label><input type="text" name="area" id="obAreaInput" placeholder="Columbus, OH and surrounding" /></div>
           <div><label>Business Hours</label><input type="text" name="hours" id="obHoursInput" placeholder="Mon–Fri 8am–6pm" /></div>
         </div>
-        <div class="form-group"><label>Website URL <span class="opt">optional</span></label><input type="text" name="website" id="obWebsiteInput" placeholder="www.smithhvac.com" /></div>
+        <div class="form-group"><label>Website URL <span class="opt">optional</span></label><input type="text" name="website" id="obWebsiteInput" placeholder="www.smithhvac.com" /><div style="font-size:11px;color:#b45309;margin-top:5px;">⚠ Please verify this is your correct website URL — Google occasionally links the wrong site.</div></div>
         <div class="form-group">
           <label>Main services</label>
           <textarea name="services" placeholder="e.g. AC repair, furnace installation, tune-ups, emergency service..."></textarea>
@@ -549,7 +549,7 @@ textarea.short { min-height: 70px; }
 
       if (place.nationalPhoneNumber) { var ph = document.getElementById('obPhoneInput'); if (ph) ph.value = place.nationalPhoneNumber; }
       if (place.websiteURI) { var wb = document.getElementById('obWebsiteInput'); if (wb) wb.value = place.websiteURI.replace(/^https?:\/\//, '').replace(/\/$/, ''); }
-      if (place.regularOpeningHours && place.regularOpeningHours.weekdayDescriptions) { var hr = document.getElementById('obHoursInput'); if (hr) hr.value = place.regularOpeningHours.weekdayDescriptions.slice(0,3).join(', '); }
+      if (place.regularOpeningHours && place.regularOpeningHours.weekdayDescriptions) { var hr = document.getElementById('obHoursInput'); if (hr) hr.value = place.regularOpeningHours.weekdayDescriptions.join(', '); }
 
       // Service area types — don't fill address as service area, leave blank for manual entry
       var serviceAreaTypes = ['plumber','electrician','roofing_contractor','general_contractor','moving_company','cleaning_service','pest_control','locksmith','painter','landscaper','hvac_contractor'];
@@ -631,7 +631,7 @@ textarea.short { min-height: 70px; }
 
       var diffEl = document.querySelector('[name="differentiators"]');
       if (d.differentiators && diffEl && !diffEl.value.trim()) {
-        diffEl.value = Array.isArray(d.differentiators) ? d.differentiators.join(', ') : d.differentiators;
+        diffEl.value = Array.isArray(d.differentiators) ? d.differentiators.join('\n') : d.differentiators;
         filled.push('differentiators');
       }
 
@@ -694,6 +694,7 @@ textarea.short { min-height: 70px; }
     if (v('email')) lines.push('<strong>Email:</strong> ' + v('email'));
     if (v('phone')) lines.push('<strong>Phone:</strong> ' + v('phone'));
     if (v('industry')) lines.push('<strong>Industry:</strong> ' + v('industry'));
+    // website intentionally omitted — Google sometimes links wrong site
     if (v('hours')) lines.push('<strong>Hours:</strong> ' + v('hours'));
     var pkg = document.getElementById('packageHidden').value;
     if (pkg) lines.push('<strong>Plan:</strong> ' + pkg);

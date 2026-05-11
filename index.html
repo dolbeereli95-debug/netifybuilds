@@ -58,7 +58,7 @@ section, .hero, nav, footer { max-width: 100vw; overflow-x: hidden; }
 nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 0 40px; height: 68px; display: flex; align-items: center; justify-content: space-between; background: var(--navy); border-bottom: 1px solid rgba(255,255,255,0.06); backdrop-filter: blur(8px); }
 .nav-logo { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; font-size: 1.3rem; color: var(--white); text-decoration: none; letter-spacing: -0.01em; }
 .nav-logo span { color: var(--blue-light); }
-.nav-links { display: flex; gap: 28px; align-items: center; }
+.nav-links { display: flex; gap: 28px; align-items: center; margin-left: auto; }
 .nav-links a { font-size: 14px; font-weight: 500; color: rgba(255,255,255,0.6); text-decoration: none; transition: color 0.2s; }
 .nav-links a:hover { color: white; }
 .nav-cta { background: var(--blue); color: white !important; padding: 9px 22px; border-radius: 99px; font-weight: 600 !important; transition: background 0.2s !important; }
@@ -1238,7 +1238,7 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
                   <div><label>Service Area</label><input type="text" name="area" id="areaInput" placeholder="Columbus, OH and surrounding" /></div>
                   <div><label>Business Hours</label><input type="text" name="hours" id="hoursInput" placeholder="Mon–Fri 8am–6pm" /></div>
                 </div>
-                <div class="form-group"><label>Website URL</label><input type="text" name="website" id="websiteInput" placeholder="www.smithhvac.com" /></div>
+                <div class="form-group"><label>Website URL</label><input type="text" name="website" id="websiteInput" placeholder="www.smithhvac.com" /><div style="font-size:11px;color:#b45309;margin-top:5px;">⚠ Please verify this is your correct website URL — Google occasionally links the wrong site.</div></div>
                 <div class="form-group">
                   <label>Main services</label>
                   <textarea name="services" placeholder="e.g. AC repair, furnace installation, tune-ups, emergency service..."></textarea>
@@ -1788,7 +1788,7 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
 
       if (place.nationalPhoneNumber) { var ph = document.getElementById('phoneInput'); if (ph) ph.value = place.nationalPhoneNumber; }
       if (place.websiteURI) { var wb = document.getElementById('websiteInput'); if (wb) wb.value = place.websiteURI.replace(/^https?:\/\//, '').replace(/\/$/, ''); }
-      if (place.regularOpeningHours && place.regularOpeningHours.weekdayDescriptions) { var hr = document.getElementById('hoursInput'); if (hr) hr.value = place.regularOpeningHours.weekdayDescriptions.slice(0,3).join(', '); }
+      if (place.regularOpeningHours && place.regularOpeningHours.weekdayDescriptions) { var hr = document.getElementById('hoursInput'); if (hr) hr.value = place.regularOpeningHours.weekdayDescriptions.join(', '); }
 
       // Service area types — leave area blank, these businesses serve a region not a fixed location
       var serviceAreaTypes = ['plumber','electrician','roofing_contractor','general_contractor','moving_company','cleaning_service','pest_control','locksmith','painter','landscaper','hvac_contractor'];
@@ -1844,7 +1844,7 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
         filled.push('FAQs');
       }
       var diffEl = document.querySelector('[name="differentiators"]');
-      if (d.differentiators && diffEl && !diffEl.value.trim()) { diffEl.value = Array.isArray(d.differentiators) ? d.differentiators.join(', ') : d.differentiators; filled.push('differentiators'); }
+      if (d.differentiators && diffEl && !diffEl.value.trim()) { diffEl.value = Array.isArray(d.differentiators) ? d.differentiators.join('\n') : d.differentiators; filled.push('differentiators'); }
       var emergencyEl = document.querySelector('[name="emergency"]');
       if (d.emergency && emergencyEl && !emergencyEl.value.trim()) { emergencyEl.value = d.emergency; filled.push('emergency number'); }
       var licensingEl = document.querySelector('[name="licensing"]');
@@ -1884,7 +1884,7 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
     if (v('phone')) lines.push('<strong>Phone:</strong> ' + v('phone'));
     if (v('industry')) lines.push('<strong>Industry:</strong> ' + v('industry'));
     if (v('hours')) lines.push('<strong>Hours:</strong> ' + v('hours'));
-    if (v('website')) lines.push('<strong>Website:</strong> ' + v('website'));
+    // website omitted from summary — Google sometimes links wrong site
     var plan = document.getElementById('selectedPlanField');
     if (plan && plan.value) lines.push('<strong>Plan:</strong> ' + plan.value);
     var el = document.getElementById('reviewSummary');
