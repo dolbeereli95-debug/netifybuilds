@@ -1203,12 +1203,8 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
                   <input type="hidden" id="bizPlaceId" name="placeId" value="" />
                 </div>
               </div>
-              <div id="autoFillBanner" style="display:none;background:#f0fdf4;border:1px solid #86efac;border-radius:10px;padding:10px 14px;margin-top:-4px;margin-bottom:4px;font-size:12px;color:#15803d;font-weight:600;">
+              <div id="autoFillBanner" style="display:none;background:#f0fdf4;border:1px solid #86efac;border-radius:10px;padding:10px 14px;margin-top:-4px;margin-bottom:8px;font-size:12px;color:#15803d;font-weight:600;">
                 ✓ Business info auto-filled from Google — review below and edit anything that looks off.
-              </div>
-              <div id="scanBanner" style="display:none;background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;padding:10px 14px;margin-top:4px;margin-bottom:8px;font-size:12px;color:#2563eb;font-weight:600;display:none;align-items:center;gap:8px;">
-                <svg id="scanSpinner" style="width:14px;height:14px;stroke:#2563eb;fill:none;stroke-width:2;flex-shrink:0;animation:spin 1s linear infinite;" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
-                <span id="scanStatus">Scanning your website...</span>
               </div>
               <div class="form-row">
                 <div><label>Email</label><input type="email" name="email" placeholder="john@smithhvac.com" required /></div>
@@ -1238,7 +1234,7 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
                   <div><label>Service Area</label><input type="text" name="area" id="areaInput" placeholder="Columbus, OH and surrounding" /></div>
                   <div><label>Business Hours</label><input type="text" name="hours" id="hoursInput" placeholder="Mon–Fri 8am–6pm" /></div>
                 </div>
-                <div class="form-group"><label>Website URL</label><input type="text" name="website" id="websiteInput" placeholder="www.smithhvac.com" /><div style="font-size:11px;color:#b45309;margin-top:5px;">⚠ Please verify this is your correct website URL — Google occasionally links the wrong site.</div></div>
+                <div class="form-group"><label>Website URL</label><input type="text" name="website" id="websiteInput" placeholder="www.smithhvac.com" /></div>
                 <div class="form-group">
                   <label>Main services</label>
                   <textarea name="services" placeholder="e.g. AC repair, furnace installation, tune-ups, emergency service..."></textarea>
@@ -1433,14 +1429,47 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
             </form>
             <div class="success-msg" id="successMsg">
   <div class="success-icon"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
-  <h3>You're all set!</h3>
-  <p>Thanks! We'll have your setup code ready within 24 hours. Complete your payment below to get started — your subscription won't begin until your bot is live.</p>
-  <div id="stripePaymentWrap" style="margin-top:20px;">
-    <a id="stripePaymentBtn" href="#" target="_blank" style="display:inline-flex;align-items:center;gap:10px;background:#635bff;color:white;padding:14px 28px;border-radius:12px;font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:700;text-decoration:none;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
-      <svg style="width:18px;height:18px;fill:white;flex-shrink:0;" viewBox="0 0 24 24"><path d="M20 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg>
-      Complete Payment with Stripe →
-    </a>
-    <p style="font-size:12px;color:var(--text-soft);margin-top:12px;line-height:1.6;">No charge until confirmed · Cancel anytime · Billing powered by Stripe</p>
+  <h3>We got it — you'll hear from us within 2 hours.</h3>
+  <p style="margin-bottom:20px;">We'll build your bot and send you the install code. Here's what happens next and how to get it on your site fast.</p>
+
+  <div style="text-align:left;background:var(--off-white);border:1.5px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:20px;">
+    <div style="padding:14px 20px;border-bottom:1px solid var(--border);background:white;">
+      <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:700;color:var(--text);margin-bottom:2px;">How to install your bot — pick what works for you</div>
+      <div style="font-size:12px;color:var(--text-soft);">Your subscription doesn't start until you hit Activate in your client portal.</div>
+    </div>
+    <div style="padding:14px 20px;border-bottom:1px solid var(--border);">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+        <div style="width:22px;height:22px;border-radius:50%;background:#dbeafe;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#2563eb;flex-shrink:0;">1</div>
+        <div style="font-size:13px;font-weight:600;color:var(--text);">You have a web developer</div>
+      </div>
+      <div style="font-size:13px;color:var(--text-soft);line-height:1.6;">We'll include a pre-written email you can forward directly — no explaining required. Should take them 5 minutes.</div>
+    </div>
+    <div style="padding:14px 20px;border-bottom:1px solid var(--border);">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+        <div style="width:22px;height:22px;border-radius:50%;background:#dbeafe;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#2563eb;flex-shrink:0;">2</div>
+        <div style="font-size:13px;font-weight:600;color:var(--text);">Your site is on WordPress</div>
+      </div>
+      <div style="font-size:13px;color:var(--text-soft);line-height:1.6;">Install the free "Header Footer Code Manager" plugin → paste the code → save. Takes 2 minutes. We'll walk you through it.</div>
+    </div>
+    <div style="padding:14px 20px;border-bottom:1px solid var(--border);">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+        <div style="width:22px;height:22px;border-radius:50%;background:#dbeafe;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#2563eb;flex-shrink:0;">3</div>
+        <div style="font-size:13px;font-weight:600;color:var(--text);">Wix, Squarespace, or GoDaddy</div>
+      </div>
+      <div style="font-size:13px;color:var(--text-soft);line-height:1.6;">These platforms support custom code through their settings. We'll include platform-specific instructions.</div>
+    </div>
+    <div style="padding:14px 20px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+        <div style="width:22px;height:22px;border-radius:50%;background:#dcfce7;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#16a34a;flex-shrink:0;">4</div>
+        <div style="font-size:13px;font-weight:600;color:var(--text);">We install it for you</div>
+      </div>
+      <div style="font-size:13px;color:var(--text-soft);line-height:1.6;">Just reply to our email and give us access to your site. We'll handle the whole install — usually same day.</div>
+    </div>
+  </div>
+
+  <div style="background:var(--navy);border-radius:14px;padding:18px 22px;text-align:left;">
+    <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:700;color:white;margin-bottom:4px;">⏱ Your subscription doesn't start until you activate</div>
+    <div style="font-size:13px;color:rgba(255,255,255,0.55);line-height:1.6;">Once the bot is on your site, log into your client portal and hit <strong style="color:#93C5FD;">Activate My Bot</strong>. That's when your subscription starts and payment is collected — not before.</div>
   </div>
 </div>
           </div>
@@ -1739,6 +1768,7 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
 
   // ── GOOGLE PLACES BUSINESS AUTOCOMPLETE (New API 2025) ──
   var bizSearchTimer = null;
+  var scanInProgress = false;
 
   async function initPlacesSDK() {
     await google.maps.importLibrary("places");
@@ -1762,7 +1792,7 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
           el.innerHTML = '<div style="font-weight:600;">' + p.mainText + '</div><div style="font-size:11px;color:#94a3b8;">' + (p.secondaryText || '') + '</div>';
           el.onmouseenter = function(){ this.style.background = '#f8fafc'; };
           el.onmouseleave = function(){ this.style.background = 'white'; };
-          el.onclick = (function(placeId, placeName) { return function(e) { e.stopPropagation(); selectBusiness(placeId, placeName); }; })(p.placeId, p.mainText.toString());
+          el.onclick = (function(pid, pname) { return function(e) { e.stopPropagation(); selectBusiness(pid, pname); }; })(p.placeId, p.mainText.toString());
           if(box) box.appendChild(el);
         });
         if(box) box.style.display = 'block';
@@ -1775,22 +1805,23 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
     if(box) box.style.display = 'none';
     document.getElementById('bizNameInput').value = name;
     document.getElementById('bizPlaceId').value = placeId;
+
+    // Clear previous autofill
+    ['phoneInput','websiteInput','hoursInput','areaInput'].forEach(function(id) { var el = document.getElementById(id); if (el) el.value = ''; });
+    ['services','faqs','differentiators','emergency','licensing'].forEach(function(n) { var el = document.querySelector('[name="' + n + '"]'); if (el) el.value = ''; });
+    var scanBannerEl = document.getElementById('scanBanner'); if(scanBannerEl) scanBannerEl.style.display = 'none';
+    var autoFillBannerEl = document.getElementById('autoFillBanner'); if(autoFillBannerEl) autoFillBannerEl.style.display = 'none';
+    scanInProgress = false;
+
     try {
       var { Place } = await google.maps.importLibrary("places");
       var place = new Place({ id: placeId });
       await place.fetchFields({ fields: ['displayName','nationalPhoneNumber','websiteURI','regularOpeningHours','formattedAddress','types'] });
-      // Clear previous autofill before refilling
-      ['phoneInput','websiteInput','hoursInput','areaInput'].forEach(function(id) { var el = document.getElementById(id); if (el) el.value = ''; });
-      ['services','faqs','differentiators','emergency','licensing'].forEach(function(n) { var el = document.querySelector('[name="' + n + '"]'); if (el) el.value = ''; });
-      var scanBannerEl = document.getElementById('scanBanner'); if(scanBannerEl) scanBannerEl.style.display = 'none';
-      var autoFillBannerEl = document.getElementById('autoFillBanner'); if(autoFillBannerEl) autoFillBannerEl.style.display = 'none';
-      scanInProgress = false;
-
       if (place.nationalPhoneNumber) { var ph = document.getElementById('phoneInput'); if (ph) ph.value = place.nationalPhoneNumber; }
       if (place.websiteURI) { var wb = document.getElementById('websiteInput'); if (wb) wb.value = place.websiteURI.replace(/^https?:\/\//, '').replace(/\/$/, ''); }
       if (place.regularOpeningHours && place.regularOpeningHours.weekdayDescriptions) { var hr = document.getElementById('hoursInput'); if (hr) hr.value = place.regularOpeningHours.weekdayDescriptions.join(', '); }
 
-      // Service area types — leave area blank, these businesses serve a region not a fixed location
+      // Service area types — leave area blank for contractor businesses
       var serviceAreaTypes = ['plumber','electrician','roofing_contractor','general_contractor','moving_company','cleaning_service','pest_control','locksmith','painter','landscaper','hvac_contractor'];
       var isServiceArea = place.types && place.types.some(function(t) { return serviceAreaTypes.indexOf(t) !== -1; });
       if (!isServiceArea && place.formattedAddress) {
@@ -1808,30 +1839,23 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
     } catch(err) { console.error('[Place details error]', err); }
   }
 
-  var scanInProgress = false;
   async function scanWebsite(url) {
     if (scanInProgress) return;
     scanInProgress = true;
     var banner = document.getElementById('scanBanner');
     var status = document.getElementById('scanStatus');
     var spinner = document.getElementById('scanSpinner');
-    if (banner) { banner.style.display = 'flex'; }
+    if (banner) banner.style.display = 'flex';
     if (status) status.textContent = 'Scanning your website...';
     if (spinner) spinner.style.animation = 'spin 1s linear infinite';
     try {
-      var res = await fetch('https://botbuilder-backend-production.up.railway.app/extract-website', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      var res = await fetch(BACKEND + '/extract-website', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ url: url })
       });
       var json = await res.json();
-      if (!json.success || !json.data) {
-        if (status) status.textContent = 'Could not read website — fill in the fields below manually.';
-        scanInProgress = false;
-        return;
-      }
-      var d = json.data;
-      var filled = [];
+      if (!json.success || !json.data) { if(status) status.textContent = 'Could not read website — fill in the fields below manually.'; scanInProgress = false; return; }
+      var d = json.data; var filled = [];
       var servicesEl = document.querySelector('[name="services"]');
       if (d.services && servicesEl && !servicesEl.value.trim()) { servicesEl.value = Array.isArray(d.services) ? d.services.join(', ') : d.services; filled.push('services'); }
       var hoursEl = document.getElementById('hoursInput');
@@ -1839,17 +1863,13 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
       var areaEl = document.getElementById('areaInput');
       if (d.area && areaEl && !areaEl.value.trim()) { areaEl.value = d.area; filled.push('service area'); }
       var faqsEl = document.querySelector('[name="faqs"]');
-      if (d.faqs && faqsEl && !faqsEl.value.trim()) {
-        faqsEl.value = Array.isArray(d.faqs) ? d.faqs.map(function(f){ return (f.question||f.q||'') + '\n' + (f.answer||f.a||''); }).join('\n\n') : d.faqs;
-        filled.push('FAQs');
-      }
+      if (d.faqs && faqsEl && !faqsEl.value.trim()) { faqsEl.value = Array.isArray(d.faqs) ? d.faqs.map(function(f){ return (f.question||f.q||'') + '\n' + (f.answer||f.a||''); }).join('\n\n') : d.faqs; filled.push('FAQs'); }
       var diffEl = document.querySelector('[name="differentiators"]');
       if (d.differentiators && diffEl && !diffEl.value.trim()) { diffEl.value = Array.isArray(d.differentiators) ? d.differentiators.join('\n') : d.differentiators; filled.push('differentiators'); }
       var emergencyEl = document.querySelector('[name="emergency"]');
       if (d.emergency && emergencyEl && !emergencyEl.value.trim()) { emergencyEl.value = d.emergency; filled.push('emergency number'); }
       var licensingEl = document.querySelector('[name="licensing"]');
       if (d.licensing && licensingEl && !licensingEl.value.trim()) { licensingEl.value = d.licensing; filled.push('licensing'); }
-
       if (spinner) spinner.style.animation = 'none';
       if (filled.length > 0) {
         if (banner) { banner.style.background = '#f0fdf4'; banner.style.borderColor = '#86efac'; }
@@ -1860,10 +1880,7 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
         if (status) status.textContent = 'Website scanned — fill in the fields below manually.';
       }
       if (window.updateReviewSummary) updateReviewSummary();
-    } catch(err) {
-      console.error('[Scan error]', err);
-      if (status) status.textContent = 'Could not scan website — fill in the fields below manually.';
-    }
+    } catch(err) { console.error('[Scan error]', err); if(status) status.textContent = 'Could not scan website — fill in the fields below manually.'; }
     scanInProgress = false;
   }
 
@@ -1884,7 +1901,7 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
     if (v('phone')) lines.push('<strong>Phone:</strong> ' + v('phone'));
     if (v('industry')) lines.push('<strong>Industry:</strong> ' + v('industry'));
     if (v('hours')) lines.push('<strong>Hours:</strong> ' + v('hours'));
-    // website omitted from summary — Google sometimes links wrong site
+    // website intentionally omitted from summary
     var plan = document.getElementById('selectedPlanField');
     if (plan && plan.value) lines.push('<strong>Plan:</strong> ' + plan.value);
     var el = document.getElementById('reviewSummary');
@@ -2157,22 +2174,7 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
       f.style.display = 'none';
       var successEl = document.getElementById('successMsg');
       successEl.style.display = 'block';
-      // Wire up correct Stripe payment link based on plan selected
-      var STRIPE_LINKS = {
-        'Chat Assistant':          'https://buy.stripe.com/REPLACE_CHAT',
-        'Review Filter':           'https://buy.stripe.com/REPLACE_REVIEW',
-        'Reactivation Campaigns':  'https://buy.stripe.com/REPLACE_CAMPAIGN',
-        'bundle':                  'https://buy.stripe.com/REPLACE_BUNDLE',
-      };
-      var plan = document.getElementById('selectedPlanField') ? document.getElementById('selectedPlanField').value : '';
-      var stripeBtn = document.getElementById('stripePaymentBtn');
-      if (stripeBtn) {
-        var link = STRIPE_LINKS['bundle'];
-        if (plan && plan.includes('Chat Assistant') && !plan.includes('Review') && !plan.includes('Reactivation')) link = STRIPE_LINKS['Chat Assistant'];
-        else if (plan && plan.includes('Review Filter') && !plan.includes('Chat') && !plan.includes('Reactivation')) link = STRIPE_LINKS['Review Filter'];
-        else if (plan && plan.includes('Reactivation') && !plan.includes('Chat') && !plan.includes('Review')) link = STRIPE_LINKS['Reactivation Campaigns'];
-        stripeBtn.href = link;
-      }
+      // Stripe wiring removed — payment happens at activation in client portal
       successEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
     } catch(err) {
       btn.textContent = 'Submit & Get Started →'; btn.disabled = false;
@@ -2182,55 +2184,7 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
 
 
 
-  // ── FORM SUBMIT ──
-  document.getElementById('onboardingForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    var f = this;
-    var v = function(n) { return (f.elements[n] && f.elements[n].value.trim()) || 'Not provided'; };
-    var pkg = v('package');
-    var pkgLabel = pkg === 'bundle' ? 'Full Bundle — $399/mo' : '24/7 Website Chat Assistant — $250/mo';
-
-    // Send to /signup endpoint — sends properly formatted BotBuilder email
-    fetch(BACKEND + '/signup', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        ownerName: v('ownerName'),
-        bizName: v('bizName'),
-        email: v('email'),
-        phone: v('phone'),
-        website: v('website'),
-        industry: v('industry'),
-        area: v('area'),
-        hours: v('hours'),
-        services: v('services'),
-        faqs: v('faqs'),
-        tone: v('tone'),
-        package: v('package'),
-        differentiators: v('differentiators'),
-        licensing: v('licensing'),
-        emergency: v('emergency'),
-        seasonal: v('seasonal'),
-        botPersonality: v('botPersonality'),
-        botColor: v('botColor'),
-        billing: v('billing'),
-        hearAbout: v('hearAbout'),
-        features: [['Workout Split Builder','feature_workout'],['Appointment Request Flow','feature_appointment'],['Emergency Escalation','feature_emergency'],['Multilanguage Support','feature_multilang'],['Pricing Guide Mode','feature_pricing'],['Service Status Updates','feature_status'],['Property Info Mode','feature_property'],['Wait Time & Waitlist','feature_waittime'],['Case Type Qualifier','feature_qualifier'],['Symptom Triage','feature_triage']].filter(function(p){return f.elements[p[1]]&&f.elements[p[1]].checked;}).map(function(p){return p[0];}).join(', ') || 'None',
-        googleReviewLink: v('googleReviewLink'),
-        features: {
-          workoutSplitBuilder: f.elements['feature_workout'] && f.elements['feature_workout'].checked ? 'Yes' : 'No',
-          appointmentFlow:     f.elements['feature_appointment'] && f.elements['feature_appointment'].checked ? 'Yes' : 'No',
-          emergencyEscalation: f.elements['feature_emergency'] && f.elements['feature_emergency'].checked ? 'Yes' : 'No',
-          multilanguage:       f.elements['feature_multilang'] && f.elements['feature_multilang'].checked ? 'Yes' : 'No',
-          pricingGuide:        f.elements['feature_pricing'] && f.elements['feature_pricing'].checked ? 'Yes' : 'No',
-        }
-      })
-    }).catch(function() {});
-
-    f.style.display = 'none';
-    document.getElementById('successMsg').style.display = 'block';
-    document.getElementById('successMsg').scrollIntoView({ behavior: 'smooth', block: 'center' });
-  });
+  // Duplicate form listener removed — handled by unified submit above
   // Expose to global scope for inline handlers
   window.setBotColor = setBotColor;
   window.setBrandColor = setBrandColor;
@@ -2293,7 +2247,7 @@ function copyAndChat(btn, question) {
   var AUTO_OPEN_DELAY = null;
   var HOURS = null;
 
-  var SYSTEM_PROMPT = "You are Netify Assistant, a friendly and casual 24/7 chat assistant for Netify Builds — a Dayton, Ohio-based company run personally by Eli that builds custom AI tools for small businesses. Your job is to answer questions honestly and guide visitors toward becoming leads by naturally collecting their name and phone number.\n\nKeep every response to 2-3 sentences maximum. Be conversational and warm — like a knowledgeable friend, not a salesperson. Never use markdown formatting, bullet points, bold text, or emojis in your responses. Plain conversational sentences only.\n\n---\n\nABOUT THE BUSINESS:\nNetify Builds creates 24/7 Website Chat Assistants and a Review Filter product for local service businesses. Everything is built and managed personally by Eli. Serves Dayton Ohio and surrounding areas, also works remotely nationwide.\n\n---\n\nSERVICES AND PRICING:\n24/7 Website Chat Assistant at $250 per month — a custom 24/7 chat assistant on the client website that answers questions 24/7 and captures leads automatically. No setup fees, no contracts, cancel anytime.\nReview Filter at $100 per month — a custom review page businesses send customers after every job. Happy customers get directed to Google reviews. Unhappy ones get caught privately before going public.\nFull Bundle at $399 per month — both products together.\n\n---\n\nHONEST TRAFFIC ADVICE:\nIf a visitor mentions they have low website traffic or are not running ads, be honest with them. Tell them the 24/7 Website Chat Assistant works best when there is already decent traffic coming to the site, so if traffic is low it might not do much for them yet. Suggest the Review Filter as a smarter starting point because more good Google reviews directly increases organic traffic over time — it builds the foundation that makes the bot valuable later. Never push a product on someone it would not genuinely help.\n\n---\n\nFAQS:\nHow much does it cost — 24/7 Website Chat Assistant $250 per month, Review Filter $100 per month, Full Bundle $399 per month, Reactivation Campaigns $200 per month. No setup fees, no contracts, cancel anytime.\nHow long does setup take — setup code delivered within 24 hours of approval — or your first month is free.\nDo I need to be tech savvy — not at all. Fill out a form, Eli builds and installs everything.\nWhat websites does it work on — any website, WordPress, Wix, Squarespace, GoDaddy, Webflow, Shopify, custom HTML. One line of code.\nCan I cancel anytime — yes, no contracts, no fees, cancel via Stripe portal.\nWhat happens when the bot captures a lead — owner gets an email instantly with name, phone, job type, urgency.\nHow does the Review Filter work — text the customer a link after each job. Happy ones go to Google reviews. Unhappy ones get a private chat that never goes public.\nWhat if something goes wrong — Eli handles it personally, fixed same day.\n\n---\n\nLEAD COLLECTION:\nNaturally collect the visitor name then phone number through conversation. Never ask again once collected. If someone wants to book or schedule, collect their info and tell them Eli will call to set it up.\n\nOnce you have BOTH a name AND a phone number output this trigger exactly at the very end of your response on its own line:\nLEAD_CAPTURED|[name]|[phone]|[job type or Not specified]|[urgency or Not specified]\n\nNever show this trigger to the customer. Never mention it.\n\n---\n\nOFF-TOPIC AND INAPPROPRIATE QUESTIONS:\nIf someone asks anything unrelated to the business — personal questions, political opinions, inappropriate or offensive questions, anything off-topic — redirect naturally and briefly without making a big deal of it. Vary how you redirect — do not use the same phrase every time. Keep it light, one sentence max, then offer to help with something real. Never lecture or refuse rudely.\n\nFUTURE PLANS AND UNKNOWNS:\nIf someone asks about future products, roadmap, or anything Eli has not shared publicly, just say honestly that you are not sure what is in the pipeline but Eli is always building and improving things, and they are welcome to reach out directly to ask him. Never speculate or make things up.\n\nPERSONALITY:\nVary your responses naturally — do not repeat the same phrases or sentence structures. Sound like a real person having a conversation, not a bot running through scripts. If someone seems stressed or says something like HELP, respond warmly and find out what they actually need before assuming.\n\n---\n\nCOMPETITORS: Stay neutral. Never speak negatively. Redirect warmly to Netify Builds strengths.\n\nLANGUAGE: Respond in whatever language the customer writes in.\n\nHONESTY: If you do not know something say so and offer to have Eli follow up directly.\n\nNEVER: Use markdown formatting, bold text, bullet points, or emojis. Quote unlisted prices. Confirm or schedule appointments directly. Speak negatively about competitors. Show the LEAD_CAPTURED trigger. Make up features or guarantees. Be pushy. Tell someone to check the demo on this page — they are already here.\n\nWHAT MAKES NETIFY BUILDS STAND OUT: Locally owned in Dayton Ohio. Built and managed personally by Eli — never a support ticket. 24 hour setup guarantee or first month free. No contracts ever. Responds in any language automatically. Honest pricing, zero hidden fees.";
+  var SYSTEM_PROMPT = "You are Netify Assistant, a friendly and casual 24/7 chat assistant for Netify Builds — a Dayton, Ohio-based company run personally by Eli that builds custom AI tools for small businesses. Your job is to answer questions honestly and guide visitors toward becoming leads by naturally collecting their name and phone number.\n\nKeep every response to 2-3 sentences maximum. Be conversational and warm — like a knowledgeable friend, not a salesperson. Never use markdown formatting, bullet points, bold text, or emojis in your responses. Plain conversational sentences only.\n\n---\n\nABOUT THE BUSINESS:\nNetify Builds creates 24/7 Website Chat Assistants and a Review Filter product for local service businesses. Everything is built and managed personally by Eli. Serves Dayton Ohio and surrounding areas, also works remotely nationwide.\n\n---\n\nSERVICES AND PRICING:\n24/7 Website Chat Assistant at $250 per month — a custom 24/7 chat assistant on the client website that answers questions 24/7 and captures leads automatically. No setup fees, no contracts, cancel anytime.\nReview Filter at $100 per month — a custom review page businesses send customers after every job. Happy customers get directed to Google reviews. Unhappy ones get caught privately before going public.\nBundle discount — 15% off when subscribing to any two or more products. Chat Assistant $250 plus Review Filter $100 equals $297 per month with bundle discount. Adding Reactivation Campaigns $200 to any bundle saves even more.\n\n---\n\nHONEST TRAFFIC ADVICE:\nIf a visitor mentions they have low website traffic or are not running ads, be honest with them. Tell them the 24/7 Website Chat Assistant works best when there is already decent traffic coming to the site, so if traffic is low it might not do much for them yet. Suggest the Review Filter as a smarter starting point because more good Google reviews directly increases organic traffic over time — it builds the foundation that makes the bot valuable later. Never push a product on someone it would not genuinely help.\n\n---\n\nFAQS:\nHow much does it cost — 24/7 Website Chat Assistant $250 per month, Review Filter $100 per month, Full Bundle $399 per month, Reactivation Campaigns $200 per month. No setup fees, no contracts, cancel anytime.\nHow long does setup take — setup code delivered within 24 hours of approval — or your first month is free.\nDo I need to be tech savvy — not at all. Fill out a form, Eli builds and installs everything.\nWhat websites does it work on — any website, WordPress, Wix, Squarespace, GoDaddy, Webflow, Shopify, custom HTML. One line of code.\nCan I cancel anytime — yes, no contracts, no fees, cancel via Stripe portal.\nWhat happens when the bot captures a lead — owner gets an email instantly with name, phone, job type, urgency.\nHow does the Review Filter work — text the customer a link after each job. Happy ones go to Google reviews. Unhappy ones get a private chat that never goes public.\nWhat if something goes wrong — Eli handles it personally, fixed same day.\n\n---\n\nLEAD COLLECTION:\nNaturally collect the visitor name then phone number through conversation. Never ask again once collected. If someone wants to book or schedule, collect their info and tell them Eli will call to set it up.\n\nOnce you have BOTH a name AND a phone number output this trigger exactly at the very end of your response on its own line:\nLEAD_CAPTURED|[name]|[phone]|[job type or Not specified]|[urgency or Not specified]\n\nNever show this trigger to the customer. Never mention it.\n\n---\n\nOFF-TOPIC AND INAPPROPRIATE QUESTIONS:\nIf someone asks anything unrelated to the business — personal questions, political opinions, inappropriate or offensive questions, anything off-topic — redirect naturally and briefly without making a big deal of it. Vary how you redirect — do not use the same phrase every time. Keep it light, one sentence max, then offer to help with something real. Never lecture or refuse rudely.\n\nFUTURE PLANS AND UNKNOWNS:\nIf someone asks about future products, roadmap, or anything Eli has not shared publicly, just say honestly that you are not sure what is in the pipeline but Eli is always building and improving things, and they are welcome to reach out directly to ask him. Never speculate or make things up.\n\nPERSONALITY:\nVary your responses naturally — do not repeat the same phrases or sentence structures. Sound like a real person having a conversation, not a bot running through scripts. If someone seems stressed or says something like HELP, respond warmly and find out what they actually need before assuming.\n\n---\n\nCOMPETITORS: Stay neutral. Never speak negatively. Redirect warmly to Netify Builds strengths.\n\nLANGUAGE: Respond in whatever language the customer writes in.\n\nHONESTY: If you do not know something say so and offer to have Eli follow up directly.\n\nNEVER: Use markdown formatting, bold text, bullet points, or emojis. Quote unlisted prices. Confirm or schedule appointments directly. Speak negatively about competitors. Show the LEAD_CAPTURED trigger. Make up features or guarantees. Be pushy. Tell someone to check the demo on this page — they are already here.\n\nWHAT MAKES NETIFY BUILDS STAND OUT: Locally owned in Dayton Ohio. Built and managed personally by Eli — never a support ticket. 24 hour setup guarantee or first month free. No contracts ever. Responds in any language automatically. Honest pricing, zero hidden fees.";
 
   var style = document.createElement('style');
   style.textContent = [
