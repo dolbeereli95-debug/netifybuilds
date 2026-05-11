@@ -563,11 +563,11 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
     <a href="#how">How It Works</a>
     <a href="#pricing">Pricing</a>
     <a href="#try">Try the Bot</a>
-    <a href="#demo">Free Demo</a><a href="portal/" style="color:var(--blue-light);">Client Portal</a>
+    <a href="#demo">Free Demo</a><a href="/portal" style="color:var(--blue-light);">Client Portal</a>
     <a href="#contact" class="nav-cta">Get Started</a>
   </div>
   <div style="display:flex;align-items:center;gap:10px;">
-    <a href="portal/" class="nav-portal-btn">Client Portal</a>
+    <a href="/portal" class="nav-portal-btn">Client Portal</a>
     <button class="nav-hamburger" id="hamburger" aria-label="Menu">
       <span></span><span></span><span></span>
     </button>
@@ -1149,7 +1149,7 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
             <svg style="width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
             Text me directly — (937) 367-1847
           </a>
-          <a href="portal/" style="display:inline-flex;align-items:center;gap:8px;background:rgba(147,197,253,0.12);border:1px solid rgba(147,197,253,0.25);color:var(--blue-light);font-size:14px;font-weight:700;text-decoration:none;padding:10px 18px;border-radius:10px;margin-top:6px;width:fit-content;">
+          <a href="/portal" style="display:inline-flex;align-items:center;gap:8px;background:rgba(147,197,253,0.12);border:1px solid rgba(147,197,253,0.25);color:var(--blue-light);font-size:14px;font-weight:700;text-decoration:none;padding:10px 18px;border-radius:10px;margin-top:6px;width:fit-content;">
             <svg style="width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
             Existing client? Sign in to your portal
           </a>
@@ -1210,7 +1210,7 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
                 <div><label>Email</label><input type="email" name="email" placeholder="john@smithhvac.com" required /></div>
                 <div><label>Phone</label><input type="tel" name="phone" id="phoneInput" placeholder="(555) 867-5309" required /></div>
               </div>
-              <p style="font-size:11px;color:var(--text-soft);line-height:1.6;margin-top:-4px;margin-bottom:8px;">By providing your phone number you agree to receive SMS messages from Netify Builds related to your account and services. Message and data rates may apply. Reply STOP to opt out at any time. Reply HELP for help. See our <a href="privacy/" style="color:var(--blue);">Privacy Policy</a> and <a href="terms/" style="color:var(--blue);">Terms of Service</a>.</p>
+              <p style="font-size:11px;color:var(--text-soft);line-height:1.6;margin-top:-4px;margin-bottom:8px;">By providing your phone number you agree to receive SMS messages from Netify Builds related to your account and services. Message and data rates may apply. Reply STOP to opt out at any time. Reply HELP for help. See our <a href="/privacy" style="color:var(--blue);">Privacy Policy</a> and <a href="/terms" style="color:var(--blue);">Terms of Service</a>.</p>
               <input type="hidden" name="selectedPlan" id="selectedPlanField" value="" />
               <input type="hidden" name="campaignFrequency" id="campaignFreqField" value="" />
 
@@ -1482,20 +1482,20 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
         <a href="#about">About Eli</a>
         <a href="mailto:netifybuilds@gmail.com">Email Us</a>
         <a href="sms:+19373671847">Text Us</a>
-        <a href="portal/">Client Portal</a>
-        <a href="onboard/">Get Started</a>
+        <a href="/portal">Client Portal</a>
+        <a href="/onboard">Get Started</a>
       </div>
       <div class="footer-col">
         <h5>Legal</h5>
-        <a href="privacy/">Privacy Policy</a>
-        <a href="terms/">Terms of Service</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/terms">Terms of Service</a>
       </div>
     </div>
     <div class="footer-bottom">
       <div class="footer-copy">© 2026 Netify Builds · Dayton, OH · All rights reserved.</div>
       <div class="footer-legal">
-        <a href="privacy/">Privacy Policy</a>
-        <a href="terms/">Terms of Service</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/terms">Terms of Service</a>
       </div>
     </div>
   </div>
@@ -1735,50 +1735,59 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
 
   // ── GOOGLE PLACES BUSINESS AUTOCOMPLETE ──
   var PLACES_API_KEY = 'AIzaSyDNIUxHy7t3IBSnsBHE8Y6VSmbOVkA_kUE';
+  var autocompleteService = null;
+  var placesService = null;
   var bizSearchTimer = null;
+
+  function initPlacesSDK() {
+    if (window.google && window.google.maps && window.google.maps.places) {
+      autocompleteService = new google.maps.places.AutocompleteService();
+      placesService = new google.maps.places.PlacesService(document.createElement('div'));
+    }
+  }
+  if (window.google && window.google.maps) initPlacesSDK();
+  window.initPlacesSDK = initPlacesSDK;
 
   window.bizNameSearch = function(val) {
     clearTimeout(bizSearchTimer);
     var box = document.getElementById('bizSuggestions');
-    if (!val || val.length < 3) { box.style.display = 'none'; return; }
-    bizSearchTimer = setTimeout(async function() {
-      try {
-        var res = await fetch('https://maps.googleapis.com/maps/api/place/autocomplete/json?input=' + encodeURIComponent(val) + '&types=establishment&key=' + PLACES_API_KEY);
-        var data = await res.json();
-        if (!data.predictions || !data.predictions.length) { box.style.display = 'none'; return; }
-        box.innerHTML = '';
-        data.predictions.slice(0,5).forEach(function(p) {
+    if (!val || val.length < 3) { if(box) box.style.display = 'none'; return; }
+    if (!autocompleteService) { initPlacesSDK(); if (!autocompleteService) return; }
+    bizSearchTimer = setTimeout(function() {
+      autocompleteService.getPlacePredictions({ input: val, types: ['establishment'] }, function(predictions, status) {
+        if (status !== google.maps.places.PlacesServiceStatus.OK || !predictions) { if(box) box.style.display = 'none'; return; }
+        if(box) box.innerHTML = '';
+        predictions.slice(0,5).forEach(function(p) {
           var el = document.createElement('div');
           el.style.cssText = 'padding:10px 14px;cursor:pointer;font-size:13px;color:#0f172a;border-bottom:1px solid #f1f5f9;background:white;';
           el.innerHTML = '<div style="font-weight:600;">' + p.structured_formatting.main_text + '</div><div style="font-size:11px;color:#94a3b8;">' + (p.structured_formatting.secondary_text || '') + '</div>';
           el.onmouseenter = function(){ this.style.background = '#f8fafc'; };
           el.onmouseleave = function(){ this.style.background = 'white'; };
           el.onclick = function(e) { e.stopPropagation(); selectBusiness(p.place_id, p.structured_formatting.main_text); };
-          box.appendChild(el);
+          if(box) box.appendChild(el);
         });
-        box.style.display = 'block';
-      } catch(e) { box.style.display = 'none'; }
+        if(box) box.style.display = 'block';
+      });
     }, 350);
   };
 
-  async function selectBusiness(placeId, name) {
-    document.getElementById('bizSuggestions').style.display = 'none';
+  function selectBusiness(placeId, name) {
+    var box = document.getElementById('bizSuggestions');
+    if(box) box.style.display = 'none';
     document.getElementById('bizNameInput').value = name;
     document.getElementById('bizPlaceId').value = placeId;
-    try {
-      var res = await fetch('https://maps.googleapis.com/maps/api/place/details/json?place_id=' + placeId + '&fields=name,formatted_phone_number,website,opening_hours,formatted_address,types&key=' + PLACES_API_KEY);
-      var data = await res.json();
-      var r = data.result;
-      if (!r) return;
+    if (!placesService) { initPlacesSDK(); if (!placesService) return; }
+    placesService.getDetails({ placeId: placeId, fields: ['name','formatted_phone_number','website','opening_hours','formatted_address','types'] }, function(r, status) {
+      if (status !== google.maps.places.PlacesServiceStatus.OK || !r) return;
       if (r.formatted_phone_number) { var ph = document.getElementById('phoneInput'); if (ph && !ph.value) ph.value = r.formatted_phone_number; }
       if (r.website) { var wb = document.getElementById('websiteInput'); if (wb) wb.value = r.website.replace(/^https?:\/\//, '').replace(/\/$/, ''); }
       if (r.opening_hours && r.opening_hours.weekday_text) { var hr = document.getElementById('hoursInput'); if (hr && !hr.value) hr.value = r.opening_hours.weekday_text.slice(0,3).join(', '); }
       if (r.formatted_address) { var ar = document.getElementById('areaInput'); if (ar && !ar.value) { var pts = r.formatted_address.split(','); ar.value = pts.slice(-3,-1).join(',').trim(); } }
-      var typeMap = { dentist:'Dental Office', doctor:'Medical / Healthcare', lawyer:'Law Firm', real_estate_agency:'Real Estate', beauty_salon:'Med Spa / Salon', hair_care:'Barber Shop', restaurant:'Restaurant / Cafe', plumber:'Plumbing', electrician:'Electrical', roofing_contractor:'Roofing', general_contractor:'General Contractor', car_repair:'Auto Shop', gym:'Fitness / Gym', veterinary_care:'Veterinary', moving_company:'Moving Company', lodging:'Other' };
-      if (r.types) { var ind = document.getElementById('industrySelect'); if (ind && !ind.value) { for (var t of r.types) { if (typeMap[t]) { ind.value = typeMap[t]; highlightFeatures(ind.value); break; } } } }
-      document.getElementById('autoFillBanner').style.display = 'block';
-      updateReviewSummary();
-    } catch(e) { console.log('Places error:', e.message); }
+      var typeMap = { dentist:'Dental Office', doctor:'Medical / Healthcare', lawyer:'Law Firm', real_estate_agency:'Real Estate', beauty_salon:'Med Spa / Salon', hair_care:'Barber Shop', restaurant:'Restaurant / Cafe', plumber:'Plumbing', electrician:'Electrical', roofing_contractor:'Roofing', general_contractor:'General Contractor', car_repair:'Auto Shop', gym:'Fitness / Gym', veterinary_care:'Veterinary', moving_company:'Moving Company' };
+      if (r.types) { var ind = document.getElementById('industrySelect'); if (ind && !ind.value) { for (var t of r.types) { if (typeMap[t]) { ind.value = typeMap[t]; if(window.highlightFeatures) highlightFeatures(ind.value); break; } } } }
+      var banner = document.getElementById('autoFillBanner'); if(banner) banner.style.display = 'block';
+      if(window.updateReviewSummary) updateReviewSummary();
+    });
   }
 
   document.addEventListener('click', function(e) {

@@ -81,7 +81,7 @@ textarea.short { min-height: 70px; }
 <body>
 
 <div class="header">
-  <a href="../" class="logo">Netify <span>Builds.</span></a>
+  <a href="/" class="logo">Netify <span>Builds.</span></a>
 </div>
 
 <div class="hero">
@@ -117,7 +117,7 @@ textarea.short { min-height: 70px; }
         <div><label>Email</label><input type="email" name="email" placeholder="john@yoursite.com" required /></div>
         <div><label>Phone</label><input type="tel" name="phone" id="obPhoneInput" placeholder="(555) 867-5309" required /></div>
       </div>
-      <p style="font-size:11px;color:var(--text-soft);line-height:1.6;margin-top:-8px;margin-bottom:8px;">By providing your phone number you agree to receive SMS messages from Netify Builds related to your account and services. Message and data rates may apply. Reply STOP to opt out. Reply HELP for help. See our <a href="../privacy/" style="color:var(--blue);">Privacy Policy</a> and <a href="../terms/" style="color:var(--blue);">Terms of Service</a>.</p>
+      <p style="font-size:11px;color:var(--text-soft);line-height:1.6;margin-top:-8px;margin-bottom:8px;">By providing your phone number you agree to receive SMS messages from Netify Builds related to your account and services. Message and data rates may apply. Reply STOP to opt out. Reply HELP for help. See our <a href="/privacy" style="color:var(--blue);">Privacy Policy</a> and <a href="/terms" style="color:var(--blue);">Terms of Service</a>.</p>
       <div class="form-group"><label>Website URL <span class="opt" id="websiteOptNote">optional for Reactivation Campaigns</span></label><input type="text" name="website" id="obWebsiteInput" placeholder="www.yoursite.com" /></div>
 
       <!-- ② PICK YOUR PLAN -->
@@ -412,7 +412,7 @@ textarea.short { min-height: 70px; }
 </div>
 
 <div class="footer">
-  <a href="../">← Back to Netify Builds</a>
+  <a href="/">← Back to Netify Builds</a>
 </div>
 
 <script>
@@ -518,48 +518,49 @@ textarea.short { min-height: 70px; }
   window.obBizSearch = function(val) {
     clearTimeout(obBizTimer);
     var box = document.getElementById('obBizSuggestions');
-    if (!val || val.length < 3) { box.style.display = 'none'; return; }
-    obBizTimer = setTimeout(async function() {
-      try {
-        var res = await fetch('https://maps.googleapis.com/maps/api/place/autocomplete/json?input=' + encodeURIComponent(val) + '&types=establishment&key=' + OB_PLACES_KEY);
-        var data = await res.json();
-        if (!data.predictions || !data.predictions.length) { box.style.display = 'none'; return; }
-        box.innerHTML = '';
-        data.predictions.slice(0,5).forEach(function(p) {
+    if (!val || val.length < 3) { if(box) box.style.display = 'none'; return; }
+    if (!window.obAutocompleteService) {
+      if (window.google && window.google.maps && window.google.maps.places) {
+        window.obAutocompleteService = new google.maps.places.AutocompleteService();
+        window.obPlacesService = new google.maps.places.PlacesService(document.createElement('div'));
+      } else { return; }
+    }
+    obBizTimer = setTimeout(function() {
+      window.obAutocompleteService.getPlacePredictions({ input: val, types: ['establishment'] }, function(predictions, status) {
+        if (status !== google.maps.places.PlacesServiceStatus.OK || !predictions) { if(box) box.style.display = 'none'; return; }
+        if(box) box.innerHTML = '';
+        predictions.slice(0,5).forEach(function(p) {
           var el = document.createElement('div');
           el.style.cssText = 'padding:10px 14px;cursor:pointer;font-size:13px;color:#0f172a;border-bottom:1px solid #f1f5f9;background:white;';
           el.innerHTML = '<div style="font-weight:600;">' + p.structured_formatting.main_text + '</div><div style="font-size:11px;color:#94a3b8;">' + (p.structured_formatting.secondary_text || '') + '</div>';
           el.onmouseenter = function(){ this.style.background = '#f8fafc'; };
           el.onmouseleave = function(){ this.style.background = 'white'; };
           el.onclick = function(e) { e.stopPropagation(); obSelectBusiness(p.place_id, p.structured_formatting.main_text); };
-          box.appendChild(el);
+          if(box) box.appendChild(el);
         });
-        box.style.display = 'block';
-      } catch(e) { box.style.display = 'none'; }
+        if(box) box.style.display = 'block';
+      });
     }, 350);
   };
 
-  async function obSelectBusiness(placeId, name) {
-    document.getElementById('obBizSuggestions').style.display = 'none';
+  function obSelectBusiness(placeId, name) {
+    var box = document.getElementById('obBizSuggestions');
+    if(box) box.style.display = 'none';
     document.getElementById('obBizNameInput').value = name;
     document.getElementById('obBizPlaceId').value = placeId;
-    try {
-      var res = await fetch('https://maps.googleapis.com/maps/api/place/details/json?place_id=' + placeId + '&fields=name,formatted_phone_number,website,opening_hours,formatted_address,types&key=' + OB_PLACES_KEY);
-      var data = await res.json();
-      var r = data.result;
-      if (!r) return;
+    if (!window.obPlacesService) return;
+    window.obPlacesService.getDetails({ placeId: placeId, fields: ['name','formatted_phone_number','website','opening_hours','formatted_address','types'] }, function(r, status) {
+      if (status !== google.maps.places.PlacesServiceStatus.OK || !r) return;
       if (r.formatted_phone_number) { var ph = document.getElementById('obPhoneInput'); if (ph && !ph.value) ph.value = r.formatted_phone_number; }
       if (r.website) { var wb = document.getElementById('obWebsiteInput'); if (wb) wb.value = r.website.replace(/^https?:\/\//, '').replace(/\/$/, ''); }
       if (r.opening_hours && r.opening_hours.weekday_text) { var hr = document.getElementById('obHoursInput'); if (hr && !hr.value) hr.value = r.opening_hours.weekday_text.slice(0,3).join(', '); }
       if (r.formatted_address) { var ar = document.getElementById('obAreaInput'); if (ar && !ar.value) { var pts = r.formatted_address.split(','); ar.value = pts.slice(-3,-1).join(',').trim(); } }
       var typeMap = { dentist:'Dental Office', doctor:'Medical / Healthcare', lawyer:'Law Firm', real_estate_agency:'Real Estate', beauty_salon:'Med Spa / Salon', hair_care:'Barber Shop', restaurant:'Restaurant / Cafe', plumber:'Plumbing', electrician:'Electrical', roofing_contractor:'Roofing', general_contractor:'General Contractor', car_repair:'Auto Shop', gym:'Fitness / Gym', veterinary_care:'Veterinary', moving_company:'Moving Company', cleaning_services:'Cleaning Service', pest_control:'Pest Control' };
-      if (r.types) { var ind = document.getElementById('industrySelectOnboard'); if (ind && !ind.value) { for (var t of r.types) { if (typeMap[t]) { ind.value = typeMap[t]; highlightFeaturesOnboard(ind.value); break; } } } }
-      document.getElementById('obAutoFillBanner').style.display = 'block';
-      obUpdateReviewSummary();
-    } catch(e) { console.log('Places error:', e.message); }
-  }
-
-  document.addEventListener('click', function(e) {
+      if (r.types) { var ind = document.getElementById('industrySelectOnboard'); if (ind && !ind.value) { for (var t of r.types) { if (typeMap[t]) { ind.value = typeMap[t]; if(window.highlightFeaturesOnboard) highlightFeaturesOnboard(ind.value); break; } } } }
+      var banner = document.getElementById('obAutoFillBanner'); if(banner) banner.style.display = 'block';
+      if(window.obUpdateReviewSummary) obUpdateReviewSummary();
+    });
+  }document.addEventListener('click', function(e) {
     var box = document.getElementById('obBizSuggestions');
     if (box && !box.contains(e.target) && e.target.id !== 'obBizNameInput') box.style.display = 'none';
   });
