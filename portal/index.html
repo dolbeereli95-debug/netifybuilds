@@ -28,7 +28,7 @@ nav {
 
 /* ── LOGIN ── */
 .login-wrap { display: flex; align-items: center; justify-content: center; min-height: calc(100vh - 56px); padding: 24px; }
-.login-card { background: white; border-radius: 24px; padding: 48px 40px; max-width: 400px; width: 100%; box-shadow: 0 8px 40px rgba(0,0,0,0.08); border: 1px solid var(--border); text-align: center; }
+.login-card { background: white; border-radius: 24px; padding: 48px 40px; max-width: 400px; width: 100%; box-shadow: 0 8px 40px rgba(0,0,0,0.08); border: 1px solid var(--border); text-align: center; overflow: hidden; }
 .login-icon { width: 64px; height: 64px; border-radius: 50%; background: var(--blue-pale); display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; }
 .login-icon svg { width: 28px; height: 28px; stroke: var(--blue); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .login-card h1 { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1.5rem; font-weight: 800; margin-bottom: 8px; }
@@ -123,8 +123,8 @@ nav {
       data-text="sign_in_with"
       data-shape="rectangular"
       data-logo_alignment="left"
-      data-width="320"
-      style="margin-bottom:4px;">
+      data-width="300"
+      style="margin-bottom:4px;max-width:100%;overflow:hidden;">
     </div>
 
     <div style="display:flex;align-items:center;gap:12px;margin:16px 0;">
