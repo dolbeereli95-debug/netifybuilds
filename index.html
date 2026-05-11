@@ -538,7 +538,7 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
   .logobar { padding: 20px; }
 }
 </style>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDNIUxHy7t3IBSnsBHE8Y6VSmbOVkA_kUE&libraries=places" async defer></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDNIUxHy7t3IBSnsBHE8Y6VSmbOVkA_kUE&libraries=places&callback=initPlacesSDK" async defer></script>
 </head>
 <body>
 
@@ -1747,6 +1747,8 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
   }
   if (window.google && window.google.maps) initPlacesSDK();
   window.initPlacesSDK = initPlacesSDK;
+  // If SDK already loaded by the time this runs, init now
+  if (window.google && window.google.maps) initPlacesSDK();
 
   window.bizNameSearch = function(val) {
     clearTimeout(bizSearchTimer);

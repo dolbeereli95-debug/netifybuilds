@@ -66,7 +66,7 @@ textarea.short { min-height: 70px; }
 .pkg-price { font-size: 14px; font-weight: 800; color: #2563eb; white-space: nowrap; }
 </style>
 </head>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDNIUxHy7t3IBSnsBHE8Y6VSmbOVkA_kUE&libraries=places" async defer></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDNIUxHy7t3IBSnsBHE8Y6VSmbOVkA_kUE&libraries=places&callback=initObPlaces" async defer></script>
 <body>
 
 <div class="header">
@@ -493,7 +493,16 @@ textarea.short { min-height: 70px; }
   window.obPickReviewColor = obPickReviewColor;
 
   // ── GOOGLE PLACES ──
+  // Called by Google Maps when SDK is ready
   var obBizTimer = null;
+  function initObPlaces() {
+    if (window.google && window.google.maps && window.google.maps.places) {
+      window.obAutocompleteService = new google.maps.places.AutocompleteService();
+      window.obPlacesService = new google.maps.places.PlacesService(document.createElement('div'));
+    }
+  }
+  window.initObPlaces = initObPlaces;
+
   window.obBizSearch = function(val) {
     clearTimeout(obBizTimer);
     var box = document.getElementById('obBizSuggestions');
