@@ -212,6 +212,11 @@ window.handleGoogleLogin = handleGoogleLogin;
     var key = saved.startsWith('__google__') ? saved.replace('__google__', '') : saved;
     document.getElementById('bizKeyInput').value = key;
     document.getElementById('rememberMe').checked = true;
+    // Hide login immediately — show portal with loading state
+    document.getElementById('loginWrap').style.display = 'none';
+    document.getElementById('portal').style.display = 'block';
+    document.getElementById('portalFooter').style.display = 'block';
+    document.getElementById('portalContent').innerHTML = '<div class="loading">Loading your dashboard...</div>';
     fetchPortalData(key);
   }
 })();
