@@ -117,7 +117,7 @@ nav {
       data-callback="handleGoogleLogin"
       data-auto_prompt="false">
     </div>
-    <div style="width:100%;overflow:hidden;margin-bottom:4px;">
+    <div style="display:flex;justify-content:center;width:100%;overflow:hidden;margin-bottom:4px;">
       <div class="g_id_signin"
         data-type="standard"
         data-size="large"
@@ -125,15 +125,9 @@ nav {
         data-text="sign_in_with"
         data-shape="rectangular"
         data-logo_alignment="left"
-        data-width="400">
+        data-width="280">
       </div>
     </div>
-    <style>
-      .login-card iframe { max-width: 100% !important; }
-      @media (max-width: 480px) {
-        .g_id_signin { transform-origin: left top; transform: scale(0.82); }
-      }
-    </style>
 
     <div style="display:flex;align-items:center;gap:12px;margin:16px 0;">
       <div style="flex:1;height:1px;background:var(--border);"></div>
