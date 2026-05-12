@@ -410,21 +410,13 @@ function renderReviews() {
     html += '</div></div>';
   }
 
-  // Send review link tool
-  var googleLink = info.googleReviewLink || '';
+  // Send review link tool — always show SMS send form
   html += '<div class="section-head"><div class="section-title">Quick Send</div></div>';
-  if (googleLink) {
-    html += '<div class="send-card"><div style="font-size:13px;color:var(--soft);margin-bottom:10px;">Enter customer name and phone — review request sends instantly.</div>';
-    html += '<input id="sndName" placeholder="Customer name" style="margin-bottom:8px;" />';
-    html += '<input id="sndPhone" type="tel" placeholder="Customer phone" />';
-    html += '<button class="copy-btn" onclick="sendReviewSMS()" style="margin-top:8px;">Send Review Request</button>';
-    html += '<div class="copy-success" id="copySuccess"></div></div>';
-  } else {
-    html += '<div class="send-card"><div style="font-size:13px;color:var(--soft);margin-bottom:10px;">After a job, copy this message and text it to your customer:</div>';
-    html += '<textarea id="reviewMsg" style="width:100%;padding:10px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-family:inherit;resize:none;outline:none;height:80px;color:var(--text);" readonly>Hi! Thanks for choosing us. If you have a moment, we\'d really appreciate a quick Google review — it helps us out a lot! Reply STOP to opt out.</textarea>';
-    html += '<button class="copy-btn" onclick="copyReviewMsg()" style="margin-top:8px;">Copy Message</button>';
-    html += '<div class="copy-success" id="copySuccess">Copied!</div></div>';
-  }
+  html += '<div class="send-card"><div style="font-size:13px;color:var(--soft);margin-bottom:10px;">Enter the customer name and phone — review request texts instantly.</div>';
+  html += '<input id="sndName" placeholder="Customer name" style="margin-bottom:8px;" />';
+  html += '<input id="sndPhone" type="tel" placeholder="Customer phone" />';
+  html += '<button class="copy-btn" onclick="sendReviewSMS()" style="margin-top:8px;">Send Review Request</button>';
+  html += '<div class="copy-success" id="copySuccess"></div></div>';
 
   // Negative feedback
   if (neg.length > 0) {
