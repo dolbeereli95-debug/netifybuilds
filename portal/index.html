@@ -253,7 +253,12 @@ async function fetchPortalData(bizKey) {
     try { convData = await convRes.json(); } catch(e) {}
     try { infoData = await infoRes.json(); } catch(e) {}
 
-    if (!reviewData || reviewData.error) {
+    // Validate — infoData only has registeredAt if the key actually exists
+    var keyExists = infoData && infoData.registeredAt;
+    if (!keyExists) {
+      document.getElementById('loginWrap').style.display = 'flex';
+      document.getElementById('portal').style.display = 'none';
+      document.getElementById('portalFooter').style.display = 'none';
       var errEl = document.getElementById('loginError');
       errEl.textContent = 'Access code not found. Check your code and try again.';
       errEl.style.display = 'block';
@@ -267,7 +272,12 @@ async function fetchPortalData(bizKey) {
 
     renderPortal(bizKey, reviewData, analyticsData, convData, infoData);
   } catch(e) {
-    document.getElementById('loginError').style.display = 'block';
+    document.getElementById('loginWrap').style.display = 'flex';
+    document.getElementById('portal').style.display = 'none';
+    document.getElementById('portalFooter').style.display = 'none';
+    var errEl = document.getElementById('loginError');
+    errEl.textContent = 'Could not connect. Check your internet and try again.';
+    errEl.style.display = 'block';
   }
 }
 

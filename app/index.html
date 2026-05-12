@@ -248,7 +248,8 @@ async function doLogin(key) {
       fetch(BACKEND + '/conversations/' + key).then(r => r.json()).catch(() => ({})),
       fetch(BACKEND + '/client-info/' + key).then(r => r.json()).catch(() => ({}))
     ]);
-    if (rd.error) throw new Error('not found');
+    // Validate key actually exists — check for registeredAt in client info
+    if (!id || !id.registeredAt) throw new Error('not found');
     currentKey = key;
     appData = { review: rd, analytics: ad, conversations: cd, info: id };
     if (document.getElementById('rememberMe').checked) {
@@ -258,6 +259,9 @@ async function doLogin(key) {
     }
     showApp();
   } catch(e) {
+    // Restore splash screen on failure
+    document.getElementById('app').classList.remove('visible');
+    document.getElementById('splash').style.display = 'flex';
     document.getElementById('loginError').textContent = 'Access code not found. Check your welcome email.';
     btn.textContent = 'Sign In →'; btn.disabled = false;
   }
@@ -564,6 +568,7 @@ async function sendUpdate() {
 function escHtml(str) {
   if (!str) return '';
   return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
 }
 </script>
 </body>
