@@ -1,6 +1,6 @@
 {
   "name": "Netify Builds",
-  "short_name": "Netify",
+  "short_name": "Netify Builds",
   "description": "Client dashboard for Netify Builds",
   "start_url": "/app",
   "display": "standalone",

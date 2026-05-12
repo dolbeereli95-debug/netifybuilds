@@ -479,7 +479,7 @@ function renderPortal(bizKey, reviewData, analyticsData, convData, infoData) {
       html += '<div style="background:white;border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;margin-bottom:24px;">';
       html += '<p style="font-size:13px;color:var(--soft);margin-bottom:16px;">Log a completed job and the review request text is sent automatically -- no action needed from you.</p>';
       html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">';
-      html += '<input id="smsJobName" placeholder="Customer name" style="padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-family:inherit;outline:none;" />';
+      html += '<input id="smsJobName" placeholder="Customer name (recommended)" style="padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-family:inherit;outline:none;" />';
       html += '<input id="smsJobPhone" type="tel" placeholder="Customer phone" style="padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-family:inherit;outline:none;" />';
       html += '</div>';
       html += '<input id="smsJobType" placeholder="Job type (e.g. AC repair, roof inspection)" style="width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-family:inherit;outline:none;box-sizing:border-box;margin-bottom:10px;" />';
@@ -609,6 +609,18 @@ function renderPortal(bizKey, reviewData, analyticsData, convData, infoData) {
     html += '</div>'; // end campaign section
   }
 
+  // -- APP INSTALL BANNER --
+  var appDismissed = false;
+  try { appDismissed = localStorage.getItem('nb_app_dismissed') === '1'; } catch(e) {}
+  if (!appDismissed) {
+    html += '<div id="appInstallBanner" style="background:var(--navy);border-radius:var(--radius);padding:18px 20px;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">';
+    html += '<div style="display:flex;align-items:center;gap:12px;">';
+    html += '<div style="width:40px;height:40px;background:rgba(59,130,246,0.2);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#93C5FD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></div>';
+    html += '<div><div style="font-size:13px;font-weight:700;color:white;margin-bottom:2px;">Install the mobile app</div><div style="font-size:12px;color:rgba(255,255,255,0.5);">Add this portal to your home screen — free, no App Store needed.</div></div></div>';
+    html += '<div style="display:flex;align-items:center;gap:8px;"><a href="/app-install" style="background:var(--blue);color:white;padding:8px 16px;border-radius:99px;font-size:12px;font-weight:700;text-decoration:none;white-space:nowrap;">Install App</a>';
+    html += '<button onclick="dismissAppBanner()" style="background:rgba(255,255,255,0.08);border:none;color:rgba(255,255,255,0.4);padding:8px 12px;border-radius:99px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap;">Not interested</button></div></div>';
+  }
+
   // -- CONTACT CARD (always shown) --
   html += '<div style="background:white;border-radius:var(--radius);padding:20px 24px;border:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-top:28px;">';
   html += '<div><div style="font-family:var(--font);font-size:14px;font-weight:700;margin-bottom:2px;">Need anything?</div><div style="font-size:13px;color:var(--soft);">Eli handles all updates personally -- usually same day.</div></div>';
@@ -640,7 +652,7 @@ function logSMSJob(bizKey) {
   var phone = document.getElementById('smsJobPhone').value.trim();
   var type  = document.getElementById('smsJobType').value.trim();
   var delay = document.getElementById('smsDelay').value;
-  if (!name || !phone) { alert('Please enter customer name and phone.'); return; }
+  if (!phone) { alert('Please enter customer phone.'); return; }
   fetch(BACKEND + '/log-sms-job', {
     method: 'POST', headers: {'Content-Type':'application/json'},
     body: JSON.stringify({ bizKey: bizKey, customerName: name, customerPhone: phone, jobType: type, delayHours: parseInt(delay) })
@@ -694,6 +706,12 @@ async function openBillingPortal(bizKey) {
     alert('Could not connect. Email netifybuilds@gmail.com for billing help.');
   }
   if (btn) { btn.textContent = 'Manage Billing ->'; btn.disabled = false; }
+}
+
+function dismissAppBanner() {
+  try { localStorage.setItem('nb_app_dismissed', '1'); } catch(e) {}
+  var banner = document.getElementById('appInstallBanner');
+  if (banner) banner.style.display = 'none';
 }
 
 function logout() {

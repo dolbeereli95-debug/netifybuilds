@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-<meta name="apple-mobile-web-app-title" content="Netify" />
+<meta name="apple-mobile-web-app-title" content="Netify Builds" />
 <meta name="theme-color" content="#0A2540" />
 <title>Netify Builds</title>
 <link rel="manifest" href="../app.webmanifest" />
@@ -413,7 +413,7 @@ function renderReviews() {
   // Send review link tool — always show SMS send form
   html += '<div class="section-head"><div class="section-title">Quick Send</div></div>';
   html += '<div class="send-card"><div style="font-size:13px;color:var(--soft);margin-bottom:10px;">Enter the customer name and phone — review request texts instantly.</div>';
-  html += '<input id="sndName" placeholder="Customer name" style="margin-bottom:8px;" />';
+  html += '<input id="sndName" placeholder="Customer name (recommended)" style="margin-bottom:8px;" />';
   html += '<input id="sndPhone" type="tel" placeholder="Customer phone" />';
   html += '<button class="copy-btn" onclick="sendReviewSMS()" style="margin-top:8px;">Send Review Request</button>';
   html += '<div class="copy-success" id="copySuccess"></div></div>';
@@ -479,27 +479,35 @@ async function activateBot() {
 }
 
 async function sendReviewSMS() {
-  var name = document.getElementById('sndName') && document.getElementById('sndName').value.trim();
-  var phone = document.getElementById('sndPhone') && document.getElementById('sndPhone').value.trim();
+  var nameEl = document.getElementById('sndName');
+  var phoneEl = document.getElementById('sndPhone');
+  var name = nameEl ? nameEl.value.trim() : '';
+  var phone = phoneEl ? phoneEl.value.trim() : '';
   var successEl = document.getElementById('copySuccess');
-  if (!name || !phone) { alert('Please enter both name and phone number.'); return; }
+  if (!phone) { alert('Please enter a phone number.'); return; }
   var btn = document.querySelector('.copy-btn');
   btn.textContent = 'Sending...'; btn.disabled = true;
   try {
     var info = appData.info || {};
     var googleLink = info.googleReviewLink || '';
-    var firstName = name.split(' ')[0];
-    var message = 'Hey ' + firstName + '! Thanks for choosing ' + (info.bizName || 'us') + '. We\'d really appreciate a quick Google review — it means a lot to us!\n\n' + googleLink + '\n\nReply STOP to opt out.';
+    var bizName = info.bizName || 'us';
+    var message;
+    if (name) {
+      var firstName = name.split(' ')[0];
+      message = 'Hey ' + firstName + '! Thanks for choosing ' + bizName + '. We\'d really appreciate a quick Google review — it means a lot to us!\n\n' + googleLink + '\n\nReply STOP to opt out.';
+    } else {
+      message = 'Hey! Thanks for choosing ' + bizName + '. We\'d really appreciate a quick Google review — it means a lot to us!\n\n' + googleLink + '\n\nReply STOP to opt out.';
+    }
     var res = await fetch(BACKEND + '/send-review-sms', {
       method: 'POST', headers: {'Content-Type':'application/json'},
       body: JSON.stringify({ to: phone, message: message, bizName: info.bizName, bizKey: currentKey, customerName: name })
     });
     var data = await res.json();
     if (data.success) {
-      successEl.textContent = 'Sent to ' + firstName + '!';
+      successEl.textContent = name ? 'Sent to ' + name.split(' ')[0] + '!' : 'Sent!';
       successEl.style.display = 'block';
-      document.getElementById('sndName').value = '';
-      document.getElementById('sndPhone').value = '';
+      if (nameEl) nameEl.value = '';
+      if (phoneEl) phoneEl.value = '';
       setTimeout(function() { successEl.style.display = 'none'; }, 3000);
     } else { throw new Error(data.error); }
   } catch(e) { alert('Failed to send. Check Twilio is configured.'); }

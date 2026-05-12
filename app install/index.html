@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Install the App — Netify Builds</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --navy: #0A2540; --blue: #3B82F6; --blue-dark: #2563EB;
+  --blue-light: #93C5FD; --blue-pale: #EFF6FF;
+  --text: #0F172A; --soft: #64748B; --muted: #94A3B8;
+  --border: #E2E8F0; --off: #F8FAFC; --green: #16a34a;
+}
+html { scroll-behavior: smooth; }
+body { font-family: 'Inter', sans-serif; background: var(--off); color: var(--text); }
+
+/* NAV */
+nav { background: var(--navy); padding: 16px 28px; display: flex; align-items: center; justify-content: space-between; }
+.nav-logo { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1.1rem; font-weight: 800; color: white; text-decoration: none; }
+.nav-logo span { color: var(--blue-light); }
+nav a.back { font-size: 13px; color: rgba(255,255,255,0.5); text-decoration: none; }
+
+/* HERO */
+.hero { background: var(--navy); padding: 56px 24px 64px; text-align: center; }
+.hero-badge { display: inline-flex; align-items: center; gap: 7px; background: rgba(59,130,246,0.15); border: 1px solid rgba(147,197,253,0.25); color: var(--blue-light); padding: 6px 16px; border-radius: 99px; font-size: 12px; font-weight: 600; margin-bottom: 20px; }
+.hero h1 { font-family: 'Plus Jakarta Sans', sans-serif; font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 800; color: white; line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 14px; }
+.hero h1 em { font-style: normal; color: var(--blue-light); }
+.hero p { font-size: 15px; color: rgba(255,255,255,0.55); line-height: 1.75; max-width: 480px; margin: 0 auto 32px; }
+.hero-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--blue); color: white; padding: 14px 28px; border-radius: 99px; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 15px; font-weight: 700; text-decoration: none; transition: all 0.2s; }
+.hero-btn:hover { background: var(--blue-dark); transform: translateY(-2px); }
+
+/* PHONE MOCKUP ANIMATION */
+.demo-wrap { max-width: 360px; margin: 0 auto; padding: 48px 24px; }
+.phone { width: 220px; height: 440px; background: #1a1a2e; border-radius: 36px; border: 6px solid #2d2d44; position: relative; margin: 0 auto; box-shadow: 0 32px 80px rgba(0,0,0,0.4), inset 0 0 0 1px rgba(255,255,255,0.05); overflow: hidden; }
+.phone-notch { width: 80px; height: 22px; background: #1a1a2e; border-radius: 0 0 14px 14px; position: absolute; top: 0; left: 50%; transform: translateX(-50%); z-index: 10; }
+.phone-screen { position: absolute; inset: 0; display: flex; flex-direction: column; overflow: hidden; }
+.phone-browser-bar { background: #f8fafc; padding: 28px 10px 6px; border-bottom: 1px solid #e2e8f0; flex-shrink: 0; }
+.phone-url { background: white; border: 1px solid #e2e8f0; border-radius: 8px; padding: 4px 10px; font-size: 9px; color: #64748b; font-family: monospace; text-align: center; }
+.phone-content { flex: 1; background: var(--navy); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 16px; text-align: center; }
+.phone-logo { width: 48px; height: 48px; background: rgba(59,130,246,0.15); border: 1px solid rgba(59,130,246,0.3); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; }
+.phone-title { font-size: 13px; font-weight: 800; color: white; margin-bottom: 3px; }
+.phone-sub { font-size: 9px; color: rgba(255,255,255,0.45); margin-bottom: 14px; }
+.phone-input-mock { width: 100%; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; padding: 7px 10px; font-size: 9px; color: rgba(255,255,255,0.4); text-align: left; margin-bottom: 8px; }
+.phone-btn-mock { width: 100%; background: var(--blue); border-radius: 8px; padding: 8px; font-size: 10px; font-weight: 700; color: white; text-align: center; }
+
+/* Steps overlay animation */
+.phone-overlay { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding-bottom: 16px; opacity: 0; transition: opacity 0.4s; pointer-events: none; }
+.phone-overlay.visible { opacity: 1; }
+.share-sheet { background: white; border-radius: 16px 16px 0 0; width: 100%; padding: 12px 10px; }
+.share-item { display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 8px; }
+.share-item.highlighted { background: #eff6ff; }
+.share-icon { width: 28px; height: 28px; border-radius: 8px; background: var(--blue); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.share-text { font-size: 9px; font-weight: 600; color: var(--text); }
+.share-hint { font-size: 7px; color: var(--soft); }
+
+/* STEP INDICATORS */
+.step-dots { display: flex; gap: 6px; justify-content: center; margin-top: 16px; }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border); transition: background 0.3s; }
+.dot.active { background: var(--blue); }
+
+/* MAIN CONTENT */
+.wrap { max-width: 800px; margin: 0 auto; padding: 56px 24px; }
+.section-title { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1.3rem; font-weight: 800; color: var(--text); margin-bottom: 6px; }
+.section-sub { font-size: 14px; color: var(--soft); margin-bottom: 28px; line-height: 1.6; }
+
+/* OS TABS */
+.os-tabs { display: flex; gap: 8px; margin-bottom: 28px; }
+.os-tab { padding: 8px 20px; border-radius: 99px; font-size: 13px; font-weight: 600; cursor: pointer; border: 1.5px solid var(--border); background: white; color: var(--soft); transition: all 0.2s; }
+.os-tab.active { background: var(--navy); color: white; border-color: var(--navy); }
+
+/* STEPS */
+.steps { display: flex; flex-direction: column; gap: 16px; }
+.step-card { background: white; border: 1.5px solid var(--border); border-radius: 16px; padding: 20px 24px; display: flex; align-items: flex-start; gap: 16px; transition: border-color 0.2s; }
+.step-card:hover { border-color: var(--blue); }
+.step-num { width: 32px; height: 32px; border-radius: 50%; background: var(--blue-pale); color: var(--blue); font-family: 'Plus Jakarta Sans', sans-serif; font-size: 14px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.step-body h3 { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+.step-body p { font-size: 13px; color: var(--soft); line-height: 1.6; }
+.step-body .tip { background: var(--blue-pale); border-radius: 8px; padding: 8px 12px; font-size: 12px; color: var(--blue-dark); font-weight: 600; margin-top: 8px; display: inline-block; }
+
+/* OPEN BTN SECTION */
+.open-section { background: var(--navy); border-radius: 20px; padding: 36px; text-align: center; margin-top: 48px; }
+.open-section h2 { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1.4rem; font-weight: 800; color: white; margin-bottom: 8px; }
+.open-section p { font-size: 14px; color: rgba(255,255,255,0.5); margin-bottom: 24px; line-height: 1.6; }
+.open-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--blue); color: white; padding: 14px 32px; border-radius: 99px; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 15px; font-weight: 700; text-decoration: none; transition: all 0.2s; }
+.open-btn:hover { background: var(--blue-dark); transform: translateY(-2px); }
+
+/* FOOTER */
+footer { text-align: center; padding: 32px; border-top: 1px solid var(--border); font-size: 13px; color: var(--muted); }
+footer a { color: var(--muted); text-decoration: none; }
+
+@media (max-width: 600px) { .step-card { padding: 16px; } .wrap { padding: 36px 16px; } .open-section { padding: 28px 20px; } }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo">Netify <span>Builds.</span></a>
+  <a href="/" class="back">← Back to home</a>
+</nav>
+
+<div class="hero">
+  <div class="hero-badge">No App Store Required</div>
+  <h1>Install the<br><em>Netify Builds App</em></h1>
+  <p>Add the client portal to your phone home screen in under 60 seconds. Works on iPhone and Android — completely free.</p>
+  <a href="/app" class="hero-btn">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v13"/><path d="M5 9l7 7 7-7"/><rect x="3" y="18" width="18" height="3" rx="1"/></svg>
+    Open the App
+  </a>
+</div>
+
+<!-- PHONE ANIMATION -->
+<div style="background:var(--navy);padding-bottom:56px;">
+  <div class="demo-wrap">
+    <div style="text-align:center;margin-bottom:24px;">
+      <div style="font-size:12px;font-weight:600;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.08em;">See how it works</div>
+    </div>
+    <div class="phone">
+      <div class="phone-notch"></div>
+      <div class="phone-screen">
+        <div class="phone-browser-bar">
+          <div class="phone-url">netifybuilds.com/app</div>
+        </div>
+        <div class="phone-content">
+          <div class="phone-logo">
+            <svg width="22" height="22" viewBox="0 0 48 50" fill="none">
+              <rect width="48" height="42" rx="10" fill="rgba(255,255,255,0.1)"/>
+              <rect x="8" y="10" width="20" height="3" rx="1.5" fill="#3B82F6"/>
+              <rect x="8" y="17" width="28" height="3" rx="1.5" fill="rgba(147,197,253,0.6)"/>
+              <rect x="8" y="24" width="14" height="3" rx="1.5" fill="rgba(147,197,253,0.35)"/>
+            </svg>
+          </div>
+          <div class="phone-title">Netify Builds</div>
+          <div class="phone-sub">Client Dashboard</div>
+          <div class="phone-input-mock">Enter your access code</div>
+          <div class="phone-btn-mock">Sign In →</div>
+        </div>
+
+        <!-- Step 2: Share sheet -->
+        <div class="phone-overlay" id="overlay-share">
+          <div class="share-sheet">
+            <div style="text-align:center;margin-bottom:8px;">
+              <div style="font-size:8px;font-weight:700;color:var(--text);">Share</div>
+              <div style="width:32px;height:2px;background:var(--border);border-radius:2px;margin:4px auto 0;"></div>
+            </div>
+            <div class="share-item highlighted">
+              <div class="share-icon">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v9"/><path d="M8 9l4 4 4-4"/><rect x="3" y="16" width="18" height="5" rx="2"/></svg>
+              </div>
+              <div>
+                <div class="share-text">Add to Home Screen</div>
+                <div class="share-hint">Install as app</div>
+              </div>
+            </div>
+            <div class="share-item" style="opacity:0.4;">
+              <div class="share-icon" style="background:#e2e8f0;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+              </div>
+              <div><div class="share-text" style="color:var(--soft);">Share via Messages</div></div>
+            </div>
+            <div class="share-item" style="opacity:0.4;">
+              <div class="share-icon" style="background:#e2e8f0;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+              </div>
+              <div><div class="share-text" style="color:var(--soft);">Copy Link</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 3: Added to home screen -->
+        <div class="phone-overlay" id="overlay-added" style="justify-content:center;">
+          <div style="background:rgba(0,0,0,0.85);border-radius:16px;padding:20px;text-align:center;width:80%;">
+            <div style="width:48px;height:48px;background:var(--blue);border-radius:12px;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;">
+              <svg width="24" height="24" viewBox="0 0 48 50" fill="none">
+                <rect width="48" height="42" rx="10" fill="rgba(255,255,255,0.15)"/>
+                <rect x="8" y="10" width="20" height="3" rx="1.5" fill="white"/>
+                <rect x="8" y="17" width="28" height="3" rx="1.5" fill="rgba(255,255,255,0.6)"/>
+                <rect x="8" y="24" width="14" height="3" rx="1.5" fill="rgba(255,255,255,0.35)"/>
+              </svg>
+            </div>
+            <div style="font-size:11px;font-weight:700;color:white;margin-bottom:4px;">Added to Home Screen</div>
+            <div style="font-size:9px;color:rgba(255,255,255,0.5);">Netify Builds is now on your home screen</div>
+            <div style="margin-top:12px;background:var(--blue);border-radius:8px;padding:6px 12px;display:inline-block;">
+              <div style="font-size:9px;font-weight:700;color:white;">Open</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-dots" id="stepDots">
+      <div class="dot active"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
+    <div style="text-align:center;margin-top:12px;font-size:12px;color:rgba(255,255,255,0.3);" id="stepLabel">Open the app in your browser</div>
+  </div>
+</div>
+
+<!-- INSTALL GUIDE -->
+<div class="wrap">
+  <div class="section-title">Step-by-step install guide</div>
+  <div class="section-sub">Pick your phone type below — the process takes about 30 seconds.</div>
+
+  <div class="os-tabs">
+    <button class="os-tab active" onclick="switchOS('iphone', this)">iPhone</button>
+    <button class="os-tab" onclick="switchOS('android', this)">Android</button>
+  </div>
+
+  <!-- iPhone steps -->
+  <div class="steps" id="steps-iphone">
+    <div class="step-card">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <h3>Open the link in Safari or Chrome</h3>
+        <p>Works in both Safari and Chrome on iPhone. Open your browser and go to the link below.</p>
+        <span class="tip">Link: netifybuilds.com/app</span>
+      </div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <h3>Tap the Share button</h3>
+        <p>Look for the Share button — it's usually at the bottom of the screen in Safari, or in the top right in Chrome. It should look something like this:</p>
+        <div style="display:flex;align-items:center;gap:10px;margin-top:10px;">
+          <div style="width:36px;height:36px;background:var(--blue-pale);border-radius:8px;display:flex;align-items:center;justify-content:center;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+          </div>
+          <span style="font-size:12px;color:var(--soft);">It should look something like this</span>
+        </div>
+      </div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <h3>Tap "Add to Home Screen"</h3>
+        <p>Scroll down in the share sheet until you see "Add to Home Screen" and tap it.</p>
+      </div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <h3>Tap "Add" in the top right</h3>
+        <p>A preview will appear. Tap Add in the top right corner. That's it — the app is now on your home screen.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Android steps -->
+  <div class="steps" id="steps-android" style="display:none;">
+    <div class="step-card">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <h3>Open Chrome on your Android</h3>
+        <p>Works best in Chrome. Open your browser and go to the link below.</p>
+        <span class="tip">Link: netifybuilds.com/app</span>
+      </div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <h3>Tap the three dots menu</h3>
+        <p>In the top right corner of Chrome, tap the three vertical dots to open the menu.</p>
+      </div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <h3>Tap "Add to Home Screen" or "Install App"</h3>
+        <p>You'll see either "Add to Home Screen" or "Install App" — tap it. Some Android phones show a banner at the bottom of the screen instead.</p>
+      </div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <h3>Tap "Install" or "Add"</h3>
+        <p>Confirm the install and the app will appear on your home screen immediately.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="open-section">
+    <h2>Ready to install?</h2>
+    <p>Open the link below on your phone, then follow the steps above. Takes less than a minute.</p>
+    <a href="/app" class="open-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v13"/><path d="M5 9l7 7 7-7"/><rect x="3" y="18" width="18" height="3" rx="1"/></svg>
+      Open netifybuilds.com/app
+    </a>
+    <p style="margin-top:16px;font-size:12px;color:rgba(255,255,255,0.3);">Works on iPhone and Android · Free · No App Store needed</p>
+  </div>
+</div>
+
+<footer>
+  <a href="/">← Back to Netify Builds</a> &nbsp;·&nbsp; Questions? <a href="mailto:netifybuilds@gmail.com">netifybuilds@gmail.com</a>
+</footer>
+
+<script>
+// ── PHONE ANIMATION ──
+var steps = [
+  { overlay: null,            label: 'Open the app in your browser' },
+  { overlay: 'overlay-share', label: 'Tap Share → Add to Home Screen' },
+  { overlay: 'overlay-added', label: 'App added to your home screen!' },
+];
+var currentStep = 0;
+var dots = document.querySelectorAll('.dot');
+var stepLabel = document.getElementById('stepLabel');
+
+function showStep(idx) {
+  // Hide all overlays
+  document.getElementById('overlay-share').classList.remove('visible');
+  document.getElementById('overlay-added').classList.remove('visible');
+  // Show current
+  if (steps[idx].overlay) {
+    document.getElementById(steps[idx].overlay).classList.add('visible');
+  }
+  // Update dots
+  dots.forEach(function(d, i) { d.classList.toggle('active', i === idx); });
+  stepLabel.textContent = steps[idx].label;
+  currentStep = idx;
+}
+
+// Auto-advance every 2.5 seconds
+setInterval(function() {
+  showStep((currentStep + 1) % steps.length);
+}, 2500);
+
+// ── OS TABS ──
+function switchOS(os, el) {
+  document.querySelectorAll('.os-tab').forEach(function(t) { t.classList.remove('active'); });
+  el.classList.add('active');
+  document.getElementById('steps-iphone').style.display = os === 'iphone' ? 'flex' : 'none';
+  document.getElementById('steps-android').style.display = os === 'android' ? 'flex' : 'none';
+}
+</script>
+</body>
+</html>
