@@ -217,13 +217,16 @@ var STORAGE_KEY = 'nb_app_key';
 var currentKey = '';
 var appData = {};
 
-// ── AUTO LOGIN ──
+// -- AUTO LOGIN --
 var saved = localStorage.getItem(STORAGE_KEY);
 if (saved) {
   document.getElementById('codeInput').value = saved;
   document.getElementById('rememberMe').checked = true;
+  // Hide splash immediately
+  document.getElementById('splash').style.display = 'none';
+  document.getElementById('app').classList.add('visible');
+  document.getElementById('appBizName').textContent = 'Loading...';
   doLogin(saved);
-}
 
 document.getElementById('loginBtn').addEventListener('click', function() {
   var key = document.getElementById('codeInput').value.trim().toLowerCase().replace(/\s+/g,'_');
@@ -264,6 +267,8 @@ function showApp() {
   document.getElementById('splash').style.display = 'none';
   var app = document.getElementById('app');
   app.classList.add('visible');
+  document.getElementById('loginBtn').textContent = 'Sign In →';
+  document.getElementById('loginBtn').disabled = false;
   var info = appData.info || {};
   var plan = info.plan || 'bot';
   var bizName = info.bizName || currentKey.replace(/_/g,' ').replace(/\b\w/g,l=>l.toUpperCase());
