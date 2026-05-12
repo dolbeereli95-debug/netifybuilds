@@ -228,6 +228,8 @@ if (saved) {
   document.getElementById('appBizName').textContent = 'Loading...';
   doLogin(saved);
 
+}
+
 document.getElementById('loginBtn').addEventListener('click', function() {
   var key = document.getElementById('codeInput').value.trim().toLowerCase().replace(/\s+/g,'_');
   if (!key) return;
@@ -568,7 +570,6 @@ async function sendUpdate() {
 function escHtml(str) {
   if (!str) return '';
   return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
 }
 </script>
 </body>
