@@ -268,14 +268,15 @@ function showApp() {
   var plan = info.plan || 'bot';
   var bizName = info.bizName || currentKey.replace(/_/g,' ').replace(/\b\w/g,l=>l.toUpperCase());
   document.getElementById('appBizName').textContent = bizName;
-  var planColors = { bot:'#2563eb', review:'#0891b2', bundle:'#7c3aed', all:'#7c3aed' };
-  var planLabels = { bot:'Chat Assistant', review:'Review Filter', bundle:'Chat + Reviews', all:'All Products', missed:'Missed Call' };
+  var planColors = { bot:'#2563eb', faq:'#2563eb', review:'#0891b2', bundle:'#7c3aed', bot_campaign:'#7c3aed', review_campaign:'#7c3aed', campaign:'#16a34a', all:'#7c3aed' };
+  var planLabels = { bot:'Chat Assistant', faq:'Chat Assistant', review:'Review Filter', bundle:'Chat + Reviews', bot_campaign:'Chat + Campaigns', review_campaign:'Review + Campaigns', campaign:'Campaigns', all:'All Products' };
   var badge = document.getElementById('appPlanBadge');
   badge.textContent = planLabels[plan] || plan;
   badge.style.background = (planColors[plan] || '#2563eb') + '20';
   badge.style.color = planColors[plan] || '#2563eb';
   // Show/hide reviews tab
-  var hasReview = plan === 'review' || plan === 'bundle' || plan === 'all';
+  var hasReview = ['review','bundle','bot_campaign','review_campaign','all'].indexOf(plan) !== -1;
+  var hasCampaign = ['campaign','bot_campaign','review_campaign','all'].indexOf(plan) !== -1;
   document.getElementById('reviewsTab').style.display = hasReview ? 'flex' : 'none';
   renderHome();
   renderLeads();
@@ -308,8 +309,10 @@ function renderHome() {
   var r = appData.review || {};
   var info = appData.info || {};
   var plan = info.plan || 'bot';
-  var hasBot = plan === 'bot' || plan === 'bundle' || plan === 'all';
-  var hasReview = plan === 'review' || plan === 'bundle' || plan === 'all';
+  var hasBot = ['bot','faq','bundle','bot_campaign','all'].indexOf(plan) !== -1;
+  var hasReview = ['review','bundle','review_campaign','all'].indexOf(plan) !== -1;
+  var hasCampaign = ['campaign','bot_campaign','review_campaign','all'].indexOf(plan) !== -1;
+  var isActivated = info.activated || false;
   var html = '<div style="padding:16px 16px 0;"><div style="font-size:12px;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Overview</div></div>';
   html += '<div class="stats-row">';
   if (hasBot) {
@@ -322,10 +325,22 @@ function renderHome() {
     html += '<div class="stat-card"><div class="stat-label">Satisfaction</div><div class="stat-num green">' + (sat !== null ? sat + '%' : '—') + '</div><div class="stat-sub">' + (sat >= 90 ? 'Excellent' : sat >= 70 ? 'Good' : sat !== null ? 'Needs work' : 'No data') + '</div></div>';
   }
   html += '</div>';
+  // Activate banner
+  if (!isActivated) {
+    html += '<div style="margin:16px;background:#fffbeb;border:2px solid #fcd34d;border-radius:14px;padding:16px;">';
+    html += '<div style="font-size:14px;font-weight:700;color:#0f172a;margin-bottom:6px;">Bot not active yet</div>';
+    html += '<div style="font-size:13px;color:#64748b;line-height:1.6;margin-bottom:12px;">Once your bot is installed, tap Activate to start your subscription.</div>';
+    html += '<button onclick="activateBot()" style="width:100%;padding:12px;background:#16a34a;color:white;border:none;border-radius:10px;font-size:14px;font-weight:700;font-family:inherit;">Activate My Bot</button>';
+    html += '</div>';
+  }
   // Bot status
   if (hasBot) {
     html += '<div class="section-head"><div class="section-title">Your Bot</div></div>';
-    html += '<div class="card-list"><div class="lead-row"><div class="lead-body"><div class="lead-name">' + (info.bizName || 'Your') + ' Assistant</div><div class="lead-meta">Deployed on your website · Replies 24/7</div></div><div style="display:flex;align-items:center;gap:5px;background:#f0fdf4;padding:5px 10px;border-radius:99px;"><div style="width:6px;height:6px;border-radius:50%;background:#22c55e;"></div><span style="font-size:11px;font-weight:700;color:#15803d;">Online</span></div></div></div>';
+    var statusBg = isActivated ? '#f0fdf4' : '#fef9c3';
+    var statusDot = isActivated ? '#22c55e' : '#b45309';
+    var statusColor = isActivated ? '#15803d' : '#b45309';
+    var statusText = isActivated ? 'Online' : 'Pending';
+    html += '<div class="card-list"><div class="lead-row"><div class="lead-body"><div class="lead-name">' + (info.bizName || 'Your') + ' Assistant</div><div class="lead-meta">Deployed on your website · Replies 24/7</div></div><div style="display:flex;align-items:center;gap:5px;background:' + statusBg + ';padding:5px 10px;border-radius:99px;"><div style="width:6px;height:6px;border-radius:50%;background:' + statusDot + ';"></div><span style="font-size:11px;font-weight:700;color:' + statusColor + ';">' + statusText + '</span></div></div></div>';
   }
   // Recent conversations preview
   var convs = (appData.conversations && appData.conversations.conversations) || [];
@@ -396,11 +411,20 @@ function renderReviews() {
   }
 
   // Send review link tool
-  html += '<div class="section-head"><div class="section-title">Send Review Link</div></div>';
-  html += '<div class="send-card"><div style="font-size:13px;color:var(--soft);margin-bottom:10px;">After a job, copy this message and text it to your customer:</div>';
-  html += '<textarea id="reviewMsg" style="width:100%;padding:10px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-family:inherit;resize:none;outline:none;height:80px;color:var(--text);" readonly>Hi! Thanks for choosing us. If you have a moment, we\'d love to hear how we did — it means a lot to a small business like ours: [your review link]</textarea>';
-  html += '<button class="copy-btn" onclick="copyReviewMsg()" style="margin-top:8px;">Copy Message</button>';
-  html += '<div class="copy-success" id="copySuccess">Copied! Paste it into a text to your customer.</div></div>';
+  var googleLink = info.googleReviewLink || '';
+  html += '<div class="section-head"><div class="section-title">Quick Send</div></div>';
+  if (googleLink) {
+    html += '<div class="send-card"><div style="font-size:13px;color:var(--soft);margin-bottom:10px;">Enter customer name and phone — review request sends instantly.</div>';
+    html += '<input id="sndName" placeholder="Customer name" style="margin-bottom:8px;" />';
+    html += '<input id="sndPhone" type="tel" placeholder="Customer phone" />';
+    html += '<button class="copy-btn" onclick="sendReviewSMS()" style="margin-top:8px;">Send Review Request</button>';
+    html += '<div class="copy-success" id="copySuccess"></div></div>';
+  } else {
+    html += '<div class="send-card"><div style="font-size:13px;color:var(--soft);margin-bottom:10px;">After a job, copy this message and text it to your customer:</div>';
+    html += '<textarea id="reviewMsg" style="width:100%;padding:10px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-family:inherit;resize:none;outline:none;height:80px;color:var(--text);" readonly>Hi! Thanks for choosing us. If you have a moment, we\'d really appreciate a quick Google review — it helps us out a lot! Reply STOP to opt out.</textarea>';
+    html += '<button class="copy-btn" onclick="copyReviewMsg()" style="margin-top:8px;">Copy Message</button>';
+    html += '<div class="copy-success" id="copySuccess">Copied!</div></div>';
+  }
 
   // Negative feedback
   if (neg.length > 0) {
@@ -425,7 +449,7 @@ function renderReviews() {
 function renderSettings() {
   var info = appData.info || {};
   var plan = info.plan || 'bot';
-  var planLabels = { bot:'Chat Assistant', review:'Review Filter', bundle:'Chat + Reviews', all:'All Products' };
+  var planLabels = { bot:'Chat Assistant', faq:'Chat Assistant', review:'Review Filter', bundle:'Chat + Reviews', bot_campaign:'Chat + Campaigns', review_campaign:'Review + Campaigns', campaign:'Reactivation Campaigns', all:'All Products' };
   var html = '';
   html += '<div class="section-head" style="padding-top:16px;"><div class="section-title">Account</div></div>';
   html += '<div class="profile-card">';
@@ -446,6 +470,48 @@ function renderSettings() {
   html += '<div class="lead-row" onclick="window.location.href=\'sms:+19373671847\'" style="cursor:pointer;"><div class="lead-body"><div class="lead-name">Text Eli</div><div class="lead-meta">(937) 367-1847</div></div><svg style="width:16px;height:16px;stroke:#94a3b8;fill:none;stroke-width:2;" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div></div>';
 
   document.getElementById('panel-settings').innerHTML = html;
+}
+
+// ── ACTIONS ──
+async function activateBot() {
+  try {
+    var res = await fetch(BACKEND + '/activate-client', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ bizKey: currentKey })
+    });
+    var data = await res.json();
+    if (data.success) {
+      window.location.href = 'https://buy.stripe.com/PLACEHOLDER';
+    }
+  } catch(e) { alert('Could not connect. Email netifybuilds@gmail.com'); }
+}
+
+async function sendReviewSMS() {
+  var name = document.getElementById('sndName') && document.getElementById('sndName').value.trim();
+  var phone = document.getElementById('sndPhone') && document.getElementById('sndPhone').value.trim();
+  var successEl = document.getElementById('copySuccess');
+  if (!name || !phone) { alert('Please enter both name and phone number.'); return; }
+  var btn = document.querySelector('.copy-btn');
+  btn.textContent = 'Sending...'; btn.disabled = true;
+  try {
+    var info = appData.info || {};
+    var googleLink = info.googleReviewLink || '';
+    var firstName = name.split(' ')[0];
+    var message = 'Hey ' + firstName + '! Thanks for choosing ' + (info.bizName || 'us') + '. We\'d really appreciate a quick Google review — it means a lot to us!\n\n' + googleLink + '\n\nReply STOP to opt out.';
+    var res = await fetch(BACKEND + '/send-review-sms', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ to: phone, message: message, bizName: info.bizName, bizKey: currentKey, customerName: name })
+    });
+    var data = await res.json();
+    if (data.success) {
+      successEl.textContent = 'Sent to ' + firstName + '!';
+      successEl.style.display = 'block';
+      document.getElementById('sndName').value = '';
+      document.getElementById('sndPhone').value = '';
+      setTimeout(function() { successEl.style.display = 'none'; }, 3000);
+    } else { throw new Error(data.error); }
+  } catch(e) { alert('Failed to send. Check Twilio is configured.'); }
+  btn.textContent = 'Send Review Request'; btn.disabled = false;
 }
 
 // ── ACTIONS ──
@@ -480,7 +546,7 @@ async function sendUpdate() {
   try {
     await fetch(BACKEND + '/update-knowledge', {
       method: 'POST', headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({ bizKey: currentKey, bizName: appData.info && appData.info.bizName, message: text })
+      body: JSON.stringify({ bizKey: currentKey, bizName: appData.info && appData.info.bizName, update: text })
     });
     document.getElementById('updateText').value = '';
     var s = document.getElementById('updateSuccess');
