@@ -217,6 +217,28 @@ var STORAGE_KEY = 'nb_app_key';
 var currentKey = '';
 var appData = {};
 
+// -- PULL TO REFRESH --
+var touchStartY = 0;
+var isPulling = false;
+document.addEventListener('touchstart', function(e) {
+  touchStartY = e.touches[0].clientY;
+}, { passive: true });
+document.addEventListener('touchmove', function(e) {
+  var pullDistance = e.touches[0].clientY - touchStartY;
+  if (pullDistance > 80 && window.scrollY === 0 && !isPulling) {
+    isPulling = true;
+    var appBizName = document.getElementById('appBizName');
+    if (appBizName) appBizName.textContent = 'Refreshing...';
+  }
+}, { passive: true });
+document.addEventListener('touchend', function() {
+  if (isPulling) {
+    isPulling = false;
+    var saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) doLogin(saved);
+  }
+}, { passive: true });
+
 // -- AUTO LOGIN --
 var saved = localStorage.getItem(STORAGE_KEY);
 if (saved) {
@@ -424,7 +446,7 @@ function renderReviews() {
   // Send review link tool — always show SMS send form
   html += '<div class="section-head"><div class="section-title">Quick Send</div></div>';
   html += '<div class="send-card"><div style="font-size:13px;color:var(--soft);margin-bottom:10px;">Enter the customer name and phone — review request texts instantly.</div>';
-  html += '<input id="sndName" placeholder="Customer name (recommended)" style="margin-bottom:8px;" />';
+  html += '<input id="sndName" placeholder="Customer name (recommended)" style="margin-bottom:8px;" oninput="var s=document.getElementById(\'copySuccess\');if(s)s.style.display=\'none\';" />';
   html += '<input id="sndPhone" type="tel" placeholder="Customer phone" />';
   html += '<button class="copy-btn" onclick="sendReviewSMS()" style="margin-top:8px;">Send Review Request</button>';
   html += '<div class="copy-success" id="copySuccess"></div></div>';
@@ -505,9 +527,9 @@ async function sendReviewSMS() {
     var message;
     if (name) {
       var firstName = name.split(' ')[0];
-      message = 'Hey ' + firstName + '! Thanks for choosing ' + bizName + '. We\'d really appreciate a quick Google review — it means a lot to us!\n\n' + googleLink + '\n\nReply STOP to opt out.';
+      message = 'Hey ' + firstName + '! Thanks for choosing ' + bizName + '. How did we do? Reply with a number from 1 to 5. Reply STOP to opt out.';
     } else {
-      message = 'Hey! Thanks for choosing ' + bizName + '. We\'d really appreciate a quick Google review — it means a lot to us!\n\n' + googleLink + '\n\nReply STOP to opt out.';
+      message = 'Hey! Thanks for choosing ' + bizName + '. How did we do? Reply with a number from 1 to 5. Reply STOP to opt out.';
     }
     var res = await fetch(BACKEND + '/send-review-sms', {
       method: 'POST', headers: {'Content-Type':'application/json'},
@@ -541,7 +563,7 @@ async function resolveItem(index, resolved, btn) {
 }
 
 function copyReviewMsg() {
-  var msg = document.getElementById('reviewMsg');
+  var msg = document.getElementById('reviewMsg'); if (!msg) return;
   navigator.clipboard.writeText(msg.value).then(function() {
     var s = document.getElementById('copySuccess');
     s.style.display = 'block';

@@ -3,7 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Netify Builds — 24/7 Website Chat Assistants for Local Businesses</title>
+<meta name="description" content="AI tools for local service businesses. 24/7 chat assistant, review filter, and reactivation campaigns. Built and managed personally. Live in 24 hours.">
+<meta property="og:title" content="Netify Builds: AI Tools for Local Service Businesses">
+<meta property="og:description" content="24/7 chat assistant, review filter, and reactivation campaigns. One captured job covers a month of service. Live in 24 hours, no contracts.">
+<meta property="og:url" content="https://netifybuilds.com">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Netify Builds">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Netify Builds: AI Tools for Local Service Businesses">
+<meta name="twitter:description" content="24/7 chat assistant, review filter, and reactivation campaigns for local service businesses. Live in 24 hours.">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230A2540'/><rect x='20' y='28' width='42' height='8' rx='4' fill='%233B82F6'/><rect x='20' y='44' width='60' height='8' rx='4' fill='%2393C5FD' opacity='0.7'/><rect x='20' y='60' width='30' height='8' rx='4' fill='%2393C5FD' opacity='0.4'/></svg>">
+<title>Netify Builds: 24/7 Website Chat Assistants for Local Businesses</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 50'%3E%3Crect width='48' height='42' rx='10' fill='%230A2540'/%3E%3Crect x='8' y='10' width='20' height='3' rx='1.5' fill='%233B82F6'/%3E%3Crect x='8' y='17' width='28' height='3' rx='1.5' fill='%2393C5FD' opacity='0.7'/%3E%3Crect x='8' y='24' width='14' height='3' rx='1.5' fill='%2393C5FD' opacity='0.4'/%3E%3Cpath d='M9 42 L4 50 L20 44' fill='%230A2540'/%3E%3Ccircle cx='41' cy='8' r='6' fill='%233B82F6'/%3E%3C/svg%3E">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -58,7 +68,7 @@ section, .hero, nav, footer { max-width: 100vw; overflow-x: hidden; }
 nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 0 40px; height: 68px; display: flex; align-items: center; justify-content: space-between; background: var(--navy); border-bottom: 1px solid rgba(255,255,255,0.06); backdrop-filter: blur(8px); }
 .nav-logo { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; font-size: 1.3rem; color: var(--white); text-decoration: none; letter-spacing: -0.01em; }
 .nav-logo span { color: var(--blue-light); }
-.nav-links { display: flex; gap: 28px; align-items: center; margin-left: auto; }
+.nav-links { display: flex; gap: 28px; align-items: center; }
 .nav-links a { font-size: 14px; font-weight: 500; color: rgba(255,255,255,0.6); text-decoration: none; transition: color 0.2s; }
 .nav-links a:hover { color: white; }
 .nav-cta { background: var(--blue); color: white !important; padding: 9px 22px; border-radius: 99px; font-weight: 600 !important; transition: background 0.2s !important; }
@@ -123,6 +133,8 @@ nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 0 40px;
 .chat-lead-captured span { font-size: 11px; color: #4ade80; font-weight: 600; }
 
 @keyframes fadeUp { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
+@keyframes msgFade { from{opacity:0} to{opacity:1} }
+.msg-fade { animation: msgFade 0.2s ease forwards; }
 
 /* ── LOGO BAR ── */
 .logobar { background: var(--off-white); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 28px 24px; }
@@ -563,8 +575,9 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
     <a href="#how">How It Works</a>
     <a href="#pricing">Pricing</a>
     <a href="#try">Try the Bot</a>
-    <a href="#demo">Free Demo</a><a href="/app-install">Mobile App</a><a href="/portal" style="color:var(--blue-light);">Client Portal</a>
-    <a href="#contact" class="nav-cta">Get Started</a>
+    <a href="#demo">Free Demo</a>
+    <a href="/app-install">Mobile App</a><a href="/portal" style="color:var(--blue-light);margin-left:4px;">Client Portal</a>
+    <a href="#pricing" class="nav-cta">Get Started</a>
   </div>
   <div style="display:flex;align-items:center;gap:10px;">
     <a href="/app-install" class="nav-portal-btn" style="margin-right:12px;">Mobile App</a>
@@ -582,7 +595,7 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
   <a href="#pricing" class="mobile-link">Pricing</a>
   <a href="#demo" class="mobile-link">Free Demo</a>
   <a href="#try" class="mobile-link">Try the Bot</a>
-  <a href="#contact" class="mobile-link">Get Started</a>
+  <a href="#pricing" class="mobile-link">Get Started</a>
   <a href="/app-install" class="mobile-link">Mobile App</a>
   <a href="/portal" class="mobile-link" style="color:var(--blue-light);">Client Portal</a>
 </div>
@@ -590,7 +603,7 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
 <!-- STICKY MOBILE CTA -->
 <div class="sticky-cta" id="stickyCta">
   <p>Never miss another lead.</p>
-  <a href="#contact">Get Started →</a>
+  <a href="#pricing">Get Started →</a>
 </div>
 
 <!-- HERO — two column -->
@@ -599,16 +612,16 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
 
     <!-- LEFT -->
     <div class="hero-left">
-      <div class="hero-badge">Chat · Reviews · Reactivation</div>
+      <div style="font-size:14px;font-weight:600;color:#93C5FD;letter-spacing:0.05em;margin-bottom:16px;padding-left:4px;">Chat · Reviews · Reactivation</div>
       <h1>Stop losing customers<br><em>you've already earned.</em></h1>
-      <p class="hero-sub">We build the tools that keep your business working when you're not — a 24/7 chat assistant that captures leads, a review filter that protects your reputation, and reactivation campaigns that bring old customers back.</p>
+      <p class="hero-sub">A 24/7 chat assistant, review filter, and reactivation campaigns, built and managed personally for your business. For most service businesses, one captured job covers an entire month of service.</p>
       <div class="hero-btns">
-        <a href="#contact" class="btn-primary">Get Started Today</a>
+        <a href="#pricing" class="btn-primary">Get Started Today</a>
         <a href="#for" class="btn-outline">See Who It's For</a>
       </div>
       <div class="hero-stats">
         <div class="stat"><div class="stat-num">24/7</div><div class="stat-label">Lead coverage</div></div>
-        <div class="stat"><div class="stat-num">&lt;24hr</div><div class="stat-label">Setup time</div></div>
+        <div class="stat"><div class="stat-num">Same day</div><div class="stat-label">Setup</div></div>
         <div class="stat"><div class="stat-num">1 line</div><div class="stat-label">To install</div></div>
         <div class="stat"><div class="stat-num">$0</div><div class="stat-label">Setup fee</div></div>
       </div>
@@ -620,10 +633,10 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
       <div id="heroCarousel" style="position:relative;overflow:hidden;touch-action:pan-y;border-radius:20px;">
 
         <!-- SLIDE TRACK -->
-        <div id="heroSlideTrack" style="display:flex;transition:transform 0.4s cubic-bezier(0.4,0,0.2,1);will-change:transform;width:200%;">
+        <div id="heroSlideTrack" style="display:flex;transition:transform 0.4s cubic-bezier(0.4,0,0.2,1);will-change:transform;width:300%;">
 
-          <!-- SLIDE 1: Chat Assistant — fixed height box -->
-          <div style="width:50%;flex-shrink:0;">
+          <!-- SLIDE 1: Chat Assistant -->
+          <div style="width:33.333%;flex-shrink:0;">
             <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.14);border-radius:0;padding:20px;display:flex;flex-direction:column;height:360px;">
               <!-- Header -->
               <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,0.08);flex-shrink:0;">
@@ -635,7 +648,7 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
                 <div class="chat-dot"></div>
               </div>
               <!-- Messages — flex:1 fills space, overflow hidden, no expansion -->
-              <div id="chatDemo" style="display:flex;flex-direction:column;gap:8px;flex:1;overflow:hidden;min-height:0;"></div>
+              <div id="chatDemo" style="display:flex;flex-direction:column;gap:8px;flex:1;overflow-y:auto;min-height:0;scroll-behavior:smooth;scrollbar-width:none;-ms-overflow-style:none;"></div>
               <!-- Input bar — always visible at bottom -->
               <div class="chat-input-mock" style="flex-shrink:0;margin-top:12px;">
                 <div class="chat-input-field">Type your question...</div>
@@ -644,8 +657,8 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
             </div>
           </div>
 
-          <!-- SLIDE 2: Review Filter — fixed height, two column -->
-          <div style="width:50%;flex-shrink:0;height:360px;">
+          <!-- SLIDE 2: Review Filter -->
+          <div style="width:33.333%;flex-shrink:0;height:360px;">
             <div style="display:grid;grid-template-columns:1fr 1fr;height:100%;gap:1px;background:rgba(255,255,255,0.08);">
 
               <!-- LEFT: review demo — fixed height, overflow hidden -->
@@ -700,10 +713,10 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
                       <span style="font-size:9px;font-weight:700;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.06em;">Private feedback</span>
                     </div>
                     <!-- Chat messages — fixed height container -->
-                    <div id="hrdChatMsgs" style="display:flex;flex-direction:column;gap:5px;height:130px;overflow:hidden;"></div>
+                    <div id="hrdChatMsgs" style="display:flex;flex-direction:column;gap:5px;height:130px;overflow-y:auto;scroll-behavior:smooth;scrollbar-width:none;-ms-overflow-style:none;"></div>
                     <div id="hrdSentPill" style="display:none;margin-top:6px;align-items:center;gap:5px;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.25);border-radius:8px;padding:5px 8px;">
                       <svg style="width:9px;height:9px;stroke:#4ade80;fill:none;stroke-width:2.5;flex-shrink:0;" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-                      <span style="font-size:9px;color:#4ade80;font-weight:600;">Sent privately — owner notified</span>
+                      <span style="font-size:9px;color:#4ade80;font-weight:600;">Sent privately. Owner notified.</span>
                     </div>
                     <div style="margin-top:8px;"><button onclick="hrdShow(1)" style="font-size:9px;color:rgba(255,255,255,0.25);background:none;border:none;cursor:pointer;font-family:inherit;">← Start over</button></div>
                   </div>
@@ -741,6 +754,62 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
             </div>
           </div>
 
+          <!-- SLIDE 3: Reactivation Campaigns -->
+          <div style="width:33.333%;flex-shrink:0;height:360px;">
+            <div style="display:grid;grid-template-columns:1fr 1fr;height:100%;gap:1px;background:rgba(255,255,255,0.08);">
+
+              <!-- LEFT: SMS animation -->
+              <div style="background:rgba(255,255,255,0.08);padding:16px;display:flex;flex-direction:column;height:360px;overflow:hidden;">
+                <!-- Phone header -->
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,0.08);flex-shrink:0;">
+                  <div class="chat-avatar" style="background:var(--blue);">
+                    <svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:white;fill:none;stroke-width:2;stroke-linecap:round;"><path d="M22 2L11 13"/><path d="M22 2L15 22 11 13 2 9l20-7z"/></svg>
+                  </div>
+                  <div>
+                    <div class="chat-preview-name" style="font-size:11px;">Reactivation Campaign</div>
+                    <div class="chat-preview-status">Automated SMS</div>
+                  </div>
+                  <div class="chat-dot" style="margin-left:auto;background:#22c55e;"></div>
+                </div>
+                <!-- SMS thread -->
+                <div id="campMsgs" style="display:flex;flex-direction:column;gap:6px;flex:1;overflow-y:auto;scroll-behavior:smooth;scrollbar-width:none;min-height:0;"></div>
+                <!-- Lead pill -->
+                <div id="campLeadPill" style="display:none;margin-top:8px;align-items:center;gap:5px;background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.25);border-radius:8px;padding:6px 10px;flex-shrink:0;">
+                  <svg style="width:9px;height:9px;stroke:#93C5FD;fill:none;stroke-width:2.5;flex-shrink:0;" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span style="font-size:9px;color:#93C5FD;font-weight:600;">Lead captured. Owner notified.</span>
+                </div>
+              </div>
+
+              <!-- RIGHT: copy panel -->
+              <div style="padding:20px 18px;display:flex;flex-direction:column;justify-content:center;background:rgba(255,255,255,0.03);overflow:hidden;">
+                <div style="font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--blue-light);margin-bottom:8px;">Reactivation Campaigns</div>
+                <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:0.95rem;font-weight:800;color:white;line-height:1.3;margin-bottom:10px;">Bring back customers who went quiet.</div>
+                <div style="font-size:11px;color:rgba(255,255,255,0.45);line-height:1.6;margin-bottom:16px;">We write it, you approve it, we send it. Seasonal campaigns fire automatically based on your industry.</div>
+                <div style="display:flex;flex-direction:column;gap:8px;">
+                  <div style="display:flex;align-items:center;gap:7px;">
+                    <div style="width:20px;height:20px;border-radius:50%;background:rgba(59,130,246,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                      <svg style="width:10px;height:10px;stroke:#93C5FD;fill:none;stroke-width:2.5;" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                    </div>
+                    <span style="font-size:11px;color:rgba(255,255,255,0.6);">Quarterly campaigns included</span>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:7px;">
+                    <div style="width:20px;height:20px;border-radius:50%;background:rgba(59,130,246,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                      <svg style="width:10px;height:10px;stroke:#93C5FD;fill:none;stroke-width:2.5;" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                    </div>
+                    <span style="font-size:11px;color:rgba(255,255,255,0.6);">Seasonal triggers fire automatically</span>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:7px;">
+                    <div style="width:20px;height:20px;border-radius:50%;background:rgba(59,130,246,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                      <svg style="width:10px;height:10px;stroke:#93C5FD;fill:none;stroke-width:2.5;" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                    </div>
+                    <span style="font-size:11px;color:rgba(255,255,255,0.6);">Replies come back as leads</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
         </div><!-- end slide track -->
 
       </div><!-- end carousel -->
@@ -749,6 +818,7 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
       <div style="display:flex;justify-content:center;gap:8px;margin-top:12px;">
         <div id="heroDot0" onclick="heroGoTo(0)" style="width:7px;height:7px;border-radius:50%;background:white;opacity:1;cursor:pointer;transition:opacity 0.2s;"></div>
         <div id="heroDot1" onclick="heroGoTo(1)" style="width:7px;height:7px;border-radius:50%;background:white;opacity:0.3;cursor:pointer;transition:opacity 0.2s;"></div>
+        <div id="heroDot2" onclick="heroGoTo(2)" style="width:7px;height:7px;border-radius:50%;background:white;opacity:0.3;cursor:pointer;transition:opacity 0.2s;"></div>
       </div>
     </div>
 
@@ -760,7 +830,7 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
   <div class="inner">
     <div class="label reveal">Who It's For</div>
     <h2 class="title reveal reveal-delay-1">Built for local service businesses.<br>Any industry, any size.</h2>
-    <p class="sub reveal reveal-delay-2">If you're losing leads after hours, struggling to get Google reviews, or sitting on a list of past customers who haven't heard from you in months — we fix all three.</p>
+    <p class="sub reveal reveal-delay-2">If you're losing leads after hours, struggling to get Google reviews, or sitting on a list of past customers who haven't heard from you in months, we fix all three.</p>
     <div class="for-grid">
       <div class="for-card reveal reveal-delay-1">
         <div class="for-icon-wrap"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
@@ -771,13 +841,13 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
       <div class="for-card reveal reveal-delay-2">
         <div class="for-icon-wrap"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
         <h3>Build your Google reviews</h3>
-        <p>After each job, send one text. Happy customers get routed straight to Google. Unhappy ones go private — you hear about it before it becomes a public post. Your rating climbs, your reputation stays clean.</p>
+        <p>After each job, send one text. Happy customers get routed straight to Google. Unhappy ones go private. you hear about it before it becomes a public post. Your rating climbs, your reputation stays clean.</p>
         <div class="for-pain"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><p>"I do great work but my competitor has 200 more Google reviews than me."</p></div>
       </div>
       <div class="for-card reveal reveal-delay-3">
         <div class="for-icon-wrap"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
         <h3>Bring old customers back</h3>
-        <p>Every business has a list of past customers who went quiet. We send personalized SMS campaigns on your behalf — each one includes a chat link so responses are captured as leads automatically.</p>
+        <p>Every business has a list of past customers who went quiet. We send personalized SMS campaigns on your behalf, each one includes a chat link so responses are captured as leads automatically.</p>
         <div class="for-pain"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><p>"I have hundreds of past customers I never follow up with because I don't have time."</p></div>
       </div>
     </div>
@@ -792,27 +862,27 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
   <div class="inner">
     <div class="label reveal">The Process</div>
     <h2 class="title reveal reveal-delay-1">Set up in under 24 hours.</h2>
-    <p class="sub reveal reveal-delay-2">You fill out a short form. We build, install, and configure everything. You're live before your next customer walks through the door. You'll have your setup code within 24 hours — or your first month is free.</p>
+    <p class="sub reveal reveal-delay-2">You fill out a short form. We build, install, and configure everything. You're live before your next customer walks through the door. You'll have your setup code within 24 hours, or your first month is free.</p>
     <div class="steps-grid">
       <div class="step reveal reveal-delay-1">
         <div class="step-num">01</div>
         <div class="step-body">
           <h3>Fill out the form</h3>
-          <p>Tell us about your business — services, hours, tone, which products you want. Takes about 5 minutes.</p>
+          <p>Tell us about your business: services, hours, tone, which products you want. Takes about 5 minutes.</p>
         </div>
       </div>
       <div class="step reveal reveal-delay-2">
         <div class="step-num">02</div>
         <div class="step-body">
           <h3>We build it</h3>
-          <p>We configure your chat assistant, review filter, and any campaigns — set up personally. No tech knowledge needed.</p>
+          <p>We configure your chat assistant, review filter, and any campaigns, set up personally. No tech knowledge needed.</p>
         </div>
       </div>
       <div class="step reveal reveal-delay-3">
         <div class="step-num">03</div>
         <div class="step-body">
           <h3>Results hit your inbox</h3>
-          <p>New leads, review alerts, and reactivation responses — all emailed instantly and tracked in your portal.</p>
+          <p>New leads, review alerts, and reactivation responses, all emailed instantly and tracked in your portal.</p>
         </div>
       </div>
     </div>
@@ -844,13 +914,13 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
     <div class="pricing-grid reveal reveal-delay-1">
 
       <!-- CHAT ASSISTANT -->
-      <div class="price-card">
+      <div class="price-card featured">
         <div class="price-name">Chat Assistant</div>
         <div class="price-amount"><span class="pm">$250</span><span class="pa" style="display:none">$229</span><span>/mo</span></div>
-        <div class="pa price-annual-note" style="display:none;">Billed $2,750/yr — save $250</div>
-        <p class="price-desc">24/7 chat assistant on your website. Answers questions, captures leads, and emails you every opportunity.</p>
+        <div class="pa price-annual-note" style="display:none;">Billed $2,750/yr, save $250</div>
+        <p class="price-desc">24/7 chat assistant on your website. Answers questions, captures leads, and emails you every opportunity. For most service businesses, one captured job pays for the month.</p>
         <ul class="price-features">
-          <li><svg class="price-check" style="stroke:#93C5FD" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Custom bot built for your business</li>
+          <li><svg class="price-check" style="stroke:var(--blue)" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Custom bot built for your business</li>
           <li><svg class="price-check" style="stroke:#93C5FD" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>24/7 lead capture & FAQ answers</li>
           <li><svg class="price-check" style="stroke:#93C5FD" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Instant email lead notifications</li>
           <li><svg class="price-check" style="stroke:#93C5FD" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Responds in any language</li>
@@ -858,16 +928,16 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
           <li><svg class="price-check" style="stroke:#93C5FD" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>24-hour setup guarantee</li>
         </ul>
 
-        <a href="#contact" class="price-btn price-btn-outline" data-plan="bot">Get Started</a>
+        <a href="#contact" class="price-btn price-btn-blue" data-plan="bot">Get Started</a>
       </div>
 
       <!-- REVIEW FILTER -->
-      <div class="price-card featured">
+      <div class="price-card">
         
         <div class="price-name">Review Filter</div>
         <div class="price-amount"><span class="pm">$100</span><span class="pa" style="display:none">$92</span><span>/mo</span></div>
-        <div class="pa price-annual-note" style="display:none;">Billed $1,100/yr — save $100</div>
-        <p class="price-desc">Turn every job into a 5-star review. Happy customers go to Google, unhappy ones stay private — automatically.</p>
+        <div class="pa price-annual-note" style="display:none;">Billed $1,100/yr, save $100</div>
+        <p class="price-desc">Turn every job into a 5-star review. Happy customers go to Google, unhappy ones stay private, automatically.</p>
         <ul class="price-features">
           <li><svg class="price-check" style="stroke:var(--blue)" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Pre-written message send tool</li>
           <li><svg class="price-check" style="stroke:var(--blue)" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>QR code for counter or receipts</li>
@@ -876,24 +946,23 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
           <li><svg class="price-check" style="stroke:var(--blue)" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Client portal with review stats</li>
         </ul>
 
-        <a href="#contact" class="price-btn price-btn-blue" data-plan="review">Get Started</a>
+        <a href="#contact" class="price-btn price-btn-outline" data-plan="review">Get Started</a>
       </div>
 
       <!-- REACTIVATION CAMPAIGNS -->
       <div class="price-card">
         <div class="price-name">Reactivation Campaigns</div>
         <div class="price-amount"><span class="pm">$200</span><span class="pa" style="display:none">$183</span><span>/mo</span></div>
-        <div class="pa price-annual-note" style="display:none;">Billed $2,200/yr — save $200</div>
-        <p class="price-desc">We actively manage your past customer list and run quarterly SMS campaigns on your behalf. Responses come back as leads automatically — you do nothing.</p>
+        <div class="pa price-annual-note" style="display:none;">Billed $2,200/yr, save $200</div>
+        <p class="price-desc">We actively manage your past customer list and run quarterly SMS campaigns on your behalf. Responses come back as leads automatically, you do nothing.</p>
         <ul class="price-features">
           <li><svg class="price-check" style="stroke:#93C5FD" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>One campaign per quarter included</li>
           <li><svg class="price-check" style="stroke:#93C5FD" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>We write every message for you</li>
-          <li><svg class="price-check" style="stroke:#93C5FD" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Sent to past customers only — compliant</li>
+          <li><svg class="price-check" style="stroke:#93C5FD" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Sent to past customers only, compliant</li>
           <li><svg class="price-check" style="stroke:#93C5FD" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Chat link turns replies into leads</li>
           <li><svg class="price-check" style="stroke:#93C5FD" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Results report after every campaign</li>
           <li><svg class="price-check" style="stroke:#93C5FD" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Extra campaigns just $100 each</li>
         </ul>
-<p style="font-size:13px;color:rgba(255,255,255,0.5);margin:16px 0;">You send us the list once. We handle the rest every quarter.</p>
         <a href="#contact" class="price-btn price-btn-outline" data-plan="campaign">Get Started</a>
       </div>
 
@@ -911,11 +980,11 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
         </div>
 
         <!-- RIGHT: static price display -->
-        <div style="text-align:right;flex-shrink:0;">
-          <div id="bundleOriginal" style="font-size:12px;color:var(--text-soft);text-decoration:line-through;height:18px;line-height:18px;"></div>
-          <div id="bundlePrice" style="font-family:'Plus Jakarta Sans',sans-serif;font-size:2rem;font-weight:800;color:var(--text);line-height:1.1;">—</div>
-          <div id="bundleSavings" style="font-size:12px;color:#16a34a;font-weight:700;height:18px;margin-top:2px;"></div>
-          <div style="font-size:11px;color:var(--text-soft);">per month</div>
+        <div style="text-align:right;flex-shrink:0;min-width:140px;">
+          <div id="bundleOriginal" style="font-size:12px;color:var(--text-soft);text-decoration:line-through;height:18px;line-height:18px;visibility:hidden;"></div>
+          <div id="bundlePrice" style="font-family:'Plus Jakarta Sans',sans-serif;font-size:2rem;font-weight:800;color:var(--text);line-height:1.1;min-height:2.6rem;display:flex;align-items:center;justify-content:flex-end;">—</div>
+          <div id="bundleSavings" style="font-size:12px;color:#16a34a;font-weight:700;height:18px;margin-top:2px;visibility:hidden;"></div>
+          <div id="bundlePerMonth" style="font-size:11px;color:var(--text-soft);visibility:hidden;">per month</div>
         </div>
 
       </div>
@@ -960,7 +1029,7 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
   <div class="inner">
     <div class="label reveal">See It In Action</div>
     <h2 class="title reveal reveal-delay-1">Try the bot yourself.</h2>
-    <p class="sub reveal reveal-delay-2">The chat assistant in the bottom right corner is the same one we'd build for your business — just trained on us instead of you. Here are some things worth trying.</p>
+    <p class="sub reveal reveal-delay-2">The chat assistant in the bottom right corner is the same one we'd build for your business, just trained on us instead of you. Here are some things worth trying.</p>
     <div class="faq-list reveal reveal-delay-2">
 
       <div class="faq-item">
@@ -1004,8 +1073,8 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
       </div>
 
       <div class="faq-item">
-        <div class="faq-question" onclick="event.stopPropagation();copyAndChat(this, 'I run a roofing company — would this work for me?')">
-          <h4>I run a roofing company — would this work for me?</h4>
+        <div class="faq-question" onclick="event.stopPropagation();copyAndChat(this, 'I run a roofing company, would this work for me?')">
+          <h4>I run a roofing company, would this work for me?</h4>
           <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
             <span style="font-size:12px;font-weight:600;color:var(--blue);white-space:nowrap;">Try it →</span>
             <svg class="faq-chevron" style="transform:none!important;" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
@@ -1044,7 +1113,24 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
       </div>
 
     </div>
-    <p style="font-size:13px;color:var(--text-soft);text-align:center;margin-top:24px;">Click any question to open it in the chat — or type your own. The bot in the corner is live.</p>
+    <p style="font-size:13px;color:var(--text-soft);text-align:center;margin-top:24px;">Click any question to open it in the chat, or type your own. The bot in the corner is live.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:32px;padding-top:28px;border-top:1px solid var(--border);">
+      <div style="background:white;border:1.5px solid var(--border);border-radius:14px;padding:18px 20px;">
+        <div style="font-size:10px;font-weight:700;color:var(--blue);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px;">HVAC</div>
+        <div style="font-size:13px;font-weight:700;color:var(--navy);margin-bottom:6px;">Captures leads at 2am</div>
+        <div style="font-size:12px;color:var(--text-soft);line-height:1.7;">When a homeowner's AC goes out on a summer night, your bot answers instantly, collects their info, and emails you the lead before they call your competitor.</div>
+      </div>
+      <div style="background:white;border:1.5px solid var(--border);border-radius:14px;padding:18px 20px;">
+        <div style="font-size:10px;font-weight:700;color:var(--blue);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px;">Roofing</div>
+        <div style="font-size:13px;font-weight:700;color:var(--navy);margin-bottom:6px;">Qualifies jobs automatically</div>
+        <div style="font-size:12px;color:var(--text-soft);line-height:1.7;">The bot asks about roof size, damage type, and timeline. You get a qualified lead in your inbox, not just a name and number.</div>
+      </div>
+      <div style="background:white;border:1.5px solid var(--border);border-radius:14px;padding:18px 20px;">
+        <div style="font-size:10px;font-weight:700;color:var(--blue);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px;">Plumbing</div>
+        <div style="font-size:13px;font-weight:700;color:var(--navy);margin-bottom:6px;">Flags emergencies instantly</div>
+        <div style="font-size:12px;color:var(--text-soft);line-height:1.7;">Urgent situations get routed to your after-hours line automatically. Non-urgent jobs get captured as leads for the next morning.</div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -1060,7 +1146,7 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
     <div style="text-align:center;margin-bottom:40px;">
       <div class="label" style="color:var(--blue-light);justify-content:center;">No commitment</div>
       <h2 class="title reveal" style="color:white;">Request a free demo.</h2>
-      <p class="sub reveal reveal-delay-1" style="color:rgba(255,255,255,0.5);">See a bot built for your specific business before you pay anything. Takes 24 hours. No credit card, no contract.</p>
+      <p class="sub reveal reveal-delay-1" style="color:rgba(255,255,255,0.5);">Not ready to sign up yet? Fill this out and we'll build a bot trained on your actual business and send it to you within 2 hours. Free, no strings attached. If you like it, getting started takes 5 minutes.</p>
     </div>
     <form id="demoForm" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:32px;display:flex;flex-direction:column;gap:16px;">
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
@@ -1106,14 +1192,14 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
         <input name="demoWebsite" placeholder="www.yoursite.com" style="width:100%;padding:11px 14px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:10px;color:white;font-size:14px;font-family:inherit;outline:none;box-sizing:border-box;" onfocus="this.style.borderColor='rgba(147,197,253,0.5)'" onblur="this.style.borderColor='rgba(255,255,255,0.12)'" />
       </div>
       <button type="submit" id="demoSubmitBtn" style="background:var(--blue);color:white;border:none;padding:14px;border-radius:12px;font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:opacity 0.2s;margin-top:4px;">Request My Free Demo →</button>
-      <p style="text-align:center;font-size:12px;color:rgba(255,255,255,0.35);margin:0;">No credit card. No contract. You'll hear from us within 2 hours during business hours.</p>
+      <p style="text-align:center;font-size:12px;color:rgba(255,255,255,0.35);margin:0;">This is just a demo request, not a signup. We build a bot for your actual business and send it within 2 hours. No credit card, no contract.</p>
     </form>
     <div id="demoSuccess" style="display:none;text-align:center;padding:48px 24px;">
       <div style="width:64px;height:64px;border-radius:50%;background:rgba(34,197,94,0.15);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;">
         <svg style="width:28px;height:28px;stroke:#4ade80;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
       </div>
       <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:1.3rem;font-weight:800;color:white;margin-bottom:8px;">You're on the list.</div>
-      <p style="color:rgba(255,255,255,0.5);font-size:14px;line-height:1.7;">We'll reach out within 2 hours with a demo bot built for your business. Check your phone — we might just text you.</p>
+      <p style="color:rgba(255,255,255,0.5);font-size:14px;line-height:1.7;">We'll reach out within 2 hours with a demo bot built for your business. Check your phone, we might just text you.</p>
     </div>
   </div>
 </section>
@@ -1141,7 +1227,7 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
       <div class="reveal reveal-delay-2">
         <div class="label">Who's Behind This</div>
         <h2 class="title">Built and run by one person.</h2>
-        <p class="about-text">I'm Eli, based in Dayton, Ohio. I build custom chat assistants for local businesses and manage them personally — no team, no outsourcing, no support tickets.</p>
+        <p class="about-text">I'm Eli, based in Dayton, Ohio. I build custom chat assistants for local businesses and manage them personally, no team, no outsourcing, no support tickets.</p>
         <p class="about-text">If something needs to be fixed or updated, you're talking directly to the person who built it. That's the whole point.</p>
         <div style="display:flex;flex-direction:column;gap:10px;margin-top:28px;">
           <a href="mailto:netifybuilds@gmail.com" style="display:inline-flex;align-items:center;gap:8px;color:var(--blue-light);font-size:14px;font-weight:600;text-decoration:none;">
@@ -1150,7 +1236,7 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
           </a>
           <a href="sms:+19373671847" style="display:inline-flex;align-items:center;gap:8px;color:var(--blue-light);font-size:14px;font-weight:600;text-decoration:none;">
             <svg style="width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-            Text me directly — (937) 367-1847
+            Text me directly, (937) 367-1847
           </a>
           <a href="/portal" style="display:inline-flex;align-items:center;gap:8px;background:rgba(147,197,253,0.12);border:1px solid rgba(147,197,253,0.25);color:var(--blue-light);font-size:14px;font-weight:700;text-decoration:none;padding:10px 18px;border-radius:10px;margin-top:6px;width:fit-content;">
             <svg style="width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
@@ -1172,13 +1258,13 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
       <div class="form-left reveal">
         <div class="label">Get Started</div>
         <h2>Let's get you set up.</h2>
-        <p>Fill out the form and we'll have everything ready within 24 hours. We'll reach out to confirm your order and send your invoice before anything goes live.</p>
+        <p>Fill out the form and we'll have everything ready within 24 hours. We'll reach out within 2 hours to confirm your info and get your bot built.</p>
         <div class="response-time"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> We typically respond within 2 hours during business hours</div>
         <div class="form-perks">
           <div class="perk"><div class="icon-box-sm"><svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div><div><h4>Live within 24 hours</h4><p>Most setups go live the same day we receive your info.</p></div></div>
           <div class="perk"><div class="icon-box-sm"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div><div><h4>We handle setup if needed</h4><p>Install it yourself in 60 seconds, or hand us your login and we'll do it free.</p></div></div>
           <div class="perk"><div class="icon-box-sm"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><div><h4>Built for your business</h4><p>Everything is custom built around your specific services, hours, and tone.</p></div></div>
-          <div class="perk"><div class="icon-box-sm"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg></div><div><h4>24-hour setup guarantee</h4><p>Setup code delivered within 24 hours of approval — or your first month is free.</p></div></div>
+          <div class="perk"><div class="icon-box-sm"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg></div><div><h4>24-hour setup guarantee</h4><p>Setup code delivered within 24 hours of approval, or your first month is free.</p></div></div>
         </div>
       </div>
       <div class="reveal reveal-delay-2">
@@ -1207,7 +1293,7 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
                 </div>
               </div>
               <div id="autoFillBanner" style="display:none;background:#f0fdf4;border:1px solid #86efac;border-radius:10px;padding:10px 14px;margin-top:-4px;margin-bottom:8px;font-size:12px;color:#15803d;font-weight:600;">
-                ✓ Business info auto-filled from Google — review below and edit anything that looks off.
+                ✓ Business info auto-filled from Google. Review below and edit anything that looks off.
               </div>
               <div class="form-row">
                 <div><label>Email</label><input type="email" name="email" placeholder="john@smithhvac.com" required /></div>
@@ -1244,11 +1330,11 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
                 </div>
                 <div class="form-group">
                   <label>Common customer questions</label>
-                  <textarea name="faqs" placeholder="e.g. Do you offer emergency service? What areas do you cover? How much does a tune-up cost?"></textarea>
+                  <textarea name="faqs" maxlength="3000" placeholder="e.g. Do you offer emergency service? What areas do you cover? How much does a tune-up cost?"></textarea>
                 </div>
                 <div class="form-group">
                   <label>What sets you apart? <span class="opt">optional</span></label>
-                  <textarea name="differentiators" class="short" placeholder="e.g. Family owned 20 years, same-day service, 5-star rated..."></textarea>
+                  <textarea name="differentiators" maxlength="1000" class="short" placeholder="e.g. Family owned 20 years, same-day service, 5-star rated..."></textarea>
                 </div>
                 <div class="form-row">
                   <div><label>Emergency / after-hours number <span class="opt">optional</span></label><input type="text" name="emergency" placeholder="(555) 123-4567" /></div>
@@ -1257,8 +1343,8 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
                 <div class="form-group">
                   <label>What should your bot collect from visitors?</label>
                   <select name="leadCapture" id="leadCaptureSelect">
-                    <option value="name_phone">Name and phone — you call them back (HVAC, plumbing, contractors)</option>
-                    <option value="name_email">Name and email — you follow up digitally (law, real estate, consulting)</option>
+                    <option value="name_phone">Name and phone (you call them back) (HVAC, plumbing, contractors)</option>
+                    <option value="name_email">Name and email (you follow up digitally) (law, real estate, consulting)</option>
                     <option value="name_email_date">Name, email, and preferred date (dental, salons, gyms, vets)</option>
                     <option value="reservation">Name, date, time, party size (restaurants, event spaces)</option>
                     <option value="email_only">Email only (retail, product sellers, ecommerce)</option>
@@ -1276,7 +1362,7 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
                 </div>
                 <div class="form-group">
                   <label>Bot name <span class="opt">optional</span></label>
-                  <input type="text" name="botPersonality" placeholder="e.g. Aria, Max — or leave blank to use your business name" />
+                  <input type="text" name="botPersonality" placeholder="e.g. Aria, Max , or leave blank to use your business name" />
                 </div>
                 <div class="form-group">
                   <label>Bot color <span class="opt">optional</span></label>
@@ -1303,18 +1389,18 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
                 </div>
                 <!-- Feature add-ons -->
                 <div id="features-section" style="display:none;">
-                  <div class="form-divider">Add-ons for your industry <span style="font-size:11px;font-weight:400;color:var(--text-soft);">— all free</span></div>
+                  <div class="form-divider">Add-ons for your industry <span style="font-size:11px;font-weight:400;color:var(--text-soft);">: all free</span></div>
                   <div class="form-group">
                     <div style="display:flex;flex-direction:column;gap:10px;">
-                      <label id="flabel_appointment" class="feat-card" style="display:none;"><input type="checkbox" name="feature_appointment" id="feat_appointment" value="yes" onchange="toggleFeatCard('flabel_appointment',this.checked)"><div><div style="font-size:14px;font-weight:600;margin-bottom:2px;">Appointment Request Flow <span class="feat-tag">Dental, salons, law</span></div><div style="font-size:13px;color:var(--text-soft);line-height:1.5;">Bot collects preferred day, time, and reason — emails you a formatted request to confirm.</div></div></label>
+                      <label id="flabel_appointment" class="feat-card" style="display:none;"><input type="checkbox" name="feature_appointment" id="feat_appointment" value="yes" onchange="toggleFeatCard('flabel_appointment',this.checked)"><div><div style="font-size:14px;font-weight:600;margin-bottom:2px;">Appointment Request Flow <span class="feat-tag">Dental, salons, law</span></div><div style="font-size:13px;color:var(--text-soft);line-height:1.5;">Bot collects preferred day, time, and reason, emails you a formatted request to confirm.</div></div></label>
                       <label id="flabel_emergency" class="feat-card" style="display:none;"><input type="checkbox" name="feature_emergency" id="feat_emergency" value="yes" onchange="toggleFeatCard('flabel_emergency',this.checked)"><div><div style="font-size:14px;font-weight:600;margin-bottom:2px;">Emergency Escalation <span class="feat-tag">HVAC, plumbing, electrical</span></div><div style="font-size:13px;color:var(--text-soft);line-height:1.5;">Bot immediately directs urgent situations to your emergency line.</div></div></label>
                       <label id="flabel_multilang" class="feat-card" style="display:none;"><input type="checkbox" name="feature_multilang" id="feat_multilang" value="yes" onchange="toggleFeatCard('flabel_multilang',this.checked)"><div><div style="font-size:14px;font-weight:600;margin-bottom:2px;">Multilanguage Support <span class="feat-tag">All businesses</span></div><div style="font-size:13px;color:var(--text-soft);line-height:1.5;">Bot automatically responds in whatever language the customer writes in.</div></div></label>
                       <label id="flabel_pricing" class="feat-card" style="display:none;"><input type="checkbox" name="feature_pricing" id="feat_pricing" value="yes" onchange="toggleFeatCard('flabel_pricing',this.checked)"><div><div style="font-size:14px;font-weight:600;margin-bottom:2px;">Pricing Guide Mode <span class="feat-tag">Roofing, HVAC, contractors</span></div><div style="font-size:13px;color:var(--text-soft);line-height:1.5;">Bot gives realistic price ranges instead of just saying "it depends."</div></div></label>
                       <label id="flabel_workout" class="feat-card" style="display:none;"><input type="checkbox" name="feature_workout" id="feat_workout" value="yes" onchange="toggleFeatCard('flabel_workout',this.checked)"><div><div style="font-size:14px;font-weight:600;margin-bottom:2px;">Workout Split Builder <span class="feat-tag">Gyms &amp; fitness</span></div><div style="font-size:13px;color:var(--text-soft);line-height:1.5;">Bot builds a personalized workout split for visitors and captures them as a lead.</div></div></label>
-                      <label id="flabel_groomer" class="feat-card" style="display:none;"><input type="checkbox" name="feature_groomer" id="feat_groomer" value="yes" onchange="toggleFeatCard('flabel_groomer',this.checked)"><div><div style="font-size:14px;font-weight:600;margin-bottom:2px;">Pet Intake Qualifier <span class="feat-tag">Pet groomers</span></div><div style="font-size:13px;color:var(--text-soft);line-height:1.5;">Bot asks about breed, size, and temperament — tells customers what service they need.</div></div></label>
-                      <label id="flabel_autosymptom" class="feat-card" style="display:none;"><input type="checkbox" name="feature_autosymptom" id="feat_autosymptom" value="yes" onchange="toggleFeatCard('flabel_autosymptom',this.checked)"><div><div style="font-size:14px;font-weight:600;margin-bottom:2px;">Symptom Checker <span class="feat-tag">Auto shops</span></div><div style="font-size:13px;color:var(--text-soft);line-height:1.5;">Customer describes the noise or warning light — bot explains what it might be and offers a free inspection.</div></div></label>
-                      <label id="flabel_moving" class="feat-card" style="display:none;"><input type="checkbox" name="feature_moving" id="feat_moving" value="yes" onchange="toggleFeatCard('flabel_moving',this.checked)"><div><div style="font-size:14px;font-weight:600;margin-bottom:2px;">Move Estimator <span class="feat-tag">Moving companies</span></div><div style="font-size:13px;color:var(--text-soft);line-height:1.5;">Bot asks rooms, distance, and large items — gives a realistic cost range and captures the lead.</div></div></label>
-                      <label id="flabel_cleaning" class="feat-card" style="display:none;"><input type="checkbox" name="feature_cleaning" id="feat_cleaning" value="yes" onchange="toggleFeatCard('flabel_cleaning',this.checked)"><div><div style="font-size:14px;font-weight:600;margin-bottom:2px;">Quote Estimator <span class="feat-tag">Cleaning services</span></div><div style="font-size:13px;color:var(--text-soft);line-height:1.5;">Bot asks square footage, type, and frequency — gives a price range and captures recurring leads.</div></div></label>
+                      <label id="flabel_groomer" class="feat-card" style="display:none;"><input type="checkbox" name="feature_groomer" id="feat_groomer" value="yes" onchange="toggleFeatCard('flabel_groomer',this.checked)"><div><div style="font-size:14px;font-weight:600;margin-bottom:2px;">Pet Intake Qualifier <span class="feat-tag">Pet groomers</span></div><div style="font-size:13px;color:var(--text-soft);line-height:1.5;">Bot asks about breed, size, and temperament, tells customers what service they need.</div></div></label>
+                      <label id="flabel_autosymptom" class="feat-card" style="display:none;"><input type="checkbox" name="feature_autosymptom" id="feat_autosymptom" value="yes" onchange="toggleFeatCard('flabel_autosymptom',this.checked)"><div><div style="font-size:14px;font-weight:600;margin-bottom:2px;">Symptom Checker <span class="feat-tag">Auto shops</span></div><div style="font-size:13px;color:var(--text-soft);line-height:1.5;">Customer describes the noise or warning light, bot explains what it might be and offers a free inspection.</div></div></label>
+                      <label id="flabel_moving" class="feat-card" style="display:none;"><input type="checkbox" name="feature_moving" id="feat_moving" value="yes" onchange="toggleFeatCard('flabel_moving',this.checked)"><div><div style="font-size:14px;font-weight:600;margin-bottom:2px;">Move Estimator <span class="feat-tag">Moving companies</span></div><div style="font-size:13px;color:var(--text-soft);line-height:1.5;">Bot asks rooms, distance, and large items, gives a realistic cost range and captures the lead.</div></div></label>
+                      <label id="flabel_cleaning" class="feat-card" style="display:none;"><input type="checkbox" name="feature_cleaning" id="feat_cleaning" value="yes" onchange="toggleFeatCard('flabel_cleaning',this.checked)"><div><div style="font-size:14px;font-weight:600;margin-bottom:2px;">Quote Estimator <span class="feat-tag">Cleaning services</span></div><div style="font-size:13px;color:var(--text-soft);line-height:1.5;">Bot asks square footage, type, and frequency, gives a price range and captures recurring leads.</div></div></label>
                     </div>
                   </div>
                 </div>
@@ -1388,7 +1474,7 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
                       <span style="font-size:13px;font-weight:700;color:var(--blue-dark);">$100 each</span>
                     </div>
                     <select name="extraCampaigns" style="width:100%;">
-                      <option value="0">No extra campaigns — just the quarterly one</option>
+                      <option value="0">No extra campaigns : just the quarterly one</option>
                       <option value="1">1 extra campaign per year (+$100)</option>
                       <option value="2">2 extra campaigns per year (+$200)</option>
                       <option value="3">3 extra campaigns per year (+$300)</option>
@@ -1414,11 +1500,11 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
               <div class="form-group">
                 <label>Billing preference</label>
                 <select name="billing">
-                  <option value="monthly">Monthly — cancel anytime</option>
-                  <option value="annual">Annual — one month free (best value)</option>
+                  <option value="monthly">Monthly, cancel anytime</option>
+                  <option value="annual">Annual, one month free (best value)</option>
                 </select>
               </div>
-              <p style="font-size:12px;color:var(--text-soft);line-height:1.6;margin-top:-6px;">You'll receive a Stripe payment link by email. Recurring billing — cancel anytime from your Stripe portal.</p>
+              <p style="font-size:12px;color:var(--text-soft);line-height:1.6;margin-top:-6px;">Your subscription starts when you activate your bot in the client portal. No charge until then. Cancel anytime.</p>
               <!-- REVIEW BEFORE SUBMITTING -->
               <div id="reviewBanner" style="display:none;background:#fffbeb;border:1.5px solid #fcd34d;border-radius:12px;padding:14px 16px;margin-bottom:16px;">
                 <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
@@ -1428,55 +1514,17 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
                 <div id="reviewSummary" style="font-size:12px;color:#78716c;line-height:1.8;"></div>
               </div>
               <button type="submit" class="form-submit" id="formSubmitBtn">Submit &amp; Get Started →</button>
-              <p class="form-note">No charge until you approve. We'll reach out within 2 hours to confirm everything.</p>
+              <p class="form-note">No charge until you activate. We'll reach out within 2 hours to confirm your info.</p>
             </form>
             <div class="success-msg" id="successMsg">
   <div class="success-icon"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
-  <h3>We got it — you'll hear from us within 2 hours.</h3>
-  <p style="margin-bottom:20px;">We'll build your bot and send you the install code. Here's what happens next and how to get it on your site fast.</p>
-
-  <div style="text-align:left;background:var(--off-white);border:1.5px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:20px;">
-    <div style="padding:14px 20px;border-bottom:1px solid var(--border);background:white;">
-      <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:700;color:var(--text);margin-bottom:2px;">How to install your bot — pick what works for you</div>
-      <div style="font-size:12px;color:var(--text-soft);">Your subscription doesn't start until you hit Activate in your client portal.</div>
-    </div>
-    <div style="padding:14px 20px;border-bottom:1px solid var(--border);">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
-        <div style="width:22px;height:22px;border-radius:50%;background:#dbeafe;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#2563eb;flex-shrink:0;">1</div>
-        <div style="font-size:13px;font-weight:600;color:var(--text);">You have a web developer</div>
-      </div>
-      <div style="font-size:13px;color:var(--text-soft);line-height:1.6;">We'll include a pre-written email you can forward directly — no explaining required. Should take them 5 minutes.</div>
-    </div>
-    <div style="padding:14px 20px;border-bottom:1px solid var(--border);">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
-        <div style="width:22px;height:22px;border-radius:50%;background:#dbeafe;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#2563eb;flex-shrink:0;">2</div>
-        <div style="font-size:13px;font-weight:600;color:var(--text);">Your site is on WordPress</div>
-      </div>
-      <div style="font-size:13px;color:var(--text-soft);line-height:1.6;">Install the free "Header Footer Code Manager" plugin → paste the code → save. Takes 2 minutes. We'll walk you through it.</div>
-    </div>
-    <div style="padding:14px 20px;border-bottom:1px solid var(--border);">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
-        <div style="width:22px;height:22px;border-radius:50%;background:#dbeafe;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#2563eb;flex-shrink:0;">3</div>
-        <div style="font-size:13px;font-weight:600;color:var(--text);">Wix, Squarespace, or GoDaddy</div>
-      </div>
-      <div style="font-size:13px;color:var(--text-soft);line-height:1.6;">These platforms support custom code through their settings. We'll include platform-specific instructions.</div>
-    </div>
-    <div style="padding:14px 20px;">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
-        <div style="width:22px;height:22px;border-radius:50%;background:#dcfce7;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#16a34a;flex-shrink:0;">4</div>
-        <div style="font-size:13px;font-weight:600;color:var(--text);">We install it for you</div>
-      </div>
-      <div style="font-size:13px;color:var(--text-soft);line-height:1.6;">Just reply to our email and give us access to your site. We'll handle the whole install — usually same day.</div>
-    </div>
-  </div>
-
+  <h3>We got it. You'll hear from us within 2 hours.</h3>
+  <p style="margin-bottom:20px;">We'll build your bot and send you the install code. Your subscription doesn't start until you hit Activate in your client portal.</p>
   <div style="background:var(--navy);border-radius:14px;padding:18px 22px;text-align:left;">
-    <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:700;color:white;margin-bottom:4px;">⏱ Your subscription doesn't start until you activate</div>
-    <div style="font-size:13px;color:rgba(255,255,255,0.55);line-height:1.6;">Once the bot is on your site, log into your client portal and hit <strong style="color:#93C5FD;">Activate My Bot</strong>. That's when your subscription starts and payment is collected — not before.</div>
+    <div style="font-size:13px;font-weight:700;color:white;margin-bottom:4px;">What happens next</div>
+    <div style="font-size:13px;color:rgba(255,255,255,0.55);line-height:1.7;">We'll reach out within 2 hours to confirm your info and get started. Setup code delivered within 24 hours. Once your bot is installed, log into your client portal and hit Activate — that's when billing starts.</div>
   </div>
 </div>
-          </div>
-        </div>
 
   </div>
 </section>
@@ -1500,10 +1548,10 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
             <span style="font-size:0.72rem;font-weight:700;color:var(--blue-light);letter-spacing:0.05em;">BUILDS</span>
           </span>
         </div>
-        <p class="footer-tagline">Custom web chat assistants for local service businesses. Never miss a lead again.</p>
+        <p class="footer-tagline">AI tools for local service businesses. Chat assistants, review management, and reactivation campaigns, built and managed personally.</p>
         <div class="footer-contact" style="display:flex;flex-direction:column;gap:6px;margin-top:16px;">
           <a href="mailto:netifybuilds@gmail.com">netifybuilds@gmail.com</a>
-          <a href="sms:+19373671847" style="color:rgba(255,255,255,0.5);font-size:13px;text-decoration:none;">(937) 367-1847 — text anytime</a>
+          <a href="sms:+19373671847" style="color:rgba(255,255,255,0.5);font-size:13px;text-decoration:none;">(937) 367-1847, text anytime</a>
         </div>
       </div>
       <div class="footer-col">
@@ -1573,66 +1621,97 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
   document.querySelectorAll('.reveal').forEach(function(el) { observer.observe(el); });
 
   // ── CHAT DEMO ──
-  var demoMessages = [
-    { role: 'user', text: 'My AC stopped working, it\'s 90° in my house' },
-    { role: 'bot', text: 'Oh no — let\'s get you taken care of. Is it not turning on at all, or is it running but not cooling?' },
-    { role: 'user', text: 'Running but no cold air coming out' },
-    { role: 'bot', text: 'Likely a refrigerant or compressor issue. We can get someone out today. What\'s your name and best number?' },
+  var chatMsgs = [
+    { role: 'user', text: 'My AC stopped working, it\'s 90 degrees in my house' },
+    { role: 'bot', text: 'Oh no, let\'s get you taken care of. Is it not turning on at all, or running but not cooling?' },
+    { role: 'user', text: 'Running but no cold air' },
+    { role: 'bot', text: 'Likely a refrigerant issue. We can get someone out today. What\'s your name and best number?' },
     { role: 'user', text: 'Mike Johnson, 937-555-0182' },
-    { role: 'bot', text: 'Got it Mike — someone will call you in the next 20 minutes to confirm your appointment. Hang tight!' },
+    { role: 'bot', text: 'Got it Mike, someone will call you in the next 20 minutes. Hang tight!' },
   ];
   var demoEl = document.getElementById('chatDemo');
-  var demoIdx = 0;
-  var demoFinished = false;
-  function addDemoMsg() {
-    if (demoIdx >= demoMessages.length) {
-      // Show lead captured indicator
-      setTimeout(function() {
-        var indicator = document.createElement('div');
-        indicator.className = 'chat-lead-captured';
-        indicator.innerHTML = '<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span>Lead captured — email sent to owner</span>';
-        indicator.style.cssText = 'opacity:0;transition:opacity 0.4s ease;';
-        demoEl.appendChild(indicator);
-        setTimeout(function() { indicator.style.opacity = '1'; }, 50);
-        // Transition to review filter slide after 2.5s on desktop
-        setTimeout(function() {
-          if (window.innerWidth >= 768 && !demoFinished) {
-            demoFinished = true;
-            heroGoTo(1);
-          }
-        }, 2500);
-      }, 600);
-      return;
-    }
-    var m = demoMessages[demoIdx];
-    var b = document.createElement('div');
-    b.className = 'chat-bubble ' + m.role;
-    b.style.cssText = 'opacity:0;transform:translateY(8px);transition:all 0.35s ease;';
-    b.textContent = m.text;
-    demoEl.appendChild(b);
-    demoEl.scrollTop = 9999;
-    setTimeout(function() { b.style.opacity = '1'; b.style.transform = 'translateY(0)'; }, 50);
-    demoIdx++;
-    if (demoIdx < demoMessages.length) setTimeout(addDemoMsg, 2200);
-    else setTimeout(addDemoMsg, 800);
+  var chatTimer = null;
+  var chatIdx = 0;
+
+  function resetChat() {
+    clearTimeout(chatTimer);
+    chatIdx = 0;
+    if (demoEl) demoEl.innerHTML = '';
   }
-  setTimeout(addDemoMsg, 1800);
+
+  function runChat() {
+    resetChat();
+    chatTimer = setTimeout(function next() {
+      if (!demoEl) return;
+      if (chatIdx >= chatMsgs.length) {
+        // Show lead pill
+        var pill = document.createElement('div');
+        pill.className = 'chat-lead-captured';
+        pill.style.opacity = '0';
+        pill.style.transition = 'opacity 0.4s ease';
+        pill.innerHTML = '<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span>Lead captured, email sent to owner</span>';
+        demoEl.appendChild(pill);
+        requestAnimationFrame(function() { requestAnimationFrame(function() { pill.style.opacity = '1'; }); });
+        demoEl.scrollTop = demoEl.scrollHeight;
+        // Wait 5s then advance
+        chatTimer = setTimeout(function() { heroGoTo(1); }, 5000);
+        return;
+      }
+      var m = chatMsgs[chatIdx];
+      var b = document.createElement('div');
+      b.className = 'chat-bubble ' + m.role;
+      b.textContent = m.text;
+      b.style.opacity = '0';
+      demoEl.appendChild(b);
+      demoEl.scrollTop = demoEl.scrollHeight;
+      requestAnimationFrame(function() {
+        requestAnimationFrame(function() {
+          b.style.transition = 'opacity 0.3s ease';
+          b.style.opacity = '1';
+        });
+      });
+      chatIdx++;
+      chatTimer = setTimeout(next, chatIdx < chatMsgs.length ? 2800 : 900);
+    }, 800);
+  }
+
+  runChat();
 
   // ── HERO CAROUSEL ──
   var heroSlide = 0;
+  var heroTransitioning = false;
   var heroTrack = document.getElementById('heroSlideTrack');
   function heroGoTo(idx) {
+    if (heroTransitioning) return;
+    heroTransitioning = true;
     heroSlide = idx;
-    // Track is 200% wide, each slide is 50% of track = 100% of viewport column
-    if (heroTrack) heroTrack.style.transform = 'translateX(-' + (idx * 50) + '%)';
-    var d0 = document.getElementById('heroDot0');
-    var d1 = document.getElementById('heroDot1');
-    if (d0) d0.style.opacity = idx === 0 ? '1' : '0.3';
-    if (d1) d1.style.opacity = idx === 1 ? '1' : '0.3';
+    if (heroTrack) heroTrack.style.transform = 'translateX(-' + (idx * 33.333) + '%)';
+    [0,1,2].forEach(function(i) {
+      var d = document.getElementById('heroDot' + i);
+      if (d) d.style.opacity = i === idx ? '1' : '0.3';
+    });
+    setTimeout(function() { heroTransitioning = false; }, 450);
+    if (idx === 0) {
+      // Reset and restart chat demo
+      runChat();
+    }
     if (idx === 1) {
-      setTimeout(function() {
-        if (heroSlide === 1) heroGoTo(0);
-      }, 50000);
+      hrdShow(1);
+      // Auto-demo: select 2 stars after 2s then submit to show negative flow
+      clearTimeout(hrdNegTimer);
+      hrdNegTimer = setTimeout(function() {
+        if (heroSlide !== 1) return;
+        hrdSelectStar(2);
+        hrdNegTimer = setTimeout(function() {
+          if (heroSlide !== 1) return;
+          hrdSubmit();
+        }, 1000);
+      }, 2000);
+    }
+    clearTimeout(hrdNegTimer); // clear any pending review timers
+    if (idx === 2) {
+      // Run campaign animation then go back to 0 after 5s pause
+      runCamp();
     }
   }
   window.heroGoTo = heroGoTo;
@@ -1644,14 +1723,17 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
     hcEl.addEventListener('touchstart', function(e) { hcStartX = e.touches[0].clientX; }, { passive: true });
     hcEl.addEventListener('touchend', function(e) {
       var diff = hcStartX - e.changedTouches[0].clientX;
-      if (Math.abs(diff) > 40) heroGoTo(diff > 0 ? 1 : 0);
+      if (Math.abs(diff) > 40) {
+        if (diff > 0) heroGoTo(Math.min(heroSlide + 1, 2));
+        else heroGoTo(Math.max(heroSlide - 1, 0));
+      }
     }, { passive: true });
   }
 
   // Review demo helpers
   var hrdSelected = 0;
   var hrdNegMsgs = [
-    { role: 'bot', text: "We're really sorry to hear that. We genuinely want to make it right — what happened?" },
+    { role: 'bot', text: "We're really sorry to hear that. We genuinely want to make it right, what happened?" },
     { role: 'user', text: "The technician arrived 2 hours late and didn't call ahead." },
     { role: 'bot', text: "That's completely unacceptable and I'm sorry. The owner has been notified and will reach out to you personally today." },
   ];
@@ -1659,29 +1741,28 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
   var hrdNegTimer = null;
 
   function hrdAddNegMsg() {
+    var container = document.getElementById('hrdChatMsgs');
+    if (!container) return;
     if (hrdNegIdx >= hrdNegMsgs.length) {
-      setTimeout(function() {
+      hrdNegTimer = setTimeout(function() {
         var pill = document.getElementById('hrdSentPill');
         if (pill) pill.style.display = 'flex';
+        // Wait 5s then advance to campaigns
+        hrdNegTimer = setTimeout(function() { heroGoTo(2); }, 5000);
       }, 400);
       return;
     }
     var m = hrdNegMsgs[hrdNegIdx];
-    var container = document.getElementById('hrdChatMsgs');
-    if (!container) return;
     var el = document.createElement('div');
     var isBot = m.role === 'bot';
-    el.style.cssText = 'padding:7px 9px;border-radius:9px;font-size:9.5px;line-height:1.5;max-width:92%;opacity:0;transform:translateY(5px);transition:all 0.3s ease;' +
+    el.style.cssText = 'padding:7px 9px;border-radius:9px;font-size:9.5px;line-height:1.5;max-width:92%;opacity:0;transition:opacity 0.3s ease;' +
       (isBot ? 'background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.88);border-bottom-left-radius:2px;align-self:flex-start;' : 'background:rgba(59,130,246,0.7);color:white;border-bottom-right-radius:2px;align-self:flex-end;');
     el.textContent = m.text;
     container.appendChild(el);
-    setTimeout(function() { el.style.opacity = '1'; el.style.transform = 'translateY(0)'; }, 50);
+    container.scrollTop = container.scrollHeight;
+    requestAnimationFrame(function() { requestAnimationFrame(function() { el.style.opacity = '1'; }); });
     hrdNegIdx++;
-    if (hrdNegIdx < hrdNegMsgs.length) {
-      hrdNegTimer = setTimeout(hrdAddNegMsg, 1800);
-    } else {
-      hrdNegTimer = setTimeout(hrdAddNegMsg, 600);
-    }
+    hrdNegTimer = setTimeout(hrdAddNegMsg, hrdNegIdx < hrdNegMsgs.length ? 2200 : 700);
   }
 
   function hrdSelectStar(n) {
@@ -1701,7 +1782,14 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
   }
   function hrdSubmit() {
     if (!hrdSelected) return;
-    hrdShow(hrdSelected >= 4 ? 2 : 3);
+    var step = hrdSelected >= 4 ? 2 : 3;
+    hrdShow(step);
+    // Happy path: advance after 5s on step 2
+    if (step === 2) {
+      hrdNegTimer = setTimeout(function() {
+        heroGoTo(2);
+      }, 5000);
+    }
   }
   function hrdShow(step) {
     var s1 = document.getElementById('hrdStep1');
@@ -1725,13 +1813,13 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
       if (btn) { btn.disabled = true; btn.style.opacity = '0.6'; btn.style.cursor = 'default'; btn.textContent = 'Select a star'; }
     }
     if (step === 3) {
-      // Start animated chat
+      clearTimeout(hrdNegTimer);
       hrdNegIdx = 0;
       var msgs = document.getElementById('hrdChatMsgs');
       if (msgs) msgs.innerHTML = '';
       var pill = document.getElementById('hrdSentPill');
       if (pill) pill.style.display = 'none';
-      setTimeout(hrdAddNegMsg, 600);
+      hrdNegTimer = setTimeout(hrdAddNegMsg, 600);
     }
   }
   function hrdRate() { hrdSubmit(); }
@@ -1739,6 +1827,46 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
   window.hrdRate = hrdRate;
   window.hrdSelectStar = hrdSelectStar;
   window.hrdSubmit = hrdSubmit;
+
+  // ── CAMPAIGN ANIMATION ──
+  var campMsgs = [
+    { role: 'out', text: "Hey Mike! Summer is coming fast. Have you had your AC checked yet? A tune-up now can save you from a breakdown on the hottest day. - Smith HVAC" },
+    { role: 'in', text: "Oh good timing, yeah I need to get that done" },
+    { role: 'out', text: "Great! Want me to have someone give you a call to schedule?" },
+    { role: 'in', text: "Yes please, same number works" },
+  ];
+  var campTimer = null;
+
+  function runCamp() {
+    clearTimeout(campTimer);
+    var container = document.getElementById('campMsgs');
+    var pill = document.getElementById('campLeadPill');
+    if (!container) return;
+    container.innerHTML = '';
+    if (pill) pill.style.display = 'none';
+    var idx = 0;
+    campTimer = setTimeout(function next() {
+      if (idx >= campMsgs.length) {
+        campTimer = setTimeout(function() {
+          if (pill) pill.style.display = 'flex';
+          // Wait 5s then go back to slide 0
+          campTimer = setTimeout(function() { if (heroSlide === 2) heroGoTo(0); }, 5000);
+        }, 400);
+        return;
+      }
+      var m = campMsgs[idx];
+      var el = document.createElement('div');
+      var isOut = m.role === 'out';
+      el.style.cssText = 'padding:7px 9px;border-radius:9px;font-size:9px;line-height:1.5;max-width:90%;opacity:0;transition:opacity 0.3s ease;' +
+        (isOut ? 'background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.88);border-bottom-left-radius:2px;align-self:flex-start;' : 'background:rgba(59,130,246,0.7);color:white;border-bottom-right-radius:2px;align-self:flex-end;');
+      el.textContent = m.text;
+      container.appendChild(el);
+      container.scrollTop = container.scrollHeight;
+      requestAnimationFrame(function() { requestAnimationFrame(function() { el.style.opacity = '1'; }); });
+      idx++;
+      campTimer = setTimeout(next, idx === 1 ? 3000 : 2200);
+    }, 600);
+  }
 
   // ── DEMO REQUEST FORM ──
   var demoForm = document.getElementById('demoForm');
@@ -1756,7 +1884,7 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
             bizKey: 'netify_demo_request',
             name: f.demoName.value,
             phone: f.demoPhone.value,
-            jobType: 'Demo Request — ' + f.demoIndustry.value + ' — ' + f.demoBiz.value + (f.demoWebsite.value ? ' — ' + f.demoWebsite.value : ''),
+            jobType: 'Demo Request, ' + f.demoIndustry.value + ', ' + f.demoBiz.value + (f.demoWebsite.value ? ', ' + f.demoWebsite.value : ''),
             urgency: 'Normal',
             email: 'netifybuilds@gmail.com',
             ownerPhone: '+19373671847',
@@ -1769,122 +1897,61 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
     });
   }
 
-  // ── GOOGLE PLACES BUSINESS AUTOCOMPLETE (New API 2025) ──
+  // ── GOOGLE PLACES BUSINESS AUTOCOMPLETE ──
+  var PLACES_API_KEY = 'AIzaSyDNIUxHy7t3IBSnsBHE8Y6VSmbOVkA_kUE';
+  var autocompleteService = null;
+  var placesService = null;
   var bizSearchTimer = null;
-  var scanInProgress = false;
 
-  async function initPlacesSDK() {
-    await google.maps.importLibrary("places");
+  function initPlacesSDK() {
+    if (window.google && window.google.maps && window.google.maps.places) {
+      autocompleteService = new google.maps.places.AutocompleteService();
+      placesService = new google.maps.places.PlacesService(document.createElement('div'));
+    }
   }
+  if (window.google && window.google.maps) initPlacesSDK();
   window.initPlacesSDK = initPlacesSDK;
 
   window.bizNameSearch = function(val) {
     clearTimeout(bizSearchTimer);
     var box = document.getElementById('bizSuggestions');
     if (!val || val.length < 3) { if(box) box.style.display = 'none'; return; }
-    bizSearchTimer = setTimeout(async function() {
-      try {
-        var { AutocompleteSuggestion } = await google.maps.importLibrary("places");
-        var { suggestions } = await AutocompleteSuggestion.fetchAutocompleteSuggestions({ input: val, includedPrimaryTypes: ['establishment'] });
-        if (!suggestions || suggestions.length === 0) { if(box) box.style.display = 'none'; return; }
+    if (!autocompleteService) { initPlacesSDK(); if (!autocompleteService) return; }
+    bizSearchTimer = setTimeout(function() {
+      autocompleteService.getPlacePredictions({ input: val, types: ['establishment'] }, function(predictions, status) {
+        if (status !== google.maps.places.PlacesServiceStatus.OK || !predictions) { if(box) box.style.display = 'none'; return; }
         if(box) box.innerHTML = '';
-        suggestions.slice(0,5).forEach(function(s) {
-          var p = s.placePrediction;
+        predictions.slice(0,5).forEach(function(p) {
           var el = document.createElement('div');
           el.style.cssText = 'padding:10px 14px;cursor:pointer;font-size:13px;color:#0f172a;border-bottom:1px solid #f1f5f9;background:white;';
-          el.innerHTML = '<div style="font-weight:600;">' + p.mainText + '</div><div style="font-size:11px;color:#94a3b8;">' + (p.secondaryText || '') + '</div>';
+          el.innerHTML = '<div style="font-weight:600;">' + p.structured_formatting.main_text + '</div><div style="font-size:11px;color:#94a3b8;">' + (p.structured_formatting.secondary_text || '') + '</div>';
           el.onmouseenter = function(){ this.style.background = '#f8fafc'; };
           el.onmouseleave = function(){ this.style.background = 'white'; };
-          el.onclick = (function(pid, pname) { return function(e) { e.stopPropagation(); selectBusiness(pid, pname); }; })(p.placeId, p.mainText.toString());
+          el.onclick = function(e) { e.stopPropagation(); selectBusiness(p.place_id, p.structured_formatting.main_text); };
           if(box) box.appendChild(el);
         });
         if(box) box.style.display = 'block';
-      } catch(err) { console.error('[Places search error]', err); }
+      });
     }, 350);
   };
 
-  async function selectBusiness(placeId, name) {
+  function selectBusiness(placeId, name) {
     var box = document.getElementById('bizSuggestions');
     if(box) box.style.display = 'none';
     document.getElementById('bizNameInput').value = name;
     document.getElementById('bizPlaceId').value = placeId;
-
-    // Clear previous autofill
-    ['phoneInput','websiteInput','hoursInput','areaInput'].forEach(function(id) { var el = document.getElementById(id); if (el) el.value = ''; });
-    ['services','faqs','differentiators','emergency','licensing'].forEach(function(n) { var el = document.querySelector('[name="' + n + '"]'); if (el) el.value = ''; });
-    var scanBannerEl = document.getElementById('scanBanner'); if(scanBannerEl) scanBannerEl.style.display = 'none';
-    var autoFillBannerEl = document.getElementById('autoFillBanner'); if(autoFillBannerEl) autoFillBannerEl.style.display = 'none';
-    scanInProgress = false;
-
-    try {
-      var { Place } = await google.maps.importLibrary("places");
-      var place = new Place({ id: placeId });
-      await place.fetchFields({ fields: ['displayName','nationalPhoneNumber','websiteURI','regularOpeningHours','formattedAddress','types'] });
-      if (place.nationalPhoneNumber) { var ph = document.getElementById('phoneInput'); if (ph) ph.value = place.nationalPhoneNumber; }
-      if (place.websiteURI) { var wb = document.getElementById('websiteInput'); if (wb) wb.value = place.websiteURI.replace(/^https?:\/\//, '').replace(/\/$/, ''); }
-      if (place.regularOpeningHours && place.regularOpeningHours.weekdayDescriptions) { var hr = document.getElementById('hoursInput'); if (hr) hr.value = place.regularOpeningHours.weekdayDescriptions.join(', '); }
-
-      // Service area types — leave area blank for contractor businesses
-      var serviceAreaTypes = ['plumber','electrician','roofing_contractor','general_contractor','moving_company','cleaning_service','pest_control','locksmith','painter','landscaper','hvac_contractor'];
-      var isServiceArea = place.types && place.types.some(function(t) { return serviceAreaTypes.indexOf(t) !== -1; });
-      if (!isServiceArea && place.formattedAddress) {
-        var ar = document.getElementById('areaInput');
-        if (ar) { var pts = place.formattedAddress.split(','); ar.value = pts.slice(-3,-1).join(',').trim(); }
-      }
-
+    if (!placesService) { initPlacesSDK(); if (!placesService) return; }
+    placesService.getDetails({ placeId: placeId, fields: ['name','formatted_phone_number','website','opening_hours','formatted_address','types'] }, function(r, status) {
+      if (status !== google.maps.places.PlacesServiceStatus.OK || !r) return;
+      if (r.formatted_phone_number) { var ph = document.getElementById('phoneInput'); if (ph && !ph.value) ph.value = r.formatted_phone_number; }
+      if (r.website) { var wb = document.getElementById('websiteInput'); if (wb) wb.value = r.website.replace(/^https?:\/\//, '').replace(/\/$/, ''); }
+      if (r.opening_hours && r.opening_hours.weekday_text) { var hr = document.getElementById('hoursInput'); if (hr && !hr.value) hr.value = r.opening_hours.weekday_text.slice(0,3).join(', '); }
+      if (r.formatted_address) { var ar = document.getElementById('areaInput'); if (ar && !ar.value) { var pts = r.formatted_address.split(','); ar.value = pts.slice(-3,-1).join(',').trim(); } }
       var typeMap = { dentist:'Dental Office', doctor:'Medical / Healthcare', lawyer:'Law Firm', real_estate_agency:'Real Estate', beauty_salon:'Med Spa / Salon', hair_care:'Barber Shop', restaurant:'Restaurant / Cafe', plumber:'Plumbing', electrician:'Electrical', roofing_contractor:'Roofing', general_contractor:'General Contractor', car_repair:'Auto Shop', gym:'Fitness / Gym', veterinary_care:'Veterinary', moving_company:'Moving Company' };
-      if (place.types) { var ind = document.getElementById('industrySelect'); if (ind) { ind.value = ''; for (var t of place.types) { if (typeMap[t]) { ind.value = typeMap[t]; if(window.highlightFeatures) highlightFeatures(ind.value); break; } } } }
+      if (r.types) { var ind = document.getElementById('industrySelect'); if (ind && !ind.value) { for (var t of r.types) { if (typeMap[t]) { ind.value = typeMap[t]; if(window.highlightFeatures) highlightFeatures(ind.value); break; } } } }
       var banner = document.getElementById('autoFillBanner'); if(banner) banner.style.display = 'block';
       if(window.updateReviewSummary) updateReviewSummary();
-
-      // Auto-scan website if found
-      if (place.websiteURI) scanWebsite(place.websiteURI);
-    } catch(err) { console.error('[Place details error]', err); }
-  }
-
-  async function scanWebsite(url) {
-    if (scanInProgress) return;
-    scanInProgress = true;
-    var banner = document.getElementById('scanBanner');
-    var status = document.getElementById('scanStatus');
-    var spinner = document.getElementById('scanSpinner');
-    if (banner) banner.style.display = 'flex';
-    if (status) status.textContent = 'Scanning your website...';
-    if (spinner) spinner.style.animation = 'spin 1s linear infinite';
-    try {
-      var res = await fetch(BACKEND + '/extract-website', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ url: url })
-      });
-      var json = await res.json();
-      if (!json.success || !json.data) { if(status) status.textContent = 'Could not read website — fill in the fields below manually.'; scanInProgress = false; return; }
-      var d = json.data; var filled = [];
-      var servicesEl = document.querySelector('[name="services"]');
-      if (d.services && servicesEl && !servicesEl.value.trim()) { servicesEl.value = Array.isArray(d.services) ? d.services.join(', ') : d.services; filled.push('services'); }
-      var hoursEl = document.getElementById('hoursInput');
-      if (d.hours && hoursEl && !hoursEl.value.trim()) { hoursEl.value = d.hours; filled.push('hours'); }
-      var areaEl = document.getElementById('areaInput');
-      if (d.area && areaEl && !areaEl.value.trim()) { areaEl.value = d.area; filled.push('service area'); }
-      var faqsEl = document.querySelector('[name="faqs"]');
-      if (d.faqs && faqsEl && !faqsEl.value.trim()) { faqsEl.value = Array.isArray(d.faqs) ? d.faqs.map(function(f){ return (f.question||f.q||'') + '\n' + (f.answer||f.a||''); }).join('\n\n') : d.faqs; filled.push('FAQs'); }
-      var diffEl = document.querySelector('[name="differentiators"]');
-      if (d.differentiators && diffEl && !diffEl.value.trim()) { diffEl.value = Array.isArray(d.differentiators) ? d.differentiators.join('\n') : d.differentiators; filled.push('differentiators'); }
-      var emergencyEl = document.querySelector('[name="emergency"]');
-      if (d.emergency && emergencyEl && !emergencyEl.value.trim()) { emergencyEl.value = d.emergency; filled.push('emergency number'); }
-      var licensingEl = document.querySelector('[name="licensing"]');
-      if (d.licensing && licensingEl && !licensingEl.value.trim()) { licensingEl.value = d.licensing; filled.push('licensing'); }
-      if (spinner) spinner.style.animation = 'none';
-      if (filled.length > 0) {
-        if (banner) { banner.style.background = '#f0fdf4'; banner.style.borderColor = '#86efac'; }
-        if (spinner) { spinner.style.stroke = '#15803d'; spinner.innerHTML = '<polyline points="20 6 9 17 4 12"/>'; }
-        if (status) { status.style.color = '#15803d'; status.textContent = '✓ Pre-filled from your website: ' + filled.join(', ') + ' — review and edit anything that looks off.'; }
-      } else {
-        if (spinner) spinner.style.display = 'none';
-        if (status) status.textContent = 'Website scanned — fill in the fields below manually.';
-      }
-      if (window.updateReviewSummary) updateReviewSummary();
-    } catch(err) { console.error('[Scan error]', err); if(status) status.textContent = 'Could not scan website — fill in the fields below manually.'; }
-    scanInProgress = false;
+    });
   }
 
   document.addEventListener('click', function(e) {
@@ -1904,7 +1971,7 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
     if (v('phone')) lines.push('<strong>Phone:</strong> ' + v('phone'));
     if (v('industry')) lines.push('<strong>Industry:</strong> ' + v('industry'));
     if (v('hours')) lines.push('<strong>Hours:</strong> ' + v('hours'));
-    // website intentionally omitted from summary
+    if (v('website')) lines.push('<strong>Website:</strong> ' + v('website'));
     var plan = document.getElementById('selectedPlanField');
     if (plan && plan.value) lines.push('<strong>Plan:</strong> ' + plan.value);
     var el = document.getElementById('reviewSummary');
@@ -1942,21 +2009,28 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
     var saveEl = document.getElementById('bundleSavings');
     var noteEl = document.getElementById('bundleNote');
     var ctaEl = document.getElementById('bundleCta');
+    var perMonth = document.getElementById('bundlePerMonth');
     if (count === 0) {
-      priceEl.textContent = '—'; origEl.textContent = ''; saveEl.textContent = '';
+      priceEl.textContent = '—';
+      origEl.style.visibility = 'hidden'; origEl.textContent = '';
+      saveEl.style.visibility = 'hidden'; saveEl.textContent = '';
+      if (perMonth) perMonth.style.visibility = 'hidden';
       noteEl.textContent = 'Select at least 2 products to unlock the 15% bundle discount.';
       ctaEl.style.pointerEvents = 'none'; ctaEl.style.opacity = '0.4';
       ctaEl.textContent = 'Select products above';
     } else if (count === 1) {
       priceEl.textContent = '$' + original.toFixed(2) + '/mo';
-      origEl.textContent = ''; saveEl.textContent = '';
+      origEl.style.visibility = 'hidden'; origEl.textContent = '';
+      saveEl.style.visibility = 'hidden'; saveEl.textContent = '';
+      if (perMonth) perMonth.style.visibility = 'visible';
       noteEl.textContent = 'Add one more product to unlock 15% off.';
       ctaEl.style.pointerEvents = 'auto'; ctaEl.style.opacity = '1';
       ctaEl.textContent = 'Get Started';
     } else {
       priceEl.textContent = '$' + discounted.toFixed(2) + '/mo';
-      origEl.textContent = '$' + original.toFixed(2) + '/mo';
-      saveEl.textContent = 'You save $' + savings.toFixed(2) + '/mo';
+      origEl.textContent = '$' + original.toFixed(2) + '/mo'; origEl.style.visibility = 'visible';
+      saveEl.textContent = 'You save $' + savings.toFixed(2) + '/mo'; saveEl.style.visibility = 'visible';
+      if (perMonth) perMonth.style.visibility = 'visible';
       noteEl.textContent = '';
       ctaEl.style.pointerEvents = 'auto'; ctaEl.style.opacity = '1';
       ctaEl.textContent = 'Get Started';
@@ -2100,16 +2174,16 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
     var planParts = [];
     if (activePlan.bot) planParts.push('Chat Assistant');
     if (activePlan.review) planParts.push('Review Filter');
-    if (activePlan.campaign) planParts.push('Reactivation Campaigns — $200/mo');
+    if (activePlan.campaign) planParts.push('Reactivation Campaigns, $200/mo');
     document.getElementById('selectedPlanField').value = planParts.join(' + ');
     document.getElementById('campaignFreqField').value = activePlan.campaignFreq;
     // Update banner
     var banner = document.getElementById('planSummaryBanner');
     var prices = [];
-    if (activePlan.bot) prices.push('Chat Assistant — $250/mo');
-    if (activePlan.review) prices.push('Review Filter — $100/mo');
+    if (activePlan.bot) prices.push('Chat Assistant, $250/mo');
+    if (activePlan.review) prices.push('Review Filter, $100/mo');
     if (activePlan.campaign) {
-      prices.push('Reactivation Campaigns — $200/mo (1 campaign/quarter included, extra campaigns $100 each)');
+      prices.push('Reactivation Campaigns, $200/mo (1 campaign/quarter included, extra campaigns $100 each)');
     }
     banner.innerHTML = '<strong>Your selection:</strong> ' + prices.join(' &nbsp;+&nbsp; ');
     banner.style.display = prices.length ? 'block' : 'none';
@@ -2177,7 +2251,7 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
       f.style.display = 'none';
       var successEl = document.getElementById('successMsg');
       successEl.style.display = 'block';
-      // Stripe wiring removed — payment happens at activation in client portal
+      // Payment handled via activation in client portal
       successEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
     } catch(err) {
       btn.textContent = 'Submit & Get Started →'; btn.disabled = false;
@@ -2187,7 +2261,55 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
 
 
 
-  // Duplicate form listener removed — handled by unified submit above
+  // ── FORM SUBMIT ──
+  document.getElementById('onboardingForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    var f = this;
+    var v = function(n) { return (f.elements[n] && f.elements[n].value.trim()) || 'Not provided'; };
+    var pkg = v('package');
+    var pkgLabel = pkg === 'bundle' ? 'Full Bundle, $399/mo' : '24/7 Website Chat Assistant, $250/mo';
+
+    // Send to /signup endpoint — sends properly formatted BotBuilder email
+    fetch(BACKEND + '/signup', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        ownerName: v('ownerName'),
+        bizName: v('bizName'),
+        email: v('email'),
+        phone: v('phone'),
+        website: v('website'),
+        industry: v('industry'),
+        area: v('area'),
+        hours: v('hours'),
+        services: v('services'),
+        faqs: v('faqs'),
+        tone: v('tone'),
+        package: v('package'),
+        differentiators: v('differentiators'),
+        licensing: v('licensing'),
+        emergency: v('emergency'),
+        seasonal: v('seasonal'),
+        botPersonality: v('botPersonality'),
+        botColor: v('botColor'),
+        billing: v('billing'),
+        hearAbout: v('hearAbout'),
+        features: [['Workout Split Builder','feature_workout'],['Appointment Request Flow','feature_appointment'],['Emergency Escalation','feature_emergency'],['Multilanguage Support','feature_multilang'],['Pricing Guide Mode','feature_pricing'],['Service Status Updates','feature_status'],['Property Info Mode','feature_property'],['Wait Time & Waitlist','feature_waittime'],['Case Type Qualifier','feature_qualifier'],['Symptom Triage','feature_triage']].filter(function(p){return f.elements[p[1]]&&f.elements[p[1]].checked;}).map(function(p){return p[0];}).join(', ') || 'None',
+        googleReviewLink: v('googleReviewLink'),
+        features: {
+          workoutSplitBuilder: f.elements['feature_workout'] && f.elements['feature_workout'].checked ? 'Yes' : 'No',
+          appointmentFlow:     f.elements['feature_appointment'] && f.elements['feature_appointment'].checked ? 'Yes' : 'No',
+          emergencyEscalation: f.elements['feature_emergency'] && f.elements['feature_emergency'].checked ? 'Yes' : 'No',
+          multilanguage:       f.elements['feature_multilang'] && f.elements['feature_multilang'].checked ? 'Yes' : 'No',
+          pricingGuide:        f.elements['feature_pricing'] && f.elements['feature_pricing'].checked ? 'Yes' : 'No',
+        }
+      })
+    }).catch(function() {});
+
+    f.style.display = 'none';
+    document.getElementById('successMsg').style.display = 'block';
+    document.getElementById('successMsg').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  });
   // Expose to global scope for inline handlers
   window.setBotColor = setBotColor;
   window.setBrandColor = setBrandColor;
@@ -2250,7 +2372,7 @@ function copyAndChat(btn, question) {
   var AUTO_OPEN_DELAY = null;
   var HOURS = null;
 
-  var SYSTEM_PROMPT = "You are Netify Assistant, a friendly and casual AI chat assistant for Netify Builds, a Dayton, Ohio-based company that builds AI tools and software for local businesses. You were built and are managed personally by Eli, the owner. Your job is to answer questions, help potential customers understand what Netify Builds offers, and capture their contact info so Eli can follow up with them directly.\n\nYour tone is warm, conversational, and casual — like a knowledgeable friend who knows the business inside and out. You never sound robotic, scripted, or salesy. You keep responses short — 2 to 3 sentences maximum unless a situation genuinely requires a little more. No walls of text ever.\n\nYou must never use markdown formatting of any kind. No bullet points, no bold text, no headers, no asterisks, no dashes used as list items, no emojis, nothing. Every response must be written in plain conversational sentences only, as if you are texting someone.\n\nNetify Builds offers three products. The 24/7 Chat Assistant is 250 dollars per month — a custom AI chatbot installed on your website that answers questions and captures leads around the clock, live within 24 hours. The Review Filter is 100 dollars per month — after every job you send a link, happy customers go straight to Google, unhappy ones stay private so you can handle it before it ever goes public. Reactivation Campaigns are 200 dollars per month — every quarter Netify writes a professional SMS message, sends it to you for approval, then blasts it to your past customer list, and most businesses see bookings come back within 48 hours. If someone bundles any two or more products together they automatically save 15 percent. There are no setup fees, no contracts, and no cancellation fees ever.\n\nBusiness hours are Monday through Friday, 9am to 6pm Eastern. Eli responds to emails and texts personally, usually same day. For anything urgent, customers can text Eli directly at 937-367-1847. The owner email is netifybuilds@gmail.com and the website is netifybuilds.com.\n\nWhen someone contacts you outside of business hours, acknowledge it warmly and let them know Eli will follow up first thing when he is back. Still do your best to help answer their questions and capture their contact info before the conversation ends.\n\nNetify Builds works with businesses anywhere in the country remotely, and is also locally based in Dayton, Ohio for businesses in the area. It works for any industry — HVAC, plumbing, roofing, landscaping, dental offices, law firms, auto shops, gyms, cleaning services, pet groomers, moving companies, and more. The chat assistant installs on any website with one line of code — WordPress, Wix, Squarespace, GoDaddy, Webflow, Shopify, custom HTML, all of it.\n\nSetup materials are delivered within 24 hours of signing up. The subscription does not start until the customer activates the bot in their client portal, so no one pays while waiting on installation. If setup materials are not delivered within 24 hours, the first month is free. Customers can cancel anytime through their Stripe billing portal with no fees and no questions asked. If anything ever needs to be fixed or updated, they just reply to any email or text Eli directly and it gets handled the same day.\n\nWhen a lead comes in through the chat assistant, the business owner gets an instant email with the customer name, phone number, job type, and urgency level.\n\nIf someone asks about cost or pricing, let them know the Chat Assistant is 250 a month, the Review Filter is 100 a month, and Reactivation Campaigns are 200 a month, and that bundling any two or more saves them 15 percent automatically with no setup fees or contracts ever.\n\nIf someone asks about setup time, let them know setup code is delivered within 24 hours and their billing does not start until they actually activate it themselves.\n\nIf someone asks if they need to be tech savvy, reassure them they do not — they fill out a form, Eli builds everything and sends a one-line code, and Netify will even install it for them if they want.\n\nIf someone asks about contracts, be clear there are none, ever, and they can cancel anytime with no fees.\n\nIf someone asks what makes Netify different, you can talk about the fact that it is personally built and managed by Eli with no outsourced support teams, the 24-hour setup guarantee, the no-contract model, the honest pricing with zero hidden fees, and the fact that it is built specifically for local service businesses rather than being a generic tool.\n\nNaturally guide every conversation toward collecting the customer name and phone number. Do this in a casual helpful way, not in a pushy or scripted way. Once you have collected both a name and a phone number, never ask for that information again.\n\nWhen you have collected both a name and a phone number, output this exact trigger at the very end of your response with no spaces or variations: LEAD_CAPTURED|[name]|[phone]|[job type or Not specified]|[urgency or Not specified]. Never show this trigger to the customer. It must be invisible in the conversation and placed only at the very end of your message after your natural reply.\n\nIf a customer asks to book, schedule, or set up an appointment, do not confirm or schedule anything directly. Collect their name and phone number and let them know someone will give them a call to get everything set up.\n\nIf a customer mentions a competitor or asks how Netify compares to another company, stay completely neutral. Never say anything negative about any competitor. Just redirect naturally to what makes Netify Builds a great fit.\n\nIf a customer writes in any language other than English, respond entirely in that same language. Never ask them to switch to English.\n\nIf someone asks something not covered in the business information you have, be honest that you are not sure and offer to have Eli follow up with them directly. Never guess or make something up.\n\nIf someone asks something completely off-topic, redirect naturally with a single light sentence and then offer to help with something real. Do not lecture, do not refuse rudely, and never repeat the same redirect phrase twice.\n\nVary your responses naturally throughout every conversation. Never repeat the same phrasing, sentence structures, or openers. Sound like a real person, not a bot cycling through a script.\n\nNever say things like Great question, Absolutely, Certainly, Of course, or other filler affirmations that sound robotic. Never make up pricing, features, or policies that are not listed here. Never promise specific results or guarantees beyond what is stated. Never be rude, dismissive, or overly formal.";
+  var SYSTEM_PROMPT = "You are Netify Assistant, a friendly and casual AI chat assistant for Netify Builds, a Dayton, Ohio-based company run personally by Eli that builds custom AI tools for small businesses. Your job is to answer questions honestly and guide visitors toward becoming leads by naturally collecting their name and phone number.\n\nKeep every response to 2-3 sentences maximum. Be conversational and warm, like a knowledgeable friend, not a salesperson. Never use markdown formatting, bullet points, bold text, or emojis in your responses. Plain conversational sentences only.\n\nABOUT THE BUSINESS:\nNetify Builds creates 24/7 Website Chat Assistants, a Review Filter, and Reactivation Campaigns for local service businesses. Everything is built and managed personally by Eli. Serves Dayton Ohio and surrounding areas, also works remotely nationwide.\n\nWe do not have set business hours. Eli responds personally, usually same day. If someone contacts us outside of a typical workday, let them know Eli will reach out soon and do your best to help in the meantime.\n\nSERVICES AND PRICING:\n24/7 Website Chat Assistant at $250 per month. A custom AI chat assistant on the client website that answers questions and captures leads automatically. No setup fees, no contracts, cancel anytime.\nReview Filter at $100 per month. After every job the client sends a link. Happy customers go straight to Google. Unhappy ones get caught privately before going public.\nReactivation Campaigns at $200 per month. Quarterly SMS campaigns sent to past customers. We write everything, client just approves it. Replies come back as leads automatically.\nBundle any two or more products and save 15% automatically. No setup fees, no contracts, cancel anytime.\n\nHONEST TRAFFIC ADVICE:\nIf a visitor mentions they have low website traffic or are not running ads, be honest with them. Tell them the chat assistant works best when there is already decent traffic coming to the site. Suggest the Review Filter as a smarter starting point because more Google reviews directly increases organic traffic over time. Never push a product on someone it would not genuinely help.\n\nFAQS:\nHow much does it cost: Chat Assistant $250 per month, Review Filter $100 per month, Reactivation Campaigns $200 per month. Bundle any two or more and save 15% automatically. No setup fees, no contracts, cancel anytime.\nHow long does setup take: setup code delivered within 24 hours of signing up, or your first month is free. Subscription does not start until the client activates their bot.\nDo I need to be tech savvy: not at all. Fill out a form, Eli builds and installs everything. We will even install it for you if needed.\nWhat websites does it work on: any website. WordPress, Wix, Squarespace, GoDaddy, Webflow, Shopify, custom HTML. One line of code.\nCan I cancel anytime: yes, no contracts, no fees, cancel via the client portal anytime.\nWhat happens when the bot captures a lead: the business owner gets an email instantly with the customer name, phone, job type, and urgency.\nHow does the Review Filter work: send a link after each job. Happy customers go to Google. Unhappy ones get a private form that never goes public.\nWhat if something goes wrong: Eli handles it personally, fixed same day.\nAre there set hours: no, Eli responds personally and usually gets back same day regardless of when you reach out.\n\nLEAD COLLECTION:\nNaturally collect the visitor name then phone number through conversation. Never ask again once collected. If someone wants to book or schedule, collect their info and let them know someone will reach out to get everything set up.\n\nOnce you have BOTH a name AND a phone number output this trigger exactly at the very end of your response on its own line:\nLEAD_CAPTURED|[name]|[phone]|[job type or Not specified]|[urgency or Not specified]\n\nNever show this trigger to the customer. Never mention it.\n\nOFF-TOPIC AND INAPPROPRIATE QUESTIONS:\nIf someone asks anything unrelated to the business redirect naturally and briefly without making a big deal of it. Vary how you redirect. Keep it light, one sentence max, then offer to help with something real. Never lecture or refuse rudely.\n\nFUTURE PLANS AND UNKNOWNS:\nIf someone asks about future products or anything not covered here, say honestly that you are not sure and offer to have someone follow up directly. Never speculate or make things up.\n\nPERSONALITY:\nVary your responses naturally. Do not repeat the same phrases or sentence structures. Sound like a real person having a conversation, not a bot running through scripts.\n\nCOMPETITORS: Stay neutral. Never speak negatively. Redirect warmly to Netify Builds strengths.\n\nLANGUAGE: Respond in whatever language the customer writes in.\n\nHONESTY: If you do not know something say so and offer to have someone follow up directly.\n\nNEVER: Use markdown formatting, bold text, bullet points, or emojis. Quote unlisted prices. Confirm or schedule appointments directly. Speak negatively about competitors. Show the LEAD_CAPTURED trigger. Make up features or guarantees. Be pushy. Tell someone to check the demo on this page since they are already here.\n\nWHAT MAKES NETIFY BUILDS STAND OUT: Locally owned in Dayton Ohio. Built and managed personally by Eli, never a support ticket. 24 hour setup guarantee or first month free. No contracts ever. Responds in any language automatically. Honest pricing, zero hidden fees. Subscription does not start until the bot is live.";
 
   var style = document.createElement('style');
   style.textContent = [
@@ -2474,7 +2596,7 @@ function copyAndChat(btn, question) {
       }
     } catch(e) {
       try { if (typeof typing.remove === 'function') typing.remove(); } catch(e2) {}
-      var errMsg = 'Having a quick hiccup — try again in a moment, or reach out at netifybuilds@gmail.com.';
+      var errMsg = 'Having a quick hiccup, try again in a moment, or reach out at netifybuilds@gmail.com.';
       addMsg(errMsg, 'bot');
     } finally {
       input.disabled = false;

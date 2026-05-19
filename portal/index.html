@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Client Portal — Netify Builds</title>
+<title>Client Portal | Netify Builds</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -180,8 +180,6 @@ async function handleGoogleLogin(response) {
     errEl.style.display = 'block';
   }
 }
-window.handleGoogleLogin = handleGoogleLogin;
-
 
 // -- GOOGLE LOGIN HANDLER --
 async function handleGoogleLogin(response) {
@@ -204,6 +202,7 @@ async function handleGoogleLogin(response) {
   }
 }
 window.handleGoogleLogin = handleGoogleLogin;
+
 
 // Auto-login if remembered
 (function() {
@@ -239,11 +238,12 @@ document.getElementById('bizKeyInput').addEventListener('keypress', function(e) 
 
 async function fetchPortalData(bizKey) {
   try {
-    var [reviewRes, analyticsRes, convRes, infoRes] = await Promise.all([
+    var [reviewRes, analyticsRes, convRes, infoRes, healthRes] = await Promise.all([
       fetch(BACKEND + '/review-report/' + bizKey),
       fetch(BACKEND + '/analytics/' + bizKey),
       fetch(BACKEND + '/conversations/' + bizKey),
-      fetch(BACKEND + '/client-info/' + bizKey)
+      fetch(BACKEND + '/client-info/' + bizKey),
+      fetch(BACKEND + '/health-score/' + bizKey)
     ]);
     var reviewData = await reviewRes.json();
     var analyticsData = {};
@@ -252,6 +252,8 @@ async function fetchPortalData(bizKey) {
     try { analyticsData = await analyticsRes.json(); } catch(e) {}
     try { convData = await convRes.json(); } catch(e) {}
     try { infoData = await infoRes.json(); } catch(e) {}
+    var healthData = {};
+    try { healthData = await healthRes.json(); } catch(e) {}
 
     // Validate — infoData only has registeredAt if the key actually exists
     var keyExists = infoData && infoData.registeredAt;
@@ -271,6 +273,12 @@ async function fetchPortalData(bizKey) {
     document.getElementById('portalFooter').style.display = 'block';
 
     renderPortal(bizKey, reviewData, analyticsData, convData, infoData);
+    try {
+      var hsEl = document.getElementById('healthScoreWrap');
+      if (hsEl && healthData && healthData.score !== undefined) {
+        hsEl.innerHTML = '<div style="display:flex;align-items:center;gap:8px;margin-top:8px;"><div style="font-size:12px;font-weight:600;color:' + healthData.color + ';background:' + healthData.color + '18;padding:3px 10px;border-radius:99px;">Health: ' + healthData.score + '/100 -- ' + healthData.label + '</div></div>';
+      }
+    } catch(e) {}
   } catch(e) {
     document.getElementById('loginWrap').style.display = 'flex';
     document.getElementById('portal').style.display = 'none';
@@ -334,6 +342,8 @@ function renderPortal(bizKey, reviewData, analyticsData, convData, infoData) {
   } else {
     html += '<div style="display:inline-flex;align-items:center;gap:6px;background:#fef9c3;color:#b45309;font-size:12px;font-weight:600;padding:4px 12px;border-radius:99px;margin-top:10px;"><div style="width:7px;height:7px;border-radius:50%;background:#b45309;"></div>Pending Activation</div>';
   }
+
+  html += '<div id="healthScoreWrap"></div>';
   html += '<div style="display:inline-flex;align-items:center;gap:5px;background:' + planColor + '18;color:' + planColor + ';font-size:11px;font-weight:700;padding:4px 12px;border-radius:99px;">' + planLabel + '</div>';
   if (hasSMS) html += '<div style="display:inline-flex;align-items:center;gap:5px;background:#f0fdf4;color:#15803d;font-size:11px;font-weight:700;padding:4px 10px;border-radius:99px;">SMS Active</div>';
   html += '</div></div>';
@@ -449,9 +459,12 @@ function renderPortal(bizKey, reviewData, analyticsData, convData, infoData) {
     html += '<div style="font-size:11px;font-weight:700;color:#0891b2;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:16px;">Review Filter</div>';
 
     // Stats
+    var smsPosCount = (reviewData.logs || []).filter(r => r.type === 'positive' && r.source === 'sms').length;
+    var chatPosCount = positiveCount - smsPosCount;
+    var smsNegCount = (reviewData.logs || []).filter(r => r.type === 'negative' && r.source === 'sms').length;
     html += '<div class="stats-grid">';
-    html += '<div class="stat-card"><div class="stat-label">Happy customers</div><div class="stat-num">' + positiveCount + '</div><div class="stat-sub">Gave positive feedback</div></div>';
-    html += '<div class="stat-card"><div class="stat-label">Private feedback</div><div class="stat-num">' + negativeCount + '</div><div class="stat-sub">Caught before going public</div></div>';
+    html += '<div class="stat-card"><div class="stat-label">Happy customers</div><div class="stat-num">' + positiveCount + '</div><div class="stat-sub">' + (smsPosCount > 0 ? smsPosCount + ' via SMS, ' + chatPosCount + ' via chat' : 'Gave positive feedback') + '</div></div>';
+    html += '<div class="stat-card"><div class="stat-label">Private feedback</div><div class="stat-num">' + negativeCount + '</div><div class="stat-sub">' + (smsNegCount > 0 ? smsNegCount + ' via SMS, ' + (negativeCount - smsNegCount) + ' via chat' : 'Caught before going public') + '</div></div>';
     html += '<div class="stat-card"><div class="stat-label">Satisfaction rate</div><div class="stat-num" style="color:' + satColor + '">' + (totalReviews > 0 ? satisfactionRate + '%' : '--') + '</div><div class="stat-sub" style="background:' + satBg + ';color:' + satColor + ';display:inline-block;padding:2px 8px;border-radius:99px;font-weight:600;">' + (totalReviews > 0 ? (satisfactionRate >= 90 ? 'Excellent' : satisfactionRate >= 70 ? 'Good' : 'Needs attention') : 'No data yet') + '</div></div>';
     var clickCount = reviewData.clicks || 0;
     if (clickCount > 0) {
@@ -488,46 +501,6 @@ function renderPortal(bizKey, reviewData, analyticsData, convData, infoData) {
       html += '</div></div>';
     }
 
-    // SMS job logger -- show for all review clients
-    if (showReview) {
-      html += '<div class="section-title"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Log a Completed Job <span style="background:#f0fdf4;color:#15803d;font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;margin-left:6px;">SMS</span></div>';
-      html += '<div style="background:white;border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;margin-bottom:24px;">';
-      html += '<p style="font-size:13px;color:var(--soft);margin-bottom:16px;">Log a completed job and the review request text is sent automatically -- no action needed from you.</p>';
-      html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">';
-      html += '<input id="smsJobName" placeholder="Customer name (recommended)" style="padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-family:inherit;outline:none;" />';
-      html += '<input id="smsJobPhone" type="tel" placeholder="Customer phone" style="padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-family:inherit;outline:none;" />';
-      html += '</div>';
-      html += '<input id="smsJobType" placeholder="Job type (e.g. AC repair, roof inspection)" style="width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-family:inherit;outline:none;box-sizing:border-box;margin-bottom:10px;" />';
-      html += '<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">';
-      html += '<label style="font-size:13px;color:var(--soft);">Send review request in:</label>';
-      html += '<select id="smsDelay" style="padding:8px 12px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-family:inherit;outline:none;">';
-      html += '<option value="2">2 hours</option><option value="24" selected>Next day</option><option value="48">2 days</option><option value="72">3 days</option>';
-      html += '</select></div>';
-      html += "<button onclick=\"logSMSJob('" + escHtml(baseKey) + "')\" style=\"width:100%;padding:12px;background:#15803d;color:white;border:none;border-radius:10px;font-family:Plus Jakarta Sans,sans-serif;font-size:14px;font-weight:700;cursor:pointer;\">Log Job &amp; Schedule Review Text</button>";
-      html += '<div id="smsJobSuccess" style="display:none;margin-top:10px;text-align:center;font-size:13px;font-weight:600;color:#15803d;">OK Logged! Review text will send automatically.</div>';
-      html += '</div>';
-
-      // SMS Job History
-      html += '<div class="section-title"><svg viewBox="0 0 24 24" style="stroke:var(--soft)"><path d="M3 3h18v18H3z" stroke="none"/><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 8h10M7 12h7M7 16h5"/></svg>Job Log History</div>';
-      var smsLogs = (reviewData && reviewData.smsJobs) || [];
-      if (smsLogs.length === 0) {
-        html += '<div style="background:white;border:1px solid var(--border);border-radius:var(--radius);padding:20px;text-align:center;font-size:13px;color:var(--soft);margin-bottom:24px;">No jobs logged yet. Once you log jobs above they will appear here with their send status.</div>';
-      } else {
-        html += '<div style="background:white;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:24px;">';
-        smsLogs.slice().reverse().slice(0,20).forEach(function(job) {
-          var logDate = job.loggedAt ? new Date(job.loggedAt).toLocaleDateString() : '';
-          var sendTime = job.loggedAt ? new Date(new Date(job.loggedAt).getTime() + (job.delayHours || 24)*60*60*1000) : null;
-          var sendDate = sendTime ? sendTime.toLocaleDateString() : '';
-          var isPast = sendTime && Date.now() > sendTime.getTime();
-          html += '<div style="padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">';
-          html += '<div><div style="font-size:13px;font-weight:600;color:var(--text);">' + escHtml(job.customerName || 'Unknown') + '</div>';
-          html += '<div style="font-size:12px;color:var(--soft);margin-top:2px;">' + escHtml(job.jobType || 'Job') + ' . Logged ' + logDate + '</div></div>';
-          html += '<span style="background:' + (isPast ? '#f0fdf4;color:#15803d' : '#fef9c3;color:#b45309') + ';font-size:11px;font-weight:700;padding:3px 10px;border-radius:99px;">' + (isPast ? 'OK Sent' : 'Sends ' + sendDate) + '</span>';
-          html += '</div>';
-        });
-        html += '</div>';
-      }
-    }
 
     // Send tool
     html += '<div class="section-title"><svg viewBox="0 0 24 24"><path d="M22 2L11 13"/><path d="M22 2L15 22 11 13 2 9l20-7z"/></svg>Quick Send Tool</div>';
@@ -631,7 +604,7 @@ function renderPortal(bizKey, reviewData, analyticsData, convData, infoData) {
     html += '<div id="appInstallBanner" style="background:var(--navy);border-radius:var(--radius);padding:18px 20px;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">';
     html += '<div style="display:flex;align-items:center;gap:12px;">';
     html += '<div style="width:40px;height:40px;background:rgba(59,130,246,0.2);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#93C5FD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></div>';
-    html += '<div><div style="font-size:13px;font-weight:700;color:white;margin-bottom:2px;">Install the mobile app</div><div style="font-size:12px;color:rgba(255,255,255,0.5);">Add this portal to your home screen — free, no App Store needed.</div></div></div>';
+    html += '<div><div style="font-size:13px;font-weight:700;color:white;margin-bottom:2px;">Install the mobile app</div><div style="font-size:12px;color:rgba(255,255,255,0.5);">Add this portal to your home screen, free, no App Store needed.</div></div></div>';
     html += '<div style="display:flex;align-items:center;gap:8px;"><a href="/app-install" style="background:var(--blue);color:white;padding:8px 16px;border-radius:99px;font-size:12px;font-weight:700;text-decoration:none;white-space:nowrap;">Install App</a>';
     html += '<button onclick="dismissAppBanner()" style="background:rgba(255,255,255,0.08);border:none;color:rgba(255,255,255,0.4);padding:8px 12px;border-radius:99px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap;">Not interested</button></div></div>';
   }
@@ -690,16 +663,23 @@ async function activateBot(bizKey) {
     });
     var data = await res.json();
     if (data.success) {
-      // Redirect to Stripe payment link
+      sessionStorage.setItem('nb_post_activate', '1');
       window.location.href = 'https://buy.stripe.com/PLACEHOLDER';
     } else {
       alert('Something went wrong. Email netifybuilds@gmail.com');
-      if (btn) { btn.textContent = ' Activate My Bot'; btn.disabled = false; }
+      if (btn) { btn.textContent = 'Activate My Bot'; btn.disabled = false; }
     }
   } catch(err) {
     alert('Could not connect. Email netifybuilds@gmail.com');
-    if (btn) { btn.textContent = ' Activate My Bot'; btn.disabled = false; }
+    if (btn) { btn.textContent = 'Activate My Bot'; btn.disabled = false; }
   }
+}
+
+// Refresh data if returning from Stripe activation
+if (sessionStorage.getItem('nb_post_activate')) {
+  sessionStorage.removeItem('nb_post_activate');
+  var savedKey = localStorage.getItem('nb_portal_key');
+  if (savedKey) setTimeout(function() { fetchPortalData(savedKey); }, 800);
 }
 
 async function openBillingPortal(bizKey) {
