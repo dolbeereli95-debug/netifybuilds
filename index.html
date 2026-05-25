@@ -1396,7 +1396,13 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
                   <div><label>Service Area</label><input type="text" name="area" id="areaInput" placeholder="Columbus, OH and surrounding" /></div>
                   <div><label>Business Hours</label><input type="text" name="hours" id="hoursInput" placeholder="Mon–Fri 8am–6pm" /></div>
                 </div>
-                <div class="form-group"><label>Website URL</label><input type="text" name="website" id="websiteInput" placeholder="www.smithhvac.com" /></div>
+                <div class="form-group"><label>Website URL</label>
+                  <input type="text" name="website" id="websiteInput" placeholder="www.smithhvac.com" onblur="mainScanWebsite(this.value)" />
+                  <div id="mainScanBanner" style="display:none;margin-top:6px;background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:8px 12px;font-size:12px;color:#2563eb;font-weight:600;align-items:center;gap:6px;">
+                    <svg style="width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;flex-shrink:0;animation:spin 1s linear infinite;" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+                    <span id="mainScanStatus">Scanning your website...</span>
+                  </div>
+                </div>
                 <div class="form-group">
                   <label>Main services</label>
                   <textarea name="services" placeholder="e.g. AC repair, furnace installation, tune-ups, emergency service..."></textarea>
@@ -1943,6 +1949,51 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
       campTimer = setTimeout(next, idx === 1 ? 3000 : 2200);
     }, 600);
   }
+
+  // ── MAIN FORM WEBSITE SCANNER ──
+  var mainScanTimer = null;
+  window.mainScanWebsite = async function(url) {
+    if (!url || url.length < 4) return;
+    var banner = document.getElementById('mainScanBanner');
+    var status = document.getElementById('mainScanStatus');
+    if (banner) banner.style.display = 'flex';
+    if (status) status.textContent = 'Scanning your website...';
+    try {
+      var res = await fetch('https://botbuilder-backend-production.up.railway.app/extract-website', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url: url })
+      });
+      var json = await res.json();
+      if (!json.success || !json.data) {
+        if (status) status.textContent = 'Could not read website — fill in fields manually.';
+        if (banner) { banner.style.background = '#fff7ed'; banner.style.borderColor = '#fed7aa'; banner.style.color = '#c2410c'; }
+        return;
+      }
+      var d = json.data;
+      var filled = [];
+      var servicesEl = document.querySelector('[name="services"]');
+      if (d.services && servicesEl && !servicesEl.value.trim()) { servicesEl.value = Array.isArray(d.services) ? d.services.join(', ') : d.services; filled.push('services'); }
+      var hoursEl = document.querySelector('[name="hours"]');
+      if (d.hours && hoursEl && !hoursEl.value.trim()) { hoursEl.value = d.hours; filled.push('hours'); }
+      var areaEl = document.querySelector('[name="area"]');
+      if (d.area && areaEl && !areaEl.value.trim()) { areaEl.value = d.area; filled.push('service area'); }
+      var faqsEl = document.querySelector('[name="faqs"]');
+      if (d.faqs && faqsEl && !faqsEl.value.trim()) { faqsEl.value = Array.isArray(d.faqs) ? d.faqs.map(function(f) { return (f.question || f.q || '') + '\n' + (f.answer || f.a || ''); }).join('\n\n') : d.faqs; filled.push('FAQs'); }
+      var diffEl = document.querySelector('[name="differentiators"]');
+      if (d.differentiators && diffEl && !diffEl.value.trim()) { diffEl.value = Array.isArray(d.differentiators) ? d.differentiators.join('\n') : d.differentiators; filled.push('differentiators'); }
+      if (filled.length > 0) {
+        if (banner) { banner.style.background = '#f0fdf4'; banner.style.borderColor = '#86efac'; banner.style.color = '#15803d'; }
+        if (status) status.textContent = 'Pre-filled from your website: ' + filled.join(', ') + ' — review and edit anything that looks off.';
+      } else {
+        if (status) status.textContent = 'Website scanned — not enough info found, fill in fields manually.';
+      }
+    } catch(err) {
+      console.error('[Scan error]', err);
+      if (status) status.textContent = 'Could not scan — fill in fields manually.';
+      if (banner) { banner.style.background = '#fff7ed'; banner.style.borderColor = '#fed7aa'; banner.style.color = '#c2410c'; }
+    }
+  };
 
   // ── DEMO REQUEST FORM ──
   var demoForm = document.getElementById('demoForm');
