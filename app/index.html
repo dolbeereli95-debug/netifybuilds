@@ -41,7 +41,7 @@ html, body { height: 100%; background: var(--navy); font-family: -apple-system, 
 #app.visible { display: flex; }
 
 /* ── TOP NAV BAR ── */
-.app-nav { background: var(--navy); padding: calc(var(--safe-top) + 12px) 20px 12px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
+.app-nav { background: var(--navy); padding: calc(var(--safe-top) + 12px) 20px 12px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; box-shadow: 0 1px 0 rgba(255,255,255,0.05), 0 4px 16px rgba(0,0,0,0.2); }
 .app-nav-logo { display: flex; align-items: center; gap: 8px; }
 .app-nav-logo span { font-size: 1rem; font-weight: 800; color: white; letter-spacing: -0.02em; }
 .app-biz-name { font-size: 12px; color: var(--blue-light); font-weight: 600; }
@@ -51,7 +51,7 @@ html, body { height: 100%; background: var(--navy); font-family: -apple-system, 
 .app-scroll { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 0 0 calc(var(--safe-bottom) + 80px); }
 
 /* ── BOTTOM TAB BAR ── */
-.tab-bar { background: white; border-top: 1px solid var(--border); display: flex; padding: 8px 0 calc(var(--safe-bottom) + 8px); flex-shrink: 0; }
+.tab-bar { background: white; border-top: 1px solid var(--border); display: flex; padding: 8px 0 calc(var(--safe-bottom) + 8px); flex-shrink: 0; box-shadow: 0 -2px 12px rgba(0,0,0,0.06); }
 .tab { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 6px 0; cursor: pointer; border: none; background: none; color: var(--muted); font-family: inherit; transition: color 0.15s; }
 .tab.active { color: var(--blue); }
 .tab svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
@@ -63,9 +63,10 @@ html, body { height: 100%; background: var(--navy); font-family: -apple-system, 
 
 /* ── STAT CARDS ── */
 .stats-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 16px; }
-.stat-card { background: white; border: 1px solid var(--border); border-radius: 16px; padding: 16px; }
+.stat-card { background: white; border: 1px solid var(--border); border-radius: 16px; padding: 16px; position: relative; overflow: hidden; transition: box-shadow 0.2s; }
+.stat-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--blue), var(--blue-light)); border-radius: 16px 16px 0 0; }
 .stat-label { font-size: 11px; font-weight: 600; color: var(--soft); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
-.stat-num { font-size: 2rem; font-weight: 800; color: var(--text); line-height: 1; }
+.stat-num { font-size: 2rem; font-weight: 800; color: var(--text); line-height: 1; letter-spacing: -0.02em; }
 .stat-num.blue { color: var(--blue); }
 .stat-num.green { color: var(--green); }
 .stat-sub { font-size: 11px; color: var(--muted); margin-top: 3px; }
@@ -76,7 +77,8 @@ html, body { height: 100%; background: var(--navy); font-family: -apple-system, 
 
 /* ── LEAD CARDS ── */
 .card-list { display: flex; flex-direction: column; gap: 0; background: white; border-radius: 16px; margin: 0 16px 16px; overflow: hidden; border: 1px solid var(--border); }
-.lead-row { padding: 14px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+.lead-row { padding: 14px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; transition: background 0.1s; }
+.lead-row:active { background: var(--off); }
 .lead-row:last-child { border-bottom: none; }
 .lead-body { flex: 1; min-width: 0; }
 .lead-name { font-size: 14px; font-weight: 600; color: var(--text); }
@@ -88,7 +90,8 @@ html, body { height: 100%; background: var(--navy); font-family: -apple-system, 
 .tag-resolved { background: #dcfce7; color: var(--green); }
 
 /* ── FEEDBACK CARDS ── */
-.feedback-card { background: white; border-radius: 16px; margin: 0 16px 12px; padding: 16px; border: 1px solid var(--border); }
+.feedback-card { background: white; border-radius: 16px; margin: 0 16px 12px; padding: 16px; border: 1px solid var(--border); box-shadow: 0 1px 6px rgba(0,0,0,0.04); transition: box-shadow 0.15s; }
+.feedback-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
 .feedback-name { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
 .feedback-text { font-size: 13px; color: var(--soft); line-height: 1.5; margin-bottom: 10px; }
 .feedback-contact { font-size: 12px; color: var(--muted); margin-bottom: 10px; }
@@ -104,16 +107,16 @@ html, body { height: 100%; background: var(--navy); font-family: -apple-system, 
 .bar-lbl { font-size: 8px; color: var(--muted); }
 
 /* ── UPDATE BOT ── */
-.update-card { background: white; border-radius: 16px; margin: 0 16px 16px; padding: 16px; border: 1px solid var(--border); }
-.update-card textarea { width: 100%; padding: 12px; border: 1.5px solid var(--border); border-radius: 10px; font-size: 14px; font-family: inherit; color: var(--text); resize: none; outline: none; min-height: 100px; }
-.update-card textarea:focus { border-color: var(--blue); }
+.update-card { background: white; border-radius: 16px; margin: 0 16px 16px; padding: 16px; border: 1px solid var(--border); box-shadow: 0 1px 6px rgba(0,0,0,0.04); }
+.update-card textarea { width: 100%; padding: 12px; border: 1.5px solid var(--border); border-radius: 10px; font-size: 14px; font-family: inherit; color: var(--text); resize: none; outline: none; min-height: 100px; transition: border-color 0.15s, box-shadow 0.15s; }
+.update-card textarea:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(59,130,246,0.08); }
 .update-submit { width: 100%; margin-top: 10px; padding: 13px; background: var(--navy); color: white; border: none; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: inherit; cursor: pointer; }
 .update-success { text-align: center; padding: 12px; background: #f0fdf4; border-radius: 10px; margin-top: 10px; font-size: 13px; font-weight: 600; color: var(--green); display: none; }
 
 /* ── SEND REVIEW SECTION ── */
 .send-card { background: white; border-radius: 16px; margin: 0 16px 16px; padding: 16px; border: 1px solid var(--border); }
-.send-card input { width: 100%; padding: 12px 14px; border: 1.5px solid var(--border); border-radius: 10px; font-size: 14px; font-family: inherit; color: var(--text); outline: none; margin-bottom: 8px; }
-.send-card input:focus { border-color: var(--blue); }
+.send-card input { width: 100%; padding: 12px 14px; border: 1.5px solid var(--border); border-radius: 10px; font-size: 14px; font-family: inherit; color: var(--text); outline: none; margin-bottom: 8px; transition: border-color 0.15s, box-shadow 0.15s; }
+.send-card input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(59,130,246,0.08); }
 .copy-btn { width: 100%; padding: 13px; background: var(--blue); color: white; border: none; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: inherit; cursor: pointer; }
 .copy-success { text-align: center; font-size: 13px; color: var(--green); font-weight: 600; margin-top: 8px; display: none; }
 
@@ -434,7 +437,7 @@ function renderReviews() {
       weeks.push({ cnt: cnt, lbl: w === 0 ? 'Now' : w + 'w' });
     }
     var max = Math.max.apply(null, weeks.map(w => w.cnt)) || 1;
-    html += '<div class="chart-wrap"><div class="chart-label">Reviews per week — 8 weeks</div><div class="bars">';
+    html += '<div class="chart-wrap"><div class="chart-label">Reviews per week, last 8 weeks</div><div class="bars">';
     weeks.forEach(function(w, i) {
       var h = Math.max(4, Math.round((w.cnt / max) * 56));
       var bg = i === 7 ? '#0891b2' : w.cnt > 0 ? '#a5f3fc' : '#e2e8f0';
@@ -445,7 +448,7 @@ function renderReviews() {
 
   // Send review link tool — always show SMS send form
   html += '<div class="section-head"><div class="section-title">Quick Send</div></div>';
-  html += '<div class="send-card"><div style="font-size:13px;color:var(--soft);margin-bottom:10px;">Enter the customer name and phone — review request texts instantly.</div>';
+  html += '<div class="send-card"><div style="font-size:13px;color:var(--soft);margin-bottom:10px;">Enter the customer name and phone. Review request texts instantly.</div>';
   html += '<input id="sndName" placeholder="Customer name (recommended)" style="margin-bottom:8px;" oninput="var s=document.getElementById(\'copySuccess\');if(s)s.style.display=\'none\';" />';
   html += '<input id="sndPhone" type="tel" placeholder="Customer phone" />';
   html += '<button class="copy-btn" onclick="sendReviewSMS()" style="margin-top:8px;">Send Review Request</button>';
@@ -462,7 +465,7 @@ function renderReviews() {
       html += '</div>';
       html += '<div class="feedback-text">' + escHtml(fb.feedback || 'No details') + '</div>';
       if (fb.contact) html += '<div class="feedback-contact">Contact: ' + escHtml(fb.contact) + '</div>';
-      html += '<button class="resolve-btn ' + (isResolved ? 'resolved' : '') + '" onclick="resolveItem(' + fb.index + ',' + !isResolved + ',this)">' + (isResolved ? '✓ Resolved — tap to reopen' : 'Mark as resolved') + '</button>';
+      html += '<button class="resolve-btn ' + (isResolved ? 'resolved' : '') + '" onclick="resolveItem(' + fb.index + ',' + !isResolved + ',this)">' + (isResolved ? '✓ Resolved, tap to reopen' : 'Mark as resolved') + '</button>';
       html += '</div>';
     });
   }
