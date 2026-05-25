@@ -66,7 +66,7 @@ textarea.short { min-height: 70px; }
 .pkg-price { font-size: 14px; font-weight: 800; color: #2563eb; white-space: nowrap; }
 </style>
 </head>
-<script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDNIUxHy7t3IBSnsBHE8Y6VSmbOVkA_kUE&v=weekly&loading=async&libraries=places"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDNIUxHy7t3IBSnsBHE8Y6VSmbOVkA_kUE&libraries=places&callback=initObPlaces" async defer></script>
 <body>
 
 <div class="header">
@@ -563,17 +563,19 @@ textarea.short { min-height: 70px; }
     obBizTimer = setTimeout(async function() {
       try {
         var { AutocompleteSuggestion } = await google.maps.importLibrary("places");
-        var { suggestions } = await AutocompleteSuggestion.fetchAutocompleteSuggestions({ input: val, includedPrimaryTypes: ['establishment'] });
+        var { suggestions } = await AutocompleteSuggestion.fetchAutocompleteSuggestions({ input: val });
         if (!suggestions || suggestions.length === 0) { if(box) box.style.display = 'none'; return; }
         box.innerHTML = '';
         suggestions.slice(0,5).forEach(function(s) {
           var p = s.placePrediction;
           var el = document.createElement('div');
           el.style.cssText = 'padding:10px 14px;cursor:pointer;font-size:13px;color:#0f172a;border-bottom:1px solid #f1f5f9;background:white;';
-          el.innerHTML = '<div style="font-weight:600;">' + p.mainText + '</div><div style="font-size:11px;color:#94a3b8;">' + (p.secondaryText || '') + '</div>';
+          el.innerHTML = '<div style="font-weight:600;">' + (p.mainText ? p.mainText.toString() : '') + '</div><div style="font-size:11px;color:#94a3b8;">' + (p.secondaryText ? p.secondaryText.toString() : '') + '</div>';
           el.onmouseenter = function(){ this.style.background = '#f8fafc'; };
           el.onmouseleave = function(){ this.style.background = 'white'; };
-          el.onclick = (function(pid, pname) { return function(e) { e.stopPropagation(); obSelectBusiness(pid, pname); }; })(p.placeId, p.mainText.toString());
+          var pid = p.placeId || (p.place && p.place.id) || '';
+          var pname = p.mainText ? p.mainText.toString() : '';
+          el.onclick = (function(pid2, pname2) { return function(e) { e.stopPropagation(); obSelectBusiness(pid2, pname2); }; })(pid, pname);
           box.appendChild(el);
         });
         box.style.display = 'block';
