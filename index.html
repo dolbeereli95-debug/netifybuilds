@@ -1466,6 +1466,16 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
                     <div style="font-size:12px;color:var(--text-soft);">Selected: <span id="botColorPreview" style="font-weight:600;color:#2563eb;">#2563eb</span></div>
                   </div>
                 </div>
+                <!-- Paid add-ons -->
+                <div id="paid-addons-section">
+                  <div class="form-divider">Paid Add-ons <span style="font-size:11px;font-weight:400;color:var(--text-soft);">: optional upgrades</span></div>
+                  <div class="form-group">
+                    <div style="display:flex;flex-direction:column;gap:10px;">
+                      <label class="feat-card" id="flabel_calendar" style="border:1.5px solid #e2e8f0;"><input type="checkbox" name="feature_calendar" id="feat_calendar" value="yes" onchange="toggleFeatCard('flabel_calendar',this.checked)"><div style="flex:1;"><div style="display:flex;align-items:center;gap:8px;margin-bottom:2px;"><span style="font-size:14px;font-weight:600;">Google Calendar Booking</span><span class="feat-tag" style="background:#eff6ff;color:#2563eb;">+$20/mo</span></div><div style="font-size:13px;color:var(--text-soft);line-height:1.5;">Your bot shows real available slots from your Google Calendar and books appointments automatically. Customer picks a time, it shows up in your calendar.</div></div></label>
+                    </div>
+                  </div>
+                </div>
+
                 <!-- Feature add-ons -->
                 <div id="features-section" style="display:none;">
                   <div class="form-divider">Add-ons for your industry <span style="font-size:11px;font-weight:400;color:var(--text-soft);">: all free</span></div>
@@ -2390,7 +2400,7 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
           campaignFrequency: v('campaignFreqField'),
           promoDiscount: 'None',
           features: ['Appointment Request Flow','Emergency Escalation','Multilanguage Support','Pricing Guide Mode','Workout Split Builder','Pet Intake Qualifier','Symptom Checker','Move Estimator','Quote Estimator'].filter(function(label, i) {
-            var names = ['feature_appointment','feature_emergency','feature_multilang','feature_pricing','feature_workout','feature_groomer','feature_autosymptom','feature_moving','feature_cleaning'];
+            var names = ['feature_appointment','feature_emergency','feature_multilang','feature_pricing','feature_workout','feature_groomer','feature_autosymptom','feature_moving','feature_cleaning','feature_calendar'];
             return f.elements[names[i]] && f.elements[names[i]].checked;
           }).join(', ') || 'None'
         })
@@ -2441,7 +2451,7 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
         botColor: v('botColor'),
         billing: v('billing'),
         hearAbout: v('hearAbout'),
-        features: [['Workout Split Builder','feature_workout'],['Appointment Request Flow','feature_appointment'],['Emergency Escalation','feature_emergency'],['Multilanguage Support','feature_multilang'],['Pricing Guide Mode','feature_pricing'],['Service Status Updates','feature_status'],['Property Info Mode','feature_property'],['Wait Time & Waitlist','feature_waittime'],['Case Type Qualifier','feature_qualifier'],['Symptom Triage','feature_triage']].filter(function(p){return f.elements[p[1]]&&f.elements[p[1]].checked;}).map(function(p){return p[0];}).join(', ') || 'None',
+        features: [['Google Calendar Booking','feature_calendar'],['Workout Split Builder','feature_workout'],['Appointment Request Flow','feature_appointment'],['Emergency Escalation','feature_emergency'],['Multilanguage Support','feature_multilang'],['Pricing Guide Mode','feature_pricing'],['Service Status Updates','feature_status'],['Property Info Mode','feature_property'],['Wait Time & Waitlist','feature_waittime'],['Case Type Qualifier','feature_qualifier'],['Symptom Triage','feature_triage']].filter(function(p){return f.elements[p[1]]&&f.elements[p[1]].checked;}).map(function(p){return p[0];}).join(', ') || 'None',
         googleReviewLink: v('googleReviewLink'),
         features: {
           workoutSplitBuilder: f.elements['feature_workout'] && f.elements['feature_workout'].checked ? 'Yes' : 'No',
@@ -2641,12 +2651,12 @@ function copyAndChat(btn, question) {
   var nbFirstMsgs = {
     question: "Sure, what's on your mind? I can answer questions about our services, pricing, hours, or anything else.",
     callback: "Of course! What's your name and best callback number? We'll get back to you as soon as possible.",
-    emergency: "We're on it. What's going on? Describe the issue and I'll make sure the right person reaches you fast."
+    emergency: "We take emergencies seriously. What's happening right now?"
   };
   var nbContextReplies = {
-    question: ['Get a quote', 'How does it work?', 'Pricing info', 'Tell me more'],
+    question: ['Pricing info', 'How does it work?', 'Service area', 'Get started'],
     callback: [],
-    emergency: ['AC not working', 'No heat', 'Other emergency']
+    emergency: ['My AC stopped working', 'No heat', 'Urgent plumbing issue', 'Other emergency']
   };
 
   window._nbShowChat = function(type) {

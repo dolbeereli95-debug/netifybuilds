@@ -14,17 +14,37 @@
   var SYSTEM_PROMPT = cfg.systemPrompt || '';
   var GREETING     = cfg.greeting || '';
 
+  // Fetch quick replies from server based on client config
+  var _nbQuickReplies = {
+    question: ['Get a quote', 'Hours & availability', 'Service area'],
+    callback: [],
+    emergency: ['Emergency service', 'Get a quote', 'Service area']
+  };
+
+  // Load client-specific quick replies
+  fetch(BACKEND_URL + '/client-info/' + BIZ_KEY)
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data.quickReplies && data.quickReplies.length > 0) {
+        _nbQuickReplies.question = data.quickReplies;
+      }
+      if (data.emergencyReplies && data.emergencyReplies.length > 0) {
+        _nbQuickReplies.emergency = data.emergencyReplies;
+      }
+      if (data.calendarConnected && !_nbQuickReplies.question.some(function(r) { return r.toLowerCase().includes('book') || r.toLowerCase().includes('appoint'); })) {
+        _nbQuickReplies.question.unshift('Book an appointment');
+        _nbQuickReplies.question = _nbQuickReplies.question.slice(0, 4);
+      }
+    })
+    .catch(function() {});
+
   // Context-based first messages
   var nbFirstMsgs = {
     question: "Sure, what's on your mind? I can answer questions about our services, pricing, hours, or anything else.",
     callback: "Of course! What's your name and best callback number? We'll get back to you as soon as possible.",
     emergency: "We're on it. What's the issue? Tell me what's happening and we'll get someone to you fast."
   };
-  var nbContextReplies = {
-    question: ['Get a quote', 'How does it work?', 'Pricing info', 'Talk to someone'],
-    callback: [],
-    emergency: ['AC not working', 'No heat', 'Other emergency']
-  };
+  var nbContextReplies = _nbQuickReplies;
 
   window._nbShowChat = function(type) {
     type = type || 'question';
