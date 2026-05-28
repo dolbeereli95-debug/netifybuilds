@@ -2641,10 +2641,10 @@ function copyAndChat(btn, question) {
   var nbFirstMsgs = {
     question: "Sure, what's on your mind? I can answer questions about our services, pricing, hours, or anything else.",
     callback: "Of course! What's your name and best callback number? We'll get back to you as soon as possible.",
-    emergency: "We're on it. What's the issue? Tell me what's happening and we'll get someone to you fast."
+    emergency: "We're on it. What's going on? Describe the issue and I'll make sure the right person reaches you fast."
   };
   var nbContextReplies = {
-    question: ['Get a quote', 'How does it work?', 'Pricing info', 'Talk to someone'],
+    question: ['Get a quote', 'How does it work?', 'Pricing info', 'Tell me more'],
     callback: [],
     emergency: ['AC not working', 'No heat', 'Other emergency']
   };
@@ -2705,7 +2705,7 @@ function copyAndChat(btn, question) {
     if (qrEl) qrEl.innerHTML = '';
   };
 
-  var QUICK_REPLIES = ['Get a quote', 'How does it work?', 'Pricing info', 'Talk to someone'];
+  var QUICK_REPLIES = ['Get a quote', 'How does it work?', 'Pricing info', 'Tell me more'];
 
   function showQuickReplies(repliesArr) {
     var qr = document.getElementById('nb-quick-replies');
