@@ -250,6 +250,15 @@ textarea.short { min-height: 70px; }
         <div id="ob-features-section" style="display:none;">
           <div class="form-divider">Add-ons for your industry <span style="font-size:11px;font-weight:400;color:var(--text-soft);">: all free</span></div>
           <div style="display:flex;flex-direction:column;gap:10px;">
+            <!-- Paid add-ons -->
+            <label class="feat-card" id="ob_flabel_calendar" for="ob_feat_calendar" style="border:1.5px solid #bfdbfe;background:#eff6ff;">
+              <input type="checkbox" name="feature_calendar" id="ob_feat_calendar" value="yes" onchange="this.closest('label').classList.toggle('active',this.checked)">
+              <div>
+                <div style="font-size:13px;font-weight:600;color:#0f172a;margin-bottom:2px;">Google Calendar Booking <span style="background:#2563eb;color:white;font-size:10px;font-weight:700;padding:2px 7px;border-radius:99px;margin-left:4px;">+$20/mo</span></div>
+                <div style="font-size:12px;color:#64748b;line-height:1.5;">Your bot shows real available slots and books appointments directly into your Google Calendar.</div>
+              </div>
+            </label>
+
             <label id="ob_flabel_appointment" class="feat-card" for="ob_feat_appointment"><input type="checkbox" name="feature_appointment" id="ob_feat_appointment" value="yes" onchange="this.closest('label').classList.toggle('active',this.checked)"><div><div style="font-size:13px;font-weight:600;color:#0f172a;margin-bottom:2px;">Appointment Request Flow <span class="feat-tag">Dental, salons, law</span></div><div style="font-size:12px;color:#64748b;line-height:1.5;">Bot collects preferred day, time, and reason, emails you a formatted request to confirm.</div></div></label>
             <label id="ob_flabel_emergency" class="feat-card" for="ob_feat_emergency"><input type="checkbox" name="feature_emergency" id="ob_feat_emergency" value="yes" onchange="this.closest('label').classList.toggle('active',this.checked)"><div><div style="font-size:13px;font-weight:600;color:#0f172a;margin-bottom:2px;">Emergency Escalation <span class="feat-tag">HVAC, plumbing, electrical</span></div><div style="font-size:12px;color:#64748b;line-height:1.5;">Bot immediately directs urgent situations to your emergency line.</div></div></label>
             <label id="ob_flabel_multilang" class="feat-card" for="ob_feat_multilang"><input type="checkbox" name="feature_multilang" id="ob_feat_multilang" value="yes" onchange="this.closest('label').classList.toggle('active',this.checked)"><div><div style="font-size:13px;font-weight:600;color:#0f172a;margin-bottom:2px;">Multilanguage Support <span class="feat-tag">All businesses</span></div><div style="font-size:12px;color:#64748b;line-height:1.5;">Bot automatically responds in whatever language the customer writes in.</div></div></label>
@@ -806,6 +815,7 @@ textarea.short { min-height: 70px; }
         hearAbout:        v('hearAbout'),
         promoDiscount:    'None',
         features: {
+          calendarBooking:     f.elements['feature_calendar'] && f.elements['feature_calendar'].checked ? 'Yes' : 'No',
           appointmentFlow:     f.elements['feature_appointment'] && f.elements['feature_appointment'].checked ? 'Yes' : 'No',
           emergencyEscalation: f.elements['feature_emergency'] && f.elements['feature_emergency'].checked ? 'Yes' : 'No',
           multilanguage:       f.elements['feature_multilang'] && f.elements['feature_multilang'].checked ? 'Yes' : 'No',
