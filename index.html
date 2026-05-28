@@ -2694,6 +2694,15 @@ function copyAndChat(btn, question) {
     var chat = document.getElementById('nb-chat-screen');
     if (home) home.style.display = 'block';
     if (chat) chat.classList.remove('nb-visible');
+    // Reset conversation so next option starts fresh
+    messages = [];
+    greetingSent = false;
+    leadCaptured = false;
+    isAdminMode = false;
+    var msgsEl = document.getElementById('nb-messages');
+    if (msgsEl) msgsEl.innerHTML = '';
+    var qrEl = document.getElementById('nb-quick-replies');
+    if (qrEl) qrEl.innerHTML = '';
   };
 
   var QUICK_REPLIES = ['Get a quote', 'How does it work?', 'Pricing info', 'Talk to someone'];
