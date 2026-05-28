@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Netify Builds — Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--navy:#0A2540;--blue:#3B82F6;--border:#e2e8f0;--off:#f8fafc;--text:#0f172a;--soft:#64748b;--radius:12px;}
+body{font-family:'DM Sans',sans-serif;background:#eef2f7;min-height:100vh;color:var(--text);}
+nav{background:var(--navy);padding:0 28px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,0.25);}
+.nav-logo{font-family:'Plus Jakarta Sans',sans-serif;font-size:1rem;font-weight:800;color:white;letter-spacing:-0.01em;}
+.nav-logo span{color:#93C5FD;}
+.nav-badge{font-size:11px;font-weight:600;background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.3);color:#fca5a5;padding:3px 10px;border-radius:99px;}
+.wrap{max-width:1100px;margin:0 auto;padding:32px 24px;}
+.page-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:1.6rem;font-weight:800;letter-spacing:-0.03em;margin-bottom:6px;}
+.page-sub{font-size:13px;color:var(--soft);margin-bottom:28px;}
+
+/* Login */
+#loginScreen{display:flex;align-items:center;justify-content:center;min-height:calc(100vh - 56px);}
+.login-box{background:white;border:1px solid var(--border);border-radius:20px;padding:40px;width:340px;box-shadow:0 8px 32px rgba(0,0,0,0.08);}
+.login-box h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:1.2rem;font-weight:800;margin-bottom:6px;}
+.login-box p{font-size:13px;color:var(--soft);margin-bottom:24px;}
+.login-box input{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:14px;font-family:inherit;outline:none;margin-bottom:12px;transition:border-color 0.15s;}
+.login-box input:focus{border-color:var(--blue);}
+.btn-primary{width:100%;background:var(--navy);color:white;border:none;border-radius:10px;padding:12px;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;transition:background 0.15s;}
+.btn-primary:hover{background:#163a5f;}
+
+/* Stats bar */
+.stats-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px;}
+.stat-box{background:white;border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px;position:relative;overflow:hidden;}
+.stat-box::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--blue),#93C5FD);}
+.stat-label{font-size:11px;font-weight:600;color:var(--soft);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:6px;}
+.stat-num{font-family:'Plus Jakarta Sans',sans-serif;font-size:1.8rem;font-weight:800;color:var(--text);letter-spacing:-0.03em;}
+
+/* Search + filter */
+.toolbar{display:flex;gap:10px;margin-bottom:16px;}
+.search-input{flex:1;padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:14px;font-family:inherit;outline:none;background:white;transition:border-color 0.15s;}
+.search-input:focus{border-color:var(--blue);}
+.filter-select{padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-family:inherit;outline:none;background:white;cursor:pointer;}
+
+/* Client table */
+.table-wrap{background:white;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;}
+.client-table{width:100%;border-collapse:collapse;}
+.client-table th{font-size:11px;font-weight:700;color:var(--soft);text-transform:uppercase;letter-spacing:0.07em;padding:12px 18px;text-align:left;border-bottom:1px solid var(--border);background:var(--off);}
+.client-table td{padding:14px 18px;font-size:13.5px;border-bottom:1px solid var(--border);vertical-align:middle;}
+.client-table tr:last-child td{border-bottom:none;}
+.client-table tbody tr:hover td{background:#fafbff;cursor:pointer;}
+.plan-tag{display:inline-flex;align-items:center;font-size:11px;font-weight:700;padding:3px 9px;border-radius:99px;}
+.plan-all{background:#eff6ff;color:#2563eb;}
+.plan-bot{background:#f0fdf4;color:#16a34a;}
+.plan-review{background:#fdf4ff;color:#7c3aed;}
+.plan-bundle{background:#fff7ed;color:#ea580c;}
+.status-dot{width:7px;height:7px;border-radius:50%;display:inline-block;margin-right:5px;}
+.dot-active{background:#22c55e;}
+.dot-pending{background:#f59e0b;}
+.dot-inactive{background:#94a3b8;}
+.action-btn{padding:5px 12px;border-radius:7px;font-size:12px;font-weight:600;border:1.5px solid var(--border);background:white;cursor:pointer;font-family:inherit;transition:all 0.15s;}
+.action-btn:hover{border-color:var(--navy);background:var(--navy);color:white;}
+.action-btn.danger:hover{border-color:#ef4444;background:#ef4444;color:white;}
+
+/* Modal */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:200;align-items:center;justify-content:center;padding:20px;}
+.modal-overlay.open{display:flex;}
+.modal{background:white;border-radius:20px;width:100%;max-width:620px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.2);}
+.modal-header{padding:22px 24px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:white;z-index:1;}
+.modal-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:800;}
+.modal-close{width:28px;height:28px;border-radius:8px;background:var(--off);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--soft);}
+.modal-body{padding:24px;}
+.field-group{margin-bottom:18px;}
+.field-group label{display:block;font-size:12px;font-weight:600;color:var(--soft);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px;}
+.field-group input,.field-group textarea,.field-group select{width:100%;padding:10px 13px;border:1.5px solid var(--border);border-radius:9px;font-size:13.5px;font-family:inherit;outline:none;transition:border-color 0.15s;background:white;}
+.field-group input:focus,.field-group textarea:focus{border-color:var(--blue);}
+.field-group textarea{resize:vertical;min-height:80px;}
+.modal-footer{padding:16px 24px;border-top:1px solid var(--border);display:flex;gap:10px;justify-content:flex-end;position:sticky;bottom:0;background:white;}
+.btn-save{background:var(--navy);color:white;border:none;border-radius:9px;padding:10px 22px;font-size:13px;font-weight:700;font-family:inherit;cursor:pointer;}
+.btn-cancel{background:var(--off);color:var(--soft);border:1px solid var(--border);border-radius:9px;padding:10px 18px;font-size:13px;font-weight:600;font-family:inherit;cursor:pointer;}
+
+/* Widget code section */
+.code-box{background:#0f172a;color:#4ade80;font-size:11px;padding:14px;border-radius:8px;font-family:monospace;white-space:pre-wrap;word-break:break-all;margin-top:6px;position:relative;}
+.copy-btn{position:absolute;top:8px;right:8px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.7);border-radius:6px;padding:4px 10px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;}
+.copy-btn:hover{background:rgba(255,255,255,0.2);}
+.section-divider{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--soft);margin:20px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+.empty-state{text-align:center;padding:48px 20px;color:var(--soft);}
+.empty-state h3{font-size:15px;font-weight:600;color:var(--text);margin-bottom:6px;}
+.toast{position:fixed;bottom:24px;right:24px;background:#0f172a;color:white;padding:12px 18px;border-radius:10px;font-size:13px;font-weight:600;z-index:999;opacity:0;transform:translateY(8px);transition:all 0.25s;pointer-events:none;}
+.toast.show{opacity:1;transform:translateY(0);}
+@media(max-width:768px){.stats-bar{grid-template-columns:1fr 1fr;}.client-table th:nth-child(3),.client-table td:nth-child(3),.client-table th:nth-child(4),.client-table td:nth-child(4){display:none;}}
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-logo">Netify <span>Builds.</span></span>
+  <span class="nav-badge">Admin Only</span>
+</nav>
+
+<!-- LOGIN -->
+<div id="loginScreen">
+  <div class="login-box">
+    <h2>Admin Access</h2>
+    <p>Enter your admin secret to continue.</p>
+    <input type="password" id="secretInput" placeholder="Admin secret" onkeydown="if(event.key==='Enter')login()" />
+    <button class="btn-primary" onclick="login()">Sign In</button>
+    <div id="loginError" style="color:#ef4444;font-size:12px;margin-top:10px;display:none;">Incorrect secret.</div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div id="mainScreen" style="display:none;">
+  <div class="wrap">
+    <div class="page-title">Client Management</div>
+    <div class="page-sub">Manage all client bots, review filters, and configurations.</div>
+
+    <div class="stats-bar" id="statsBar">
+      <div class="stat-box"><div class="stat-label">Total Clients</div><div class="stat-num" id="statTotal">—</div></div>
+      <div class="stat-box"><div class="stat-label">Active</div><div class="stat-num" id="statActive">—</div></div>
+      <div class="stat-box"><div class="stat-label">Pending</div><div class="stat-num" id="statPending">—</div></div>
+      <div class="stat-box"><div class="stat-label">With Calendar</div><div class="stat-num" id="statCalendar">—</div></div>
+    </div>
+
+    <div class="toolbar">
+      <input class="search-input" id="searchInput" placeholder="Search by name, email, or bizKey..." oninput="renderClients()" />
+      <select class="filter-select" id="filterPlan" onchange="renderClients()">
+        <option value="">All plans</option>
+        <option value="all">All Products</option>
+        <option value="bot">Chat Bot</option>
+        <option value="review">Review Filter</option>
+        <option value="bundle">Bundle</option>
+      </select>
+      <select class="filter-select" id="filterStatus" onchange="renderClients()">
+        <option value="">All statuses</option>
+        <option value="active">Active</option>
+        <option value="pending">Pending</option>
+        <option value="inactive">Inactive</option>
+      </select>
+    </div>
+
+    <div class="table-wrap">
+      <table class="client-table">
+        <thead>
+          <tr>
+            <th>Business</th>
+            <th>Plan</th>
+            <th>Email</th>
+            <th>Registered</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="clientTableBody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- EDIT MODAL -->
+<div class="modal-overlay" id="editModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modalTitle">Edit Client</div>
+      <button class="modal-close" onclick="closeModal()">×</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+      <button class="btn-save" onclick="saveClient()">Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const BACKEND = 'https://botbuilder-backend-production.up.railway.app';
+let adminSecret = '';
+let clients = {};
+let editingKey = null;
+
+function login() {
+  const val = document.getElementById('secretInput').value.trim();
+  if (!val) return;
+  adminSecret = val;
+  loadClients();
+}
+
+async function loadClients() {
+  try {
+    const res = await fetch(BACKEND + '/admin/clients', {
+      headers: { 'x-admin-secret': adminSecret }
+    });
+    if (res.status === 403) {
+      document.getElementById('loginError').style.display = 'block';
+      adminSecret = '';
+      return;
+    }
+    clients = await res.json();
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('mainScreen').style.display = 'block';
+    updateStats();
+    renderClients();
+  } catch(e) {
+    document.getElementById('loginError').style.display = 'block';
+    document.getElementById('loginError').textContent = 'Could not connect to backend.';
+  }
+}
+
+function updateStats() {
+  const keys = Object.keys(clients);
+  const active = keys.filter(k => clients[k].activated).length;
+  const pending = keys.filter(k => !clients[k].activated).length;
+  const cal = keys.filter(k => clients[k].calendarConnected).length;
+  document.getElementById('statTotal').textContent = keys.length;
+  document.getElementById('statActive').textContent = active;
+  document.getElementById('statPending').textContent = pending;
+  document.getElementById('statCalendar').textContent = cal;
+}
+
+function renderClients() {
+  const search = document.getElementById('searchInput').value.toLowerCase();
+  const planFilter = document.getElementById('filterPlan').value;
+  const statusFilter = document.getElementById('filterStatus').value;
+
+  const tbody = document.getElementById('clientTableBody');
+  const keys = Object.keys(clients).filter(k => {
+    const c = clients[k];
+    const matchSearch = !search || k.includes(search) || (c.bizName||'').toLowerCase().includes(search) || (c.email||'').toLowerCase().includes(search);
+    const matchPlan = !planFilter || (c.plan||'') === planFilter;
+    const matchStatus = !statusFilter || (statusFilter === 'active' && c.activated) || (statusFilter === 'pending' && !c.activated && c.registeredAt) || (statusFilter === 'inactive' && !c.activated && !c.registeredAt);
+    return matchSearch && matchPlan && matchStatus;
+  });
+
+  if (keys.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="6"><div class="empty-state"><h3>No clients found</h3><p>Try adjusting your search or filters.</p></div></td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = keys.sort((a,b) => (clients[b].registeredAt||'').localeCompare(clients[a].registeredAt||'')).map(k => {
+    const c = clients[k];
+    const planClass = c.plan === 'all' ? 'plan-all' : c.plan === 'review' ? 'plan-review' : c.plan === 'bundle' ? 'plan-bundle' : 'plan-bot';
+    const planLabel = c.plan === 'all' ? 'All Products' : c.plan === 'review' ? 'Review Filter' : c.plan === 'bundle' ? 'Bundle' : c.plan || 'Bot';
+    const dotClass = c.activated ? 'dot-active' : c.registeredAt ? 'dot-pending' : 'dot-inactive';
+    const statusLabel = c.activated ? 'Active' : c.registeredAt ? 'Pending' : 'Inactive';
+    const date = c.registeredAt ? new Date(c.registeredAt).toLocaleDateString('en-US', {month:'short',day:'numeric',year:'numeric'}) : '—';
+    return `<tr onclick="openModal('${k}')">
+      <td><div style="font-weight:600;">${c.bizName||k}</div><div style="font-size:11px;color:#94a3b8;">${k}</div></td>
+      <td><span class="plan-tag ${planClass}">${planLabel}</span></td>
+      <td style="color:#64748b;font-size:12.5px;">${c.email||'—'}</td>
+      <td style="color:#94a3b8;font-size:12px;">${date}</td>
+      <td><span class="status-dot ${dotClass}"></span>${statusLabel}</td>
+      <td onclick="event.stopPropagation()">
+        <button class="action-btn" onclick="openModal('${k}')">Edit</button>
+        <button class="action-btn" onclick="getWidgetCode('${k}')">Widget</button>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function openModal(bizKey) {
+  editingKey = bizKey;
+  const c = clients[bizKey] || {};
+  document.getElementById('modalTitle').textContent = c.bizName || bizKey;
+  document.getElementById('modalBody').innerHTML = `
+    <div class="section-divider">Business Info</div>
+    <div class="field-group"><label>Business Name</label><input id="f_bizName" value="${esc(c.bizName||'')}" /></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div class="field-group"><label>Email</label><input id="f_email" value="${esc(c.email||'')}" /></div>
+      <div class="field-group"><label>Phone</label><input id="f_phone" value="${esc(c.phone||'')}" /></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div class="field-group"><label>Plan</label>
+        <select id="f_plan">
+          <option value="bot" ${c.plan==='bot'?'selected':''}>Chat Bot</option>
+          <option value="review" ${c.plan==='review'?'selected':''}>Review Filter</option>
+          <option value="bundle" ${c.plan==='bundle'?'selected':''}>Bundle</option>
+          <option value="all" ${c.plan==='all'?'selected':''}>All Products</option>
+        </select>
+      </div>
+      <div class="field-group"><label>Domain</label><input id="f_domain" value="${esc(c.domain||'')}" /></div>
+    </div>
+    <div class="field-group"><label>Google Review Link</label><input id="f_googleReviewLink" value="${esc(c.googleReviewLink||'')}" /></div>
+    <div class="field-group"><label>Emergency Number</label><input id="f_emergency" value="${esc(c.emergency||'')}" /></div>
+
+    <div class="section-divider">Bot Configuration</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div class="field-group"><label>Bot Name</label><input id="f_botName" value="${esc(c.botName||'')}" /></div>
+      <div class="field-group"><label>Accent Color</label><input id="f_botColor" value="${esc(c.botColor||'#0A2540')}" /></div>
+    </div>
+    <div class="field-group"><label>Services</label><textarea id="f_services">${esc(c.services||'')}</textarea></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div class="field-group"><label>Hours</label><textarea id="f_hours" style="min-height:60px;">${esc(c.hours||'')}</textarea></div>
+      <div class="field-group"><label>Service Area</label><input id="f_area" value="${esc(c.area||'')}" /></div>
+    </div>
+    <div class="field-group"><label>FAQs</label><textarea id="f_faqs">${esc(c.faqs||'')}</textarea></div>
+    <div class="field-group"><label>Differentiators</label><textarea id="f_differentiators" style="min-height:60px;">${esc(c.differentiators||'')}</textarea></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div class="field-group"><label>Tone</label>
+        <select id="f_tone">
+          <option value="friendly" ${c.tone==='friendly'?'selected':''}>Friendly</option>
+          <option value="professional" ${c.tone==='professional'?'selected':''}>Professional</option>
+          <option value="casual" ${c.tone==='casual'?'selected':''}>Casual</option>
+        </select>
+      </div>
+      <div class="field-group"><label>Lead Capture</label>
+        <select id="f_leadCapture">
+          <option value="name_phone" ${c.leadCapture==='name_phone'?'selected':''}>Name + Phone</option>
+          <option value="name_email" ${c.leadCapture==='name_email'?'selected':''}>Name + Email</option>
+          <option value="name_only" ${c.leadCapture==='name_only'?'selected':''}>Name Only</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="section-divider">System Prompt</div>
+    <div class="field-group">
+      <label>System Prompt <span style="font-weight:400;text-transform:none;font-size:11px;">(edit directly or save above fields to regenerate)</span></label>
+      <textarea id="f_systemPrompt" style="min-height:160px;font-size:12px;font-family:monospace;">${esc(c.systemPrompt||'')}</textarea>
+    </div>
+    <button onclick="regeneratePrompt('${bizKey}')" style="background:#eff6ff;color:#2563eb;border:1.5px solid #bfdbfe;border-radius:8px;padding:8px 16px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;margin-bottom:4px;">↻ Regenerate from fields above</button>
+
+    <div class="section-divider">Widget Install Code</div>
+    <div style="position:relative;">
+      <div class="code-box" id="widgetCodeBox">Loading...</div>
+      <button class="copy-btn" onclick="copyWidget()">Copy</button>
+    </div>
+  `;
+  document.getElementById('editModal').classList.add('open');
+  loadWidgetCode(bizKey);
+}
+
+async function loadWidgetCode(bizKey) {
+  try {
+    const res = await fetch(BACKEND + '/widget-inline/' + bizKey);
+    const text = await res.text();
+    document.getElementById('widgetCodeBox').textContent = text;
+  } catch(e) {
+    document.getElementById('widgetCodeBox').textContent = 'Could not load widget code.';
+  }
+}
+
+async function regeneratePrompt(bizKey) {
+  const data = gatherFields();
+  try {
+    const res = await fetch(BACKEND + '/admin/regenerate-prompt/' + bizKey, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-admin-secret': adminSecret },
+      body: JSON.stringify(data)
+    });
+    const json = await res.json();
+    if (json.prompt) {
+      document.getElementById('f_systemPrompt').value = json.prompt;
+      showToast('Prompt regenerated');
+    }
+  } catch(e) { showToast('Failed to regenerate'); }
+}
+
+function gatherFields() {
+  const g = id => document.getElementById(id) ? document.getElementById(id).value : '';
+  return {
+    bizName: g('f_bizName'), email: g('f_email'), phone: g('f_phone'),
+    plan: g('f_plan'), domain: g('f_domain'), googleReviewLink: g('f_googleReviewLink'),
+    emergency: g('f_emergency'), botName: g('f_botName'), botColor: g('f_botColor'),
+    services: g('f_services'), hours: g('f_hours'), area: g('f_area'),
+    faqs: g('f_faqs'), differentiators: g('f_differentiators'),
+    tone: g('f_tone'), leadCapture: g('f_leadCapture'),
+    systemPrompt: g('f_systemPrompt')
+  };
+}
+
+async function saveClient() {
+  const data = gatherFields();
+  try {
+    const res = await fetch(BACKEND + '/admin/update-client/' + editingKey, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-admin-secret': adminSecret },
+      body: JSON.stringify(data)
+    });
+    const json = await res.json();
+    if (json.success) {
+      clients[editingKey] = { ...clients[editingKey], ...data };
+      showToast('Saved!');
+      closeModal();
+      renderClients();
+      updateStats();
+    }
+  } catch(e) { showToast('Save failed'); }
+}
+
+async function getWidgetCode(bizKey) {
+  try {
+    const res = await fetch(BACKEND + '/widget-inline/' + bizKey);
+    const text = await res.text();
+    await navigator.clipboard.writeText(text);
+    showToast('Widget code copied!');
+  } catch(e) { showToast('Could not copy'); }
+}
+
+function copyWidget() {
+  const text = document.getElementById('widgetCodeBox').textContent;
+  navigator.clipboard.writeText(text).then(() => showToast('Copied!')).catch(() => showToast('Copy failed'));
+}
+
+function closeModal() {
+  document.getElementById('editModal').classList.remove('open');
+  editingKey = null;
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+function esc(str) {
+  return String(str).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+document.getElementById('editModal').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+</script>
+</body>
+</html>
