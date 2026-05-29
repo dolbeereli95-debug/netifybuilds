@@ -282,7 +282,12 @@
       });
       var data = {};
       try { data = await res.json(); } catch(e) {}
-      var reply = (data && (data.reply || data.error)) || 'Sorry, something went wrong. Please try again.';
+      var reply = (data && data.reply) || '';
+      if (!reply && data && data.error && data.error.includes('not yet activated')) {
+        reply = "This bot isn't live yet. The business owner still needs to activate it. Check back soon!";
+      } else if (!reply) {
+        reply = 'Sorry, something went wrong. Please try again.';
+      }
       try { typing.remove(); } catch(e) {}
       if (!leadCaptured && reply.includes('LEAD_CAPTURED|')) {
         var lead = parseLead(reply);
