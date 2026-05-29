@@ -1482,7 +1482,7 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
                   <div class="form-divider">Add-ons for your industry <span style="font-size:11px;font-weight:400;color:var(--text-soft);">: all free</span></div>
                   <div class="form-group">
                     <div style="display:flex;flex-direction:column;gap:10px;">
-                      <label id="flabel_appointment" class="feat-card" style="display:none;"><input type="checkbox" name="feature_appointment" id="feat_appointment" value="yes" onchange="toggleFeatCard('flabel_appointment',this.checked)"><div><div style="font-size:14px;font-weight:600;margin-bottom:2px;">Appointment Request Flow <span class="feat-tag">Dental, salons, law</span></div><div style="font-size:13px;color:var(--text-soft);line-height:1.5;">Bot collects preferred day, time, and reason, emails you a formatted request to confirm.</div></div></label>
+                      <label id="flabel_appointment" class="feat-card" style="display:none;"><input type="checkbox" name="feature_appointment" id="feat_appointment" value="yes" onchange="toggleFeatCard('flabel_appointment',this.checked)"><div><div style="font-size:14px;font-weight:600;margin-bottom:2px;">Appointment Request Flow <span class="feat-tag">Free</span></div><div style="font-size:13px;color:var(--text-soft);line-height:1.5;">Bot collects preferred day, time, and reason, then emails you the request to confirm. You call them back to book. Upgrade to Google Calendar Booking (+$20/mo) to let the bot book automatically.</div></div></label>
                       <label id="flabel_emergency" class="feat-card" style="display:none;"><input type="checkbox" name="feature_emergency" id="feat_emergency" value="yes" disabled onchange="toggleFeatCard('flabel_emergency',this.checked)"><div><div style="font-size:14px;font-weight:600;margin-bottom:2px;">Emergency Escalation <span class="feat-tag">HVAC, plumbing, electrical</span></div><div style="font-size:13px;color:var(--text-soft);line-height:1.5;">Bot immediately directs urgent situations to your emergency line.</div></div></label>
                       <label id="flabel_multilang" class="feat-card" style="display:none;"><input type="checkbox" name="feature_multilang" id="feat_multilang" value="yes" onchange="toggleFeatCard('flabel_multilang',this.checked)"><div><div style="font-size:14px;font-weight:600;margin-bottom:2px;">Multilanguage Support <span class="feat-tag">All businesses</span></div><div style="font-size:13px;color:var(--text-soft);line-height:1.5;">Bot automatically responds in whatever language the customer writes in.</div></div></label>
                       <label id="flabel_pricing" class="feat-card" style="display:none;"><input type="checkbox" name="feature_pricing" id="feat_pricing" value="yes" onchange="toggleFeatCard('flabel_pricing',this.checked)"><div><div style="font-size:14px;font-weight:600;margin-bottom:2px;">Pricing Guide Mode <span class="feat-tag">Roofing, HVAC, contractors</span></div><div style="font-size:13px;color:var(--text-soft);line-height:1.5;">Bot gives realistic price ranges instead of just saying "it depends."</div></div></label>
@@ -2232,22 +2232,22 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
     'Dental Office':        ['feat_appointment', 'feat_multilang'],
     'Medical / Healthcare': ['feat_appointment', 'feat_multilang'],
     'Med Spa / Salon':      ['feat_appointment', 'feat_multilang'],
-    'HVAC':                 ['feat_emergency', 'feat_pricing', 'feat_multilang'],
-    'Plumbing':             ['feat_emergency', 'feat_multilang'],
-    'Electrical':           ['feat_emergency', 'feat_multilang'],
-    'Roofing':              ['feat_pricing', 'feat_multilang'],
-    'Landscaping':          ['feat_pricing', 'feat_multilang'],
-    'General Contractor':   ['feat_pricing', 'feat_emergency', 'feat_multilang'],
+    'HVAC':                 ['feat_appointment', 'feat_emergency', 'feat_pricing', 'feat_multilang'],
+    'Plumbing':             ['feat_appointment', 'feat_emergency', 'feat_multilang'],
+    'Electrical':           ['feat_appointment', 'feat_emergency', 'feat_multilang'],
+    'Roofing':              ['feat_appointment', 'feat_pricing', 'feat_multilang'],
+    'Landscaping':          ['feat_appointment', 'feat_pricing', 'feat_multilang'],
+    'General Contractor':   ['feat_appointment', 'feat_pricing', 'feat_emergency', 'feat_multilang'],
     'Restaurant / Cafe':    ['feat_multilang'],
     'Law Firm':             ['feat_appointment', 'feat_multilang'],
     'Real Estate':          ['feat_appointment', 'feat_multilang'],
-    'Auto Shop':            ['feat_autosymptom', 'feat_multilang'],
-    'Cleaning Service':     ['feat_cleaning', 'feat_pricing', 'feat_multilang'],
-    'Pest Control':         ['feat_pricing', 'feat_multilang'],
+    'Auto Shop':            ['feat_appointment', 'feat_autosymptom', 'feat_multilang'],
+    'Cleaning Service':     ['feat_appointment', 'feat_cleaning', 'feat_pricing', 'feat_multilang'],
+    'Pest Control':         ['feat_appointment', 'feat_pricing', 'feat_multilang'],
     'Veterinary':           ['feat_appointment', 'feat_multilang'],
-    'Barber Shop':          ['feat_waittime', 'feat_multilang'],
-    'Pet Grooming':         ['feat_groomer', 'feat_multilang'],
-    'Moving Company':       ['feat_moving', 'feat_multilang'],
+    'Barber Shop':          ['feat_appointment', 'feat_waittime', 'feat_multilang'],
+    'Pet Grooming':         ['feat_appointment', 'feat_groomer', 'feat_multilang'],
+    'Moving Company':       ['feat_appointment', 'feat_moving', 'feat_multilang'],
   };
 
   var allFeatureIds = ['feat_appointment','feat_emergency','feat_multilang','feat_pricing','feat_workout','feat_groomer','feat_autosymptom','feat_moving','feat_cleaning'];
