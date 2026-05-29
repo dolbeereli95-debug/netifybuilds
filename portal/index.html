@@ -457,8 +457,16 @@ function renderPortal(bizKey, reviewData, analyticsData, convData, infoData) {
       html += '<div style="background:#fffbeb;border:2px solid #fcd34d;border-radius:var(--radius);padding:24px;margin-bottom:24px;">';
       html += '<div style="display:flex;align-items:flex-start;gap:14px;flex-wrap:wrap;">';
       html += '<div style="flex:1;">';
-      html += '<div style="font-size:15px;font-weight:700;color:#0f172a;margin-bottom:6px;">Your bot is installed but not active yet</div>';
-      html += '<div style="font-size:13px;color:#64748b;line-height:1.6;margin-bottom:16px;">Once your bot is on your website and you\'re ready to go live, hit Activate. That\'s when your subscription starts and your bot turns on for visitors.</div>';
+      html += '<div style="font-size:15px;font-weight:700;color:#0f172a;margin-bottom:6px;">Step 1 — Install your bot</div>';
+      html += '<div style="font-size:13px;color:#64748b;line-height:1.6;margin-bottom:16px;">Paste this code before the closing <code>&lt;/body&gt;</code> tag on your website, or send it to your web developer. Takes about 2 minutes.</div>';
+      html += '<div style="background:#0f172a;border-radius:10px;padding:14px 16px;margin-bottom:16px;position:relative;">';
+      html += '<div style="font-family:monospace;font-size:11px;color:#4ade80;white-space:pre-wrap;word-break:break-all;line-height:1.6;">';
+      html += escHtml('<!-- Netify Builds Chat Widget -->\n<script>\nwindow.__nb={bizKey:\'' + baseKey + '\',bizName:' + JSON.stringify((infoData && infoData.bizName) || bizName) + ',botName:' + JSON.stringify((infoData && infoData.botName) || bizName + ' Assistant') + ',accentColor:\'' + ((infoData && infoData.botColor) || '#0A2540') + '\',backend:\'https://botbuilder-backend-production.up.railway.app\',leadEmail:' + JSON.stringify((infoData && infoData.email) || '') + '};\n<\/script>\n<script src="https://netifybuilds.com/widget-loader.js" async><\/script>');
+      html += '</div>';
+      html += '<button onclick="navigator.clipboard.writeText(this.previousElementSibling.textContent).then(function(){var b=document.getElementById(\'copyInstallBtn\');b.textContent=\'Copied!\';setTimeout(function(){b.textContent=\'Copy Code\';},2000);})" id="copyInstallBtn" style="position:absolute;top:10px;right:10px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.7);border-radius:6px;padding:4px 10px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;">Copy Code</button>';
+      html += '</div>';
+      html += '<div style="font-size:15px;font-weight:700;color:#0f172a;margin-bottom:6px;">Step 2 — Activate when ready</div>';
+      html += '<div style="font-size:13px;color:#64748b;line-height:1.6;margin-bottom:16px;">Once the bot is on your website and you\'re happy with it, hit Activate. That\'s when your subscription starts and the bot goes live for visitors.</div>';
       html += '<button onclick="activateBot(&quot;' + escHtml(baseKey) + '&quot;)" id="activateBtn" style="background:#16a34a;color:white;border:none;padding:12px 24px;border-radius:99px;font-size:14px;font-weight:700;cursor:pointer;">Activate My Bot</button>';
       html += '</div></div></div>';
     } else {
