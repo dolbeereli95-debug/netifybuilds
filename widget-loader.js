@@ -155,14 +155,23 @@
   function nbLockScroll() { nbScrollY = window.scrollY; document.body.style.overflow = 'hidden'; }
   function nbUnlockScroll() { document.body.style.overflow = ''; }
 
+  function logAnalytics(event, data) {
+    fetch(BACKEND_URL + '/log-analytics', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ bizKey: BIZ_KEY, bizName: BIZ_NAME, event: event, data: data || '' })
+    }).catch(function() {});
+  }
+
   window._nbCloseWidget = function() {
     // Log conversation on close
     if (messages.length > 0) {
       fetch(BACKEND_URL + '/log-conversation', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ bizName: BIZ_NAME, messages: messages.slice(-20), leadCaptured: leadCaptured, timestamp: new Date().toISOString() })
+        body: JSON.stringify({ bizKey: BIZ_KEY, bizName: BIZ_NAME, messages: messages.slice(-20), leadCaptured: leadCaptured, timestamp: new Date().toISOString() })
       }).catch(function() {});
+      logAnalytics('conversation');
     }
     isOpen = false;
     if (window.innerWidth <= 480) { nbUnlockScroll(); }
@@ -273,6 +282,9 @@
     input.value = ''; input.disabled = true;
     addMsg(text, 'user');
     messages.push({ role: 'user', content: text });
+    if (messages.filter(function(m){return m.role==='user';}).length === 1) {
+      logAnalytics('firstMessage', text);
+    }
     var typing = showTyping();
     try {
       var res = await fetch(BACKEND_URL + '/chat', {
@@ -301,11 +313,12 @@
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ name: lead.name, phone: lead.phone, jobType: lead.jobType, urgency: lead.urgency, businessEmail: LEAD_EMAIL, businessName: BIZ_NAME, conversation: messages.slice(-20) })
           }).catch(function() {});
+          logAnalytics('lead');
           // Log conversation with lead details
           fetch(BACKEND_URL + '/log-conversation', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ bizName: BIZ_NAME, messages: messages.slice(-20), leadCaptured: true, leadName: lead.name, leadPhone: lead.phone, leadJobType: lead.jobType, timestamp: new Date().toISOString() })
+            body: JSON.stringify({ bizKey: BIZ_KEY, bizName: BIZ_NAME, messages: messages.slice(-20), leadCaptured: true, leadName: lead.name, leadPhone: lead.phone, leadJobType: lead.jobType, timestamp: new Date().toISOString() })
           }).catch(function() {});
         } else {
           addMsg(reply.replace(/LEAD_CAPTURED\|.*/g, '').trim() || reply, 'bot');
