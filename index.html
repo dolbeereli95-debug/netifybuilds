@@ -2746,6 +2746,10 @@ function copyAndChat(btn, question) {
   function closeChat() {
     isOpen = false;
     if (window.innerWidth <= 480) { nbUnlockScroll(); }
+    if (messages.length > 0) {
+      fetch(BACKEND_URL + '/log-conversation', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ bizKey: BIZ_KEY, bizName: BIZ_NAME, messages: messages.slice(-20), leadCaptured: leadCaptured, timestamp: new Date().toISOString() }) }).catch(function(){});
+      fetch(BACKEND_URL + '/log-analytics', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ bizKey: BIZ_KEY, bizName: BIZ_NAME, event: 'conversation' }) }).catch(function(){});
+    }
     box.classList.remove('visible');
     btn.style.display = 'flex';
     btn.classList.remove('open');
@@ -2796,6 +2800,9 @@ function copyAndChat(btn, question) {
     input.value = ''; input.disabled = true;
     addMsg(text, 'user');
     messages.push({ role: 'user', content: text });
+    if (messages.filter(function(m){return m.role==='user';}).length === 1) {
+      fetch(BACKEND_URL + '/log-analytics', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ bizKey: BIZ_KEY, bizName: BIZ_NAME, event: 'firstMessage', data: text }) }).catch(function(){});
+    }
     var typing = showTyping();
     try {
       var trimmedMessages = messages.slice(-10);
@@ -2812,6 +2819,8 @@ function copyAndChat(btn, question) {
           addMsg(displayReply, 'bot');
           messages.push({ role: 'assistant', content: displayReply });
           fetch(BACKEND_URL + '/lead', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: lead.name, phone: lead.phone, jobType: lead.jobType, urgency: lead.urgency, businessEmail: LEAD_EMAIL, businessName: BIZ_NAME, conversation: messages.slice(-20) }) }).catch(function(){});
+          fetch(BACKEND_URL + '/log-analytics', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ bizKey: BIZ_KEY, bizName: BIZ_NAME, event: 'lead' }) }).catch(function(){});
+          fetch(BACKEND_URL + '/log-conversation', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ bizKey: BIZ_KEY, bizName: BIZ_NAME, messages: messages.slice(-20), leadCaptured: true, leadName: lead.name, leadPhone: lead.phone, leadJobType: lead.jobType, timestamp: new Date().toISOString() }) }).catch(function(){});
         } else {
           var fallback = reply.replace(/LEAD_CAPTURED\|.*/g, '').trim();
           addMsg(fallback || reply, 'bot');
