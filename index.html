@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="color-scheme" content="light">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <meta name="description" content="AI tools for local service businesses. 24/7 chat assistant, review filter, and reactivation campaigns. Built and managed personally. Live in 24 hours.">
 <meta property="og:title" content="Netify Builds: AI Tools for Local Service Businesses">
@@ -28,7 +29,7 @@
 }
 html { scroll-behavior: smooth; }
 html { overflow-x: hidden; }
-body { font-family: 'Inter', sans-serif; background: var(--white); color: var(--text); overflow-x: hidden; line-height: 1.6; }
+body { font-family: 'Inter', sans-serif; background: var(--white); color: var(--text); overflow-x: hidden; line-height: 1.6; color-scheme: light; }
 
 /* ── ICON SYSTEM ── */
 .icon-box { width: 54px; height: 54px; border-radius: 14px; background: var(--blue-pale); display: flex; align-items: center; justify-content: center; margin-bottom: 22px; flex-shrink: 0; }
@@ -308,14 +309,14 @@ section { padding: 72px 24px; contain: layout style; }
 .setup-card p { font-size: 14px; color: var(--text-soft); line-height: 1.75; }
 
 /* ── PRICING ── */
-.pricing-section { background: var(--navy); }
+.pricing-section { background: var(--navy); color-scheme: dark; }
 .pricing-section .title { color: white; }
 .pricing-section .sub { color: rgba(255,255,255,0.5); }
 .pricing-section .label { color: var(--blue-light); }
 .pricing-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; margin-top: 48px; }
 .price-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.09); border-radius: 20px; padding: 40px 32px; position: relative; transition: transform 0.2s; }
 .price-card:hover { transform: translateY(-4px); }
-.price-card.featured { background: white; border-color: white; }
+.price-card.featured { background: #ffffff !important; border-color: #ffffff !important; color-scheme: light; }
 .price-card.featured:hover { transform: translateY(-4px); }
 .price-badge { background: var(--blue); color: white; padding: 5px 20px; border-radius: 99px; font-size: 12px; font-weight: 700; white-space: nowrap; font-family: 'Plus Jakarta Sans', sans-serif; display: inline-block; margin-bottom: 12px; }
 .price-badge-abs { position: absolute; top: -13px; left: 50%; transform: translateX(-50%); }
@@ -323,17 +324,17 @@ section { padding: 72px 24px; contain: layout style; }
 .price-nudge svg { width: 13px; height: 13px; stroke: #4ade80; fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
 .price-nudge span { font-size: 12px; color: #4ade80; font-weight: 600; }
 .price-name { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.9375rem; font-weight: 600; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
-.price-card.featured .price-name { color: var(--text-soft); }
+.price-card.featured .price-name { color: #64748B !important; }
 .price-amount { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 3rem; font-weight: 800; color: white; line-height: 1; letter-spacing: -0.03em; }
-.price-card.featured .price-amount { color: var(--text); }
+.price-card.featured .price-amount { color: #0F172A !important; }
 .price-amount span { font-size: 1rem; font-weight: 400; opacity: 0.55; letter-spacing: 0; }
 .price-annual-note { font-size: 11px; color: rgba(255,255,255,0.45); margin-top: 2px; margin-bottom: 0; }
-.price-card.featured .price-annual-note { color: var(--text-soft); }
+.price-card.featured .price-annual-note { color: #64748B !important; }
 .price-desc { font-size: 13.5px; color: rgba(255,255,255,0.45); margin: 14px 0 28px; line-height: 1.7; }
-.price-card.featured .price-desc { color: var(--text-soft); }
+.price-card.featured .price-desc { color: #64748B !important; }
 .price-features { list-style: none; display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px; }
 .price-features li { font-size: 14px; color: rgba(255,255,255,0.7); display: flex; gap: 10px; line-height: 1.5; align-items: flex-start; }
-.price-card.featured .price-features li { color: var(--text-mid); }
+.price-card.featured .price-features li { color: #334155 !important; }
 .price-check { width: 16px; height: 16px; flex-shrink: 0; margin-top: 1px; fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
 .price-btn { display: block; text-align: center; padding: 14px; border-radius: 99px; font-size: 14px; font-weight: 700; text-decoration: none; transition: all 0.2s; font-family: 'Plus Jakarta Sans', sans-serif; }
 .price-btn-outline { border: 1.5px solid rgba(255,255,255,0.2); color: white; }
@@ -994,11 +995,11 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
         <p class="price-desc">24/7 chat assistant on your website. Answers questions, captures leads, and emails you every opportunity. For most service businesses, one captured job pays for the month.</p>
         <ul class="price-features">
           <li><svg class="price-check" style="stroke:var(--blue)" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Custom bot built for your business</li>
-          <li><svg class="price-check" style="stroke:#93C5FD" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>24/7 lead capture & FAQ answers</li>
-          <li><svg class="price-check" style="stroke:#93C5FD" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Instant email lead notifications</li>
-          <li><svg class="price-check" style="stroke:#93C5FD" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Responds in any language</li>
-          <li><svg class="price-check" style="stroke:#93C5FD" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Client portal & analytics</li>
-          <li><svg class="price-check" style="stroke:#93C5FD" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>24-hour setup guarantee</li>
+          <li><svg class="price-check" style="stroke:var(--blue)" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>24/7 lead capture & FAQ answers</li>
+          <li><svg class="price-check" style="stroke:var(--blue)" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Instant email lead notifications</li>
+          <li><svg class="price-check" style="stroke:var(--blue)" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Responds in any language</li>
+          <li><svg class="price-check" style="stroke:var(--blue)" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Client portal & analytics</li>
+          <li><svg class="price-check" style="stroke:var(--blue)" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>24-hour setup guarantee</li>
         </ul>
 
         <a href="#contact" class="price-btn price-btn-blue" data-plan="bot">Get Started</a>
@@ -1416,7 +1417,7 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
                   <textarea name="differentiators" maxlength="1000" class="short" placeholder="e.g. Family owned 20 years, same-day service, 5-star rated..."></textarea>
                 </div>
                 <div class="form-row">
-                  <div><label>Emergency / after-hours number <span class="opt">optional</span></label><input type="text" name="emergency" placeholder="(555) 123-4567" oninput="(function(v){var cb=document.getElementById('feat_emergency');var lbl=document.getElementById('flabel_emergency');if(cb&&lbl&&lbl.style.display!=='none'){cb.checked=!!v.trim();lbl.classList.toggle('active',!!v.trim());}})(this.value)" /></div>
+                  <div><label>Emergency / after-hours number <span class="opt">optional</span></label><input type="text" name="emergency" placeholder="(555) 123-4567" oninput="(function(v){var cb=document.getElementById('feat_emergency');var lbl=document.getElementById('flabel_emergency');if(cb&&lbl){var has=!!v.trim();cb.disabled=!has;if(!has){cb.checked=false;lbl.classList.remove('active');}lbl.style.opacity=has?'1':'0.5';lbl.style.cursor=has?'pointer':'not-allowed';}})(this.value)" /></div>
                   <div><label>Licenses or certifications <span class="opt">optional</span></label><input type="text" name="licensing" placeholder="e.g. Licensed & insured in Ohio" /></div>
                 </div>
                 <div class="form-group">
@@ -1482,7 +1483,7 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
                   <div class="form-group">
                     <div style="display:flex;flex-direction:column;gap:10px;">
                       <label id="flabel_appointment" class="feat-card" style="display:none;"><input type="checkbox" name="feature_appointment" id="feat_appointment" value="yes" onchange="toggleFeatCard('flabel_appointment',this.checked)"><div><div style="font-size:14px;font-weight:600;margin-bottom:2px;">Appointment Request Flow <span class="feat-tag">Dental, salons, law</span></div><div style="font-size:13px;color:var(--text-soft);line-height:1.5;">Bot collects preferred day, time, and reason, emails you a formatted request to confirm.</div></div></label>
-                      <label id="flabel_emergency" class="feat-card" style="display:none;"><input type="checkbox" name="feature_emergency" id="feat_emergency" value="yes" onchange="toggleFeatCard('flabel_emergency',this.checked)"><div><div style="font-size:14px;font-weight:600;margin-bottom:2px;">Emergency Escalation <span class="feat-tag">HVAC, plumbing, electrical</span></div><div style="font-size:13px;color:var(--text-soft);line-height:1.5;">Bot immediately directs urgent situations to your emergency line.</div></div></label>
+                      <label id="flabel_emergency" class="feat-card" style="display:none;"><input type="checkbox" name="feature_emergency" id="feat_emergency" value="yes" disabled onchange="toggleFeatCard('flabel_emergency',this.checked)"><div><div style="font-size:14px;font-weight:600;margin-bottom:2px;">Emergency Escalation <span class="feat-tag">HVAC, plumbing, electrical</span></div><div style="font-size:13px;color:var(--text-soft);line-height:1.5;">Bot immediately directs urgent situations to your emergency line.</div></div></label>
                       <label id="flabel_multilang" class="feat-card" style="display:none;"><input type="checkbox" name="feature_multilang" id="feat_multilang" value="yes" onchange="toggleFeatCard('flabel_multilang',this.checked)"><div><div style="font-size:14px;font-weight:600;margin-bottom:2px;">Multilanguage Support <span class="feat-tag">All businesses</span></div><div style="font-size:13px;color:var(--text-soft);line-height:1.5;">Bot automatically responds in whatever language the customer writes in.</div></div></label>
                       <label id="flabel_pricing" class="feat-card" style="display:none;"><input type="checkbox" name="feature_pricing" id="feat_pricing" value="yes" onchange="toggleFeatCard('flabel_pricing',this.checked)"><div><div style="font-size:14px;font-weight:600;margin-bottom:2px;">Pricing Guide Mode <span class="feat-tag">Roofing, HVAC, contractors</span></div><div style="font-size:13px;color:var(--text-soft);line-height:1.5;">Bot gives realistic price ranges instead of just saying "it depends."</div></div></label>
                       <label id="flabel_workout" class="feat-card" style="display:none;"><input type="checkbox" name="feature_workout" id="feat_workout" value="yes" onchange="toggleFeatCard('flabel_workout',this.checked)"><div><div style="font-size:14px;font-weight:600;margin-bottom:2px;">Workout Split Builder <span class="feat-tag">Gyms &amp; fitness</span></div><div style="font-size:13px;color:var(--text-soft);line-height:1.5;">Bot builds a personalized workout split for visitors and captures them as a lead.</div></div></label>
@@ -2368,11 +2369,11 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
   document.getElementById('onboardingForm').addEventListener('submit', async function(e) {
     e.preventDefault();
     var f = this;
-    var v = function(n) { return (f.elements[n] && f.elements[n].value.trim()) || 'Not provided'; };
+    var v = function(n) { return (f.elements[n] && f.elements[n].value.trim()) || ''; };
     var btn = document.getElementById('formSubmitBtn');
     btn.textContent = 'Sending...'; btn.disabled = true;
     try {
-      await fetch(BACKEND + '/signup', {
+      var res = await fetch(BACKEND + '/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -2390,30 +2391,25 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
           differentiators: v('differentiators'),
           emergency: v('emergency'),
           licensing: v('licensing'),
+          seasonal: v('seasonal'),
           tone: v('tone'),
           botPersonality: v('botPersonality'),
           botColor: v('botColor'),
-          googleReviewLink: v('googleLink'),
+          googleReviewLink: v('googleLink') || v('googleReviewLink'),
           alertEmail: v('alertEmail'),
-          brandColor: v('brandColor'),
           campaignListSize: v('campaignListSize'),
           campaignListFormat: v('campaignListFormat'),
-          campaignMonths: Array.from(f.querySelectorAll('[name="campaignMonths"]:checked')).map(function(c){return c.value;}).join(', ') || 'Not specified',
           hearAbout: v('hearAbout'),
           billing: v('billing'),
-          package: v('selectedPlanField'),
-          campaignFrequency: v('campaignFreqField'),
-          promoDiscount: 'None',
-          features: ['Appointment Request Flow','Emergency Escalation','Multilanguage Support','Pricing Guide Mode','Workout Split Builder','Pet Intake Qualifier','Symptom Checker','Move Estimator','Quote Estimator'].filter(function(label, i) {
-            var names = ['feature_appointment','feature_emergency','feature_multilang','feature_pricing','feature_workout','feature_groomer','feature_autosymptom','feature_moving','feature_cleaning','feature_calendar'];
-            return f.elements[names[i]] && f.elements[names[i]].checked;
-          }).join(', ') || 'None'
+          package: v('package') || v('selectedPlanField'),
+          leadCapture: v('leadCapture'),
+          features: [['Google Calendar Booking','feature_calendar'],['Appointment Request Flow','feature_appointment'],['Emergency Escalation','feature_emergency'],['Multilanguage Support','feature_multilang'],['Pricing Guide Mode','feature_pricing'],['Workout Split Builder','feature_workout'],['Pet Intake Qualifier','feature_groomer'],['Symptom Checker','feature_autosymptom'],['Move Estimator','feature_moving'],['Quote Estimator','feature_cleaning']].filter(function(p){return f.elements[p[1]]&&f.elements[p[1]].checked;}).map(function(p){return p[0];}).join(', ') || 'None'
         })
       });
+      if (!res.ok) throw new Error('Server error ' + res.status);
       f.style.display = 'none';
       var successEl = document.getElementById('successMsg');
       successEl.style.display = 'block';
-      // Payment handled via activation in client portal
       successEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
     } catch(err) {
       btn.textContent = 'Submit & Get Started →'; btn.disabled = false;
@@ -2423,55 +2419,6 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
 
 
 
-  // ── FORM SUBMIT ──
-  document.getElementById('onboardingForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    var f = this;
-    var v = function(n) { return (f.elements[n] && f.elements[n].value.trim()) || 'Not provided'; };
-    var pkg = v('package');
-    var pkgLabel = pkg === 'bundle' ? 'Full Bundle, $399/mo' : '24/7 Website Chat Assistant, $250/mo';
-
-    // Send to /signup endpoint — sends properly formatted BotBuilder email
-    fetch(BACKEND + '/signup', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        ownerName: v('ownerName'),
-        bizName: v('bizName'),
-        email: v('email'),
-        phone: v('phone'),
-        website: v('website'),
-        industry: v('industry'),
-        area: v('area'),
-        hours: v('hours'),
-        services: v('services'),
-        faqs: v('faqs'),
-        tone: v('tone'),
-        package: v('package'),
-        differentiators: v('differentiators'),
-        licensing: v('licensing'),
-        emergency: v('emergency'),
-        seasonal: v('seasonal'),
-        botPersonality: v('botPersonality'),
-        botColor: v('botColor'),
-        billing: v('billing'),
-        hearAbout: v('hearAbout'),
-        features: [['Google Calendar Booking','feature_calendar'],['Workout Split Builder','feature_workout'],['Appointment Request Flow','feature_appointment'],['Emergency Escalation','feature_emergency'],['Multilanguage Support','feature_multilang'],['Pricing Guide Mode','feature_pricing'],['Service Status Updates','feature_status'],['Property Info Mode','feature_property'],['Wait Time & Waitlist','feature_waittime'],['Case Type Qualifier','feature_qualifier'],['Symptom Triage','feature_triage']].filter(function(p){return f.elements[p[1]]&&f.elements[p[1]].checked;}).map(function(p){return p[0];}).join(', ') || 'None',
-        googleReviewLink: v('googleReviewLink'),
-        features: {
-          workoutSplitBuilder: f.elements['feature_workout'] && f.elements['feature_workout'].checked ? 'Yes' : 'No',
-          appointmentFlow:     f.elements['feature_appointment'] && f.elements['feature_appointment'].checked ? 'Yes' : 'No',
-          emergencyEscalation: f.elements['feature_emergency'] && f.elements['feature_emergency'].checked ? 'Yes' : 'No',
-          multilanguage:       f.elements['feature_multilang'] && f.elements['feature_multilang'].checked ? 'Yes' : 'No',
-          pricingGuide:        f.elements['feature_pricing'] && f.elements['feature_pricing'].checked ? 'Yes' : 'No',
-        }
-      })
-    }).catch(function() {});
-
-    f.style.display = 'none';
-    document.getElementById('successMsg').style.display = 'block';
-    document.getElementById('successMsg').scrollIntoView({ behavior: 'smooth', block: 'center' });
-  });
   // Expose to global scope for inline handlers
   window.setBotColor = setBotColor;
   window.setBrandColor = setBrandColor;

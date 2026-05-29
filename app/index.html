@@ -483,6 +483,10 @@ function renderSettings() {
   html += '<div class="profile-card">';
   html += '<div class="profile-row"><div class="profile-label">Business</div><div class="profile-value">' + escHtml(info.bizName || '—') + '</div></div>';
   html += '<div class="profile-row"><div class="profile-label">Plan</div><div class="profile-value">' + (planLabels[plan] || plan) + '</div></div>';
+  html += '<div class="profile-row"><div class="profile-label">Bot Status</div><div class="profile-value" style="color:' + (info.activated ? 'var(--green)' : '#f59e0b') + ';">' + (info.activated ? 'Active' : 'Pending activation') + '</div></div>';
+  if (info.calendarConnected || (info.features && info.features.includes('calendar'))) {
+    html += '<div class="profile-row"><div class="profile-label">Calendar Booking</div><div class="profile-value" style="color:' + (info.calendarConnected ? 'var(--green)' : '#f59e0b') + ';">' + (info.calendarConnected ? '✓ Connected' : 'Not connected yet') + '</div></div>';
+  }
   html += '<div class="profile-row"><div class="profile-label">Access code</div><div class="profile-value" style="font-family:monospace;font-size:12px;">' + currentKey + '</div></div>';
   html += '</div>';
 
