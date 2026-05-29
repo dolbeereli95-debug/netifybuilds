@@ -1,6 +1,7 @@
 (function() {
   'use strict';
 
+  function nbInit() {
   // Read config from window.__nb (set before this script loads)
   var cfg = window.__nb || {};
   var BIZ_KEY      = cfg.bizKey || '';
@@ -351,6 +352,14 @@
 
   if (AUTO_OPEN_DELAY && typeof AUTO_OPEN_DELAY === 'number') {
     setTimeout(function() { if (!isOpen) openChat(); }, AUTO_OPEN_DELAY * 1000);
+  }
+
+  } // end nbInit
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', nbInit);
+  } else {
+    nbInit();
   }
 
 })();
