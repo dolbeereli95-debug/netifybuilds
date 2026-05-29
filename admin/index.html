@@ -94,6 +94,7 @@ nav{background:var(--navy);padding:0 28px;height:56px;display:flex;align-items:c
 <nav>
   <span class="nav-logo">Netify <span>Builds.</span></span>
   <span class="nav-badge">Admin Only</span>
+  <button onclick="showDemoGenerator()" style="background:rgba(59,130,246,0.15);border:1px solid rgba(59,130,246,0.3);color:#93C5FD;font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;cursor:pointer;font-family:inherit;">⚡ Generate Demo</button>
 </nav>
 
 <!-- LOGIN -->
@@ -419,6 +420,115 @@ function esc(str) {
 document.getElementById('editModal').addEventListener('click', function(e) {
   if (e.target === this) closeModal();
 });
+
+// ── DEMO GENERATOR ──
+function showDemoGenerator() {
+  editingKey = null;
+  document.getElementById('modalTitle').textContent = '⚡ Generate Demo Bot';
+  document.getElementById('modalBody').innerHTML = `
+    <p style="font-size:13px;color:var(--soft);margin-bottom:20px;line-height:1.6;">Fill in the prospect's info and generate a standalone HTML demo file you can send directly to them. They open it in any browser and see their own bot working instantly.</p>
+    <div class="section-divider">Business Info</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div class="field-group"><label>Business Name *</label><input id="d_bizName" placeholder="Smith HVAC" /></div>
+      <div class="field-group"><label>Owner Name</label><input id="d_ownerName" placeholder="Mike Smith" /></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div class="field-group"><label>Industry</label>
+        <select id="d_industry">
+          <option value="hvac">HVAC</option>
+          <option value="plumbing">Plumbing</option>
+          <option value="electrical">Electrical</option>
+          <option value="roofing">Roofing</option>
+          <option value="landscaping">Landscaping / Lawn Care</option>
+          <option value="cleaning">Cleaning</option>
+          <option value="pest">Pest Control</option>
+          <option value="auto">Auto / Mechanic</option>
+          <option value="dental">Dental</option>
+          <option value="moving">Moving</option>
+          <option value="general">General Service</option>
+        </select>
+      </div>
+      <div class="field-group"><label>Accent Color</label>
+        <input id="d_color" type="color" value="#0A2540" style="height:42px;width:100%;padding:4px;border:1.5px solid var(--border);border-radius:9px;cursor:pointer;" />
+      </div>
+    </div>
+    <div class="field-group"><label>Services (optional)</label><textarea id="d_services" placeholder="AC repair, furnace installation, maintenance plans..."></textarea></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div class="field-group"><label>Hours (optional)</label><input id="d_hours" placeholder="Mon-Fri 8am-5pm, emergency 24/7" /></div>
+      <div class="field-group"><label>Service Area (optional)</label><input id="d_area" placeholder="Dayton OH and surrounding areas" /></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div class="field-group"><label>Phone (optional)</label><input id="d_phone" placeholder="(555) 867-5309" /></div>
+      <div class="field-group"><label>Tone</label>
+        <select id="d_tone">
+          <option value="friendly">Friendly & conversational</option>
+          <option value="professional">Professional & polished</option>
+          <option value="casual">Casual & relaxed</option>
+        </select>
+      </div>
+    </div>
+    <div class="field-group"><label>Bot Name</label><input id="d_botName" placeholder="Smith HVAC Assistant (leave blank to auto-set)" /></div>
+    <div id="demoStatus" style="display:none;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:14px 16px;margin-top:4px;font-size:13px;color:#15803d;font-weight:600;"></div>
+  `;
+  // Update footer buttons
+  document.querySelector('.modal-footer').innerHTML = `
+    <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+    <button class="btn-save" onclick="generateDemo()">⚡ Generate &amp; Download</button>
+  `;
+  document.getElementById('editModal').classList.add('open');
+}
+
+async function generateDemo() {
+  var bizName = document.getElementById('d_bizName').value.trim();
+  if (!bizName) { alert('Business name is required'); return; }
+
+  var industry = document.getElementById('d_industry').value;
+  var ownerName = document.getElementById('d_ownerName').value.trim();
+  var services = document.getElementById('d_services').value.trim();
+  var hours = document.getElementById('d_hours').value.trim();
+  var area = document.getElementById('d_area').value.trim();
+  var phone = document.getElementById('d_phone').value.trim();
+  var tone = document.getElementById('d_tone').value;
+  var color = document.getElementById('d_color').value || '#0A2540';
+  var botName = document.getElementById('d_botName').value.trim() || bizName + ' Assistant';
+  var bizInitial = bizName.charAt(0).toUpperCase();
+
+  var toneDesc = tone === 'professional' ? 'professional and polished' : tone === 'casual' ? 'casual and relaxed' : 'friendly and conversational';
+  var industryLabel = {hvac:'HVAC heating and cooling',plumbing:'Plumbing',electrical:'Electrical',roofing:'Roofing',landscaping:'Landscaping and lawn care',cleaning:'Cleaning services',pest:'Pest control',auto:'Auto repair',dental:'Dental',moving:'Moving and relocation',general:'General home services'}[industry] || industry;
+
+  var systemPrompt = 'You are ' + botName + ', the AI assistant for ' + bizName + '. You help answer questions, capture leads, and provide excellent customer service 24/7.\n\nKeep every response to 2-3 sentences maximum. Be ' + toneDesc + ', like a knowledgeable friend. Never use markdown, bullet points, bold text, or emojis. Plain conversational sentences only.\n\nABOUT THE BUSINESS:\nBusiness Name: ' + bizName + '\nIndustry: ' + industryLabel + (ownerName ? '\nOwner: ' + ownerName : '') + (phone ? '\nPhone: ' + phone : '') + (services ? '\nServices: ' + services : '') + (hours ? '\nHours: ' + hours : '') + (area ? '\nService Area: ' + area : '') + '\n\nLEAD COLLECTION:\nNaturally collect the customer name then phone number. Once you have both output: LEAD_CAPTURED|[name]|[phone]|[service]|[urgency] — never show this to the customer.\n\nThis is a DEMO bot by Netify Builds showing ' + bizName + ' what their real bot would look like. If asked who built it, mention Netify Builds at netifybuilds.com.\n\nNEVER: Use markdown. Make up prices. Be pushy. Show the trigger.';
+
+  var qrMap = {hvac:['Get a quote','AC not cooling','Hours & availability','Service area'],plumbing:['Emergency leak','Get a quote','Hours & availability','Service area'],electrical:['Get a quote','Emergency service','Hours & availability','Service area'],roofing:['Free inspection','Get a quote','Storm damage','Service area'],landscaping:['Get a quote','What services?','Service area','Hours & availability'],cleaning:['Get a quote','What do you clean?','Service area','Hours & availability'],pest:['Get a quote','Emergency pest','Service area','Hours & availability'],auto:['Get a quote','Hours & availability','What services?','Service area'],dental:['New patient info','Hours & availability','Insurance accepted','Book appointment'],moving:['Get a quote','Service area','What do you move?','Hours & availability'],general:['Get a quote','Hours & availability','Service area','Contact us']};
+  var emergMap = {hvac:['AC stopped working','No heat','Strange smell','System leaking'],plumbing:['Pipe burst','No hot water','Drain clogged','Toilet overflowing'],electrical:['Power outage','Sparks or smell','Breaker tripping','No power'],roofing:['Active leak','Storm damage','Tree on roof','Ceiling wet'],pest:['Bees inside','Rodents','Termites','Other emergency'],general:['Urgent issue','Emergency service','Need help now','Other']};
+  var qrs = qrMap[industry] || qrMap.general;
+  var emergs = emergMap[industry] || emergMap.general;
+
+  // Send to server to generate demo HTML
+  try {
+    var res = await fetch(BACKEND + '/admin/generate-demo', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-admin-secret': adminSecret },
+      body: JSON.stringify({ bizName, botName, bizInitial, color, systemPrompt, qrs, emergs, industry })
+    });
+    var html = await res.text();
+    var blob = new Blob([html], {type:'text/html'});
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = bizName.replace(/[^a-z0-9]/gi,'_').toLowerCase() + '_demo_bot.html';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    var status = document.getElementById('demoStatus');
+    status.style.display = 'block';
+    status.textContent = '✓ Downloaded! Send the file directly to ' + bizName + '.';
+  } catch(e) {
+    alert('Failed to generate demo. Make sure backend is running.');
+  }
+}
+
+
 </script>
 </body>
 </html>
