@@ -164,6 +164,14 @@
   function nbUnlockScroll() { document.body.style.overflow = ''; }
 
   window._nbCloseWidget = function() {
+    // Log conversation on close
+    if (messages.length > 0) {
+      fetch(BACKEND_URL + '/log-conversation', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ bizName: BIZ_NAME, messages: messages.slice(-20), leadCaptured: leadCaptured, timestamp: new Date().toISOString() })
+      }).catch(function() {});
+    }
     isOpen = false;
     if (window.innerWidth <= 480) { nbUnlockScroll(); }
     box.classList.remove('visible');
@@ -295,6 +303,12 @@
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ name: lead.name, phone: lead.phone, jobType: lead.jobType, urgency: lead.urgency, businessEmail: LEAD_EMAIL, businessName: BIZ_NAME, conversation: messages.slice(-20) })
+          }).catch(function() {});
+          // Log conversation with lead details
+          fetch(BACKEND_URL + '/log-conversation', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ bizName: BIZ_NAME, messages: messages.slice(-20), leadCaptured: true, leadName: lead.name, leadPhone: lead.phone, leadJobType: lead.jobType, timestamp: new Date().toISOString() })
           }).catch(function() {});
         } else {
           addMsg(reply.replace(/LEAD_CAPTURED\|.*/g, '').trim() || reply, 'bot');
