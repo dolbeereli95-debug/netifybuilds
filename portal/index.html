@@ -517,25 +517,97 @@ function renderPortal(bizKey, reviewData, analyticsData, convData, infoData) {
       var platformNames = { wordpress:'WordPress', wix:'Wix', squarespace:'Squarespace', webflow:'Webflow', shopify:'Shopify', godaddy:'GoDaddy', custom:'Custom website', other:'your website' };
       var platformName = platformNames[platform] || 'your website';
       var platformStepMap = {
-        wordpress: ['Log into your WordPress dashboard','Install the free plugin WPCode — Insert Headers and Footers','Go to Code Snippets then Header and Footer','Paste the widget code in the Footer section','Click Save Changes'],
-        wix: ['Log into Wix and open your site editor','Click Settings then Custom Code then Add Custom Code','Paste the widget code, name it Netify Chat, load location: Body - end','Click Apply then Publish'],
-        squarespace: ['Log into Squarespace','Go to Settings then Advanced then Code Injection','Paste the widget code in the Footer section','Click Save'],
-        webflow: ['Open your Webflow project then Project Settings then Custom Code','Paste the widget code in the Footer Code section','Click Save Changes then Publish'],
-        shopify: ['Shopify Admin then Online Store then Themes then Actions then Edit Code','Open theme.liquid and find the closing body tag near the bottom','Paste the widget code just before the closing body tag','Click Save'],
-        godaddy: ['Log into GoDaddy Website Builder','Go to Settings then Custom Code or use an HTML widget in your footer','Paste the widget code and save','Publish your site'],
-        custom: ['Open your main HTML file usually index.html','Find the closing body tag near the bottom','Paste the widget code just before the closing body tag','Save and upload to your server'],
-        other: ['Find the Custom Code or Footer Scripts section in your platform settings','Paste the widget code there','Save and publish']
+        wordpress: [
+          'Log in to your WordPress admin panel at yourwebsite.com/wp-admin',
+          'In the left sidebar, go to Plugins → Add New Plugin',
+          'Search for WPCode and install the free plugin called "WPCode – Insert Headers and Footers + Custom Code Snippets"',
+          'Click Activate after installing',
+          'In the left sidebar, go to Code Snippets → Header & Footer',
+          'Scroll down to the Body section and paste the widget code in the box',
+          'Click Save Changes',
+          'Visit your website in a new tab — the chat button should appear in the bottom right corner'
+        ],
+        wix: [
+          'Log in to your Wix account at wix.com and click Edit Site on your website',
+          'In the top left menu, click the Wix logo to open the main menu, then go to Settings',
+          'In Settings, click Custom Code under the Advanced section',
+          'Click + Add Custom Code in the top right',
+          'Paste the widget code in the code box',
+          'Name it Netify Chat Widget',
+          'Under "Add Code to Pages", select All Pages',
+          'Under "Place Code in", select Body – End',
+          'Click Apply',
+          'Click Publish in the top right to make your changes live',
+          'Visit your website — the chat button should appear in the bottom right corner'
+        ],
+        squarespace: [
+          'Log in to Squarespace at account.squarespace.com and open your website',
+          'In the left sidebar, click Settings',
+          'Scroll down and click Advanced',
+          'Click Code Injection',
+          'Scroll to the Footer section and paste the widget code in the Footer box',
+          'Click Save in the top right',
+          'Visit your website — the chat button should appear in the bottom right corner',
+          'Note: Code Injection is available on Business plan and above. If you do not see it, you may need to upgrade your plan.'
+        ],
+        webflow: [
+          'Log in to Webflow at webflow.com and open your project in the Designer',
+          'Click the gear icon in the top left to open Project Settings',
+          'Click the Custom Code tab at the top',
+          'Scroll to the Footer Code section',
+          'Paste the widget code in the Footer Code box',
+          'Click Save Changes at the top right',
+          'Click Publish in the top right and publish to your domain',
+          'Visit your website — the chat button should appear in the bottom right corner'
+        ],
+        shopify: [
+          'Log in to your Shopify admin at yourstore.myshopify.com/admin',
+          'In the left sidebar, click Online Store, then click Themes',
+          'Find your current live theme and click the three-dot menu, then click Edit Code',
+          'In the Layout folder on the left, click theme.liquid',
+          'Use Ctrl+F (or Cmd+F on Mac) to search for </body>',
+          'Click just before </body> and paste the widget code there',
+          'Click Save in the top right',
+          'Visit your store — the chat button should appear in the bottom right corner'
+        ],
+        godaddy: [
+          'Log in to GoDaddy and go to My Products, then find your website and click Manage',
+          'Click Edit Website or Edit Site to open the website builder',
+          'Click the + button to add a new section, and look for an HTML or Embed Code element',
+          'Drag it to the footer area of your site',
+          'Double-click the HTML element and paste the widget code',
+          'Click Done, then Publish your site',
+          'If you do not see an HTML element option, contact Eli directly — GoDaddy has limited custom code support on some plans'
+        ],
+        custom: [
+          'Open your website files and find your main HTML file — this is usually called index.html',
+          'Open the file in a text editor (Notepad, VS Code, or similar)',
+          'Use Ctrl+F to search for </body>',
+          'Click just before </body> and paste the widget code on a new line',
+          'Save the file',
+          'Upload the updated file to your server using FTP or your hosting file manager',
+          'Visit your website — the chat button should appear in the bottom right corner',
+          'If your site is managed by a developer, forward them your setup email — it has everything they need'
+        ],
+        other: [
+          'Look for a Custom Code, Scripts, or Header and Footer section in your website platform settings',
+          'Paste the widget code in the Footer or Body section',
+          'Save your changes and publish',
+          'Visit your website to confirm the chat button appears in the bottom right corner',
+          'Not sure where to find it? Reply to your setup email or schedule a call with Eli below'
+        ]
       };
       var tempLoginMap = {
-        wordpress: 'Go to Users then Add New. Create a user with email netifybuilds@gmail.com and role: Administrator. Share the temporary password with Eli. Delete the account after setup.',
-        wix: 'Go to Settings then Roles and Permissions then Invite People. Invite netifybuilds@gmail.com with Admin role. Remove access anytime after setup.',
-        squarespace: 'Go to Settings then Permissions then Invite Contributor. Invite netifybuilds@gmail.com as an Administrator.',
-        webflow: 'Go to Project Settings then Collaborators then Invite. Invite netifybuilds@gmail.com with Editor access.',
-        shopify: 'Go to Settings then Users and Permissions then Add Staff. Invite netifybuilds@gmail.com with full permissions.',
-        godaddy: 'Go to My Account then Delegate Access then Grant Access. Enter netifybuilds@gmail.com.',
-        custom: 'Share your FTP credentials or cPanel login using the secure form below.',
-        other: 'Create a temporary admin account in your platform settings and share it using the secure form below.'
+        wordpress: 'In your WordPress admin, go to Users → Add New User. Enter the email netifybuilds@gmail.com, set the Role to Administrator, and check the box to send a login link. Share the temporary password with Eli via the secure form below. Once installation is confirmed, go back to Users, find the account, and delete it.',
+        wix: 'In Wix, go to Settings → Roles & Permissions → Invite People. Enter netifybuilds@gmail.com and set the role to Admin. Wix will send an invitation email. You can remove access at any time from the same Roles & Permissions screen after setup is complete.',
+        squarespace: 'In Squarespace, go to Settings → Permissions. Click Invite Contributor, enter netifybuilds@gmail.com, and set the permission level to Administrator. Once installation is confirmed, return to Permissions and remove the account.',
+        webflow: 'In your Webflow project, go to Project Settings → Collaborators. Click Invite Collaborator and enter netifybuilds@gmail.com with Editor or Admin access. You can remove access from the same screen after setup.',
+        shopify: 'In Shopify, go to Settings → Users and Permissions → Add Staff. Enter netifybuilds@gmail.com and grant full permissions. Once installation is done, return to Users and Permissions and remove the staff account.',
+        godaddy: 'In GoDaddy, go to Account Settings → Delegate Access → Grant Access to My Account. Enter netifybuilds@gmail.com and grant Website Builder access. You can revoke access at any time from the same screen.',
+        custom: 'Share your FTP login or hosting control panel credentials using the secure form below. Eli will only access the files needed for installation and will notify you when complete.',
+        other: 'Create a temporary admin or editor account in your platform settings and share the login details using the secure form below. Remove the account after Eli confirms the installation is complete.'
       };
+      var steps = platformStepMap[platform] || platformStepMap['other'];
       var steps = platformStepMap[platform] || platformStepMap['other'];
 
       html += '<div style="font-size:15px;font-weight:700;color:#0f172a;margin-bottom:6px;">Step 1 — Install your bot</div>';
@@ -552,19 +624,19 @@ function renderPortal(bizKey, reviewData, analyticsData, convData, infoData) {
 
       // Option 1: DIY
       html += '<details style="background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:12px;overflow:hidden;">';
-      html += '<summary style="padding:13px 16px;cursor:pointer;font-size:13px;font-weight:600;color:#0f172a;display:flex;align-items:center;gap:8px;list-style:none;">📋 Do it yourself on ' + platformName + '</summary>';
+      html += '<summary style="padding:13px 16px;cursor:pointer;font-size:13px;font-weight:600;color:#0f172a;display:flex;align-items:center;gap:8px;list-style:none;"><svg style="width:15px;height:15px;stroke:#0f172a;fill:none;stroke-width:2;stroke-linecap:round;flex-shrink:0;" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Install it yourself on ' + platformName + '</summary>';
       html += '<div style="padding:0 16px 14px;border-top:1px solid #e2e8f0;"><ol style="margin:12px 0 0 16px;display:flex;flex-direction:column;gap:6px;">';
       steps.forEach(function(step) { html += '<li style="font-size:13px;color:#334155;line-height:1.5;">' + escHtml(step) + '</li>'; });
       html += '</ol></div></details>';
 
       // Option 2: Temp login
       html += '<details style="background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:12px;overflow:hidden;">';
-      html += '<summary style="padding:13px 16px;cursor:pointer;font-size:13px;font-weight:600;color:#0f172a;display:flex;align-items:center;gap:8px;list-style:none;">👤 Give Eli temporary access</summary>';
+      html += '<summary style="padding:13px 16px;cursor:pointer;font-size:13px;font-weight:600;color:#0f172a;display:flex;align-items:center;gap:8px;list-style:none;"><svg style="width:15px;height:15px;stroke:#0f172a;fill:none;stroke-width:2;stroke-linecap:round;flex-shrink:0;" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Create a temporary login for Eli</summary>';
       html += '<div style="padding:12px 16px 14px;border-top:1px solid #e2e8f0;font-size:13px;color:#334155;line-height:1.6;">' + escHtml(tempLoginMap[platform] || tempLoginMap['other']) + '</div></details>';
 
       // Option 3: Share login securely
       html += '<details style="background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:12px;overflow:hidden;">';
-      html += '<summary style="padding:13px 16px;cursor:pointer;font-size:13px;font-weight:600;color:#0f172a;display:flex;align-items:center;gap:8px;list-style:none;">🔐 Share your login with Eli securely</summary>';
+      html += '<summary style="padding:13px 16px;cursor:pointer;font-size:13px;font-weight:600;color:#0f172a;display:flex;align-items:center;gap:8px;list-style:none;"><svg style="width:15px;height:15px;stroke:#0f172a;fill:none;stroke-width:2;stroke-linecap:round;flex-shrink:0;" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Share your login with Eli</summary>';
       html += '<div style="padding:12px 16px 14px;border-top:1px solid #e2e8f0;">';
       html += '<p style="font-size:12px;color:#64748b;margin-bottom:10px;">Sends directly to Eli. Never stored on our servers. Change your password after setup if you prefer.</p>';
       html += '<div style="display:flex;flex-direction:column;gap:8px;">';
@@ -576,7 +648,7 @@ function renderPortal(bizKey, reviewData, analyticsData, convData, infoData) {
 
       // Option 4: Schedule call
       html += '<a href="https://calendly.com/netifybuilds/30min" target="_blank" style="display:flex;align-items:center;gap:12px;background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:12px;padding:13px 16px;text-decoration:none;">';
-      html += '<span style="font-size:18px;">📅</span><div style="flex:1;"><div style="font-size:13px;font-weight:600;color:#0f172a;">Schedule a 30-min install call with Eli</div><div style="font-size:12px;color:#64748b;">We do it together on Google Meet — you share your screen, Eli walks you through it</div></div>';
+      html += '<svg style="width:20px;height:20px;stroke:#0A2540;fill:none;stroke-width:2;stroke-linecap:round;flex-shrink:0;" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><div style="flex:1;"><div style="font-size:13px;font-weight:600;color:#0f172a;">Schedule a 30-min install call with Eli</div><div style="font-size:12px;color:#64748b;">We do it together on Google Meet — you share your screen, Eli walks you through it</div></div>';
       html += '<svg style="width:16px;height:16px;stroke:#94a3b8;fill:none;stroke-width:2;stroke-linecap:round;flex-shrink:0;" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></a>';
 
       html += '</div>';
