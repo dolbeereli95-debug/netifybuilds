@@ -513,16 +513,76 @@ function renderPortal(bizKey, reviewData, analyticsData, convData, infoData) {
       html += '<div style="background:#fffbeb;border:2px solid #fcd34d;border-radius:var(--radius);padding:24px;margin-bottom:24px;">';
       html += '<div style="display:flex;align-items:flex-start;gap:14px;flex-wrap:wrap;">';
       html += '<div style="flex:1;">';
+      var platform = infoData && infoData.platform ? infoData.platform : 'other';
+      var platformNames = { wordpress:'WordPress', wix:'Wix', squarespace:'Squarespace', webflow:'Webflow', shopify:'Shopify', godaddy:'GoDaddy', custom:'Custom website', other:'your website' };
+      var platformName = platformNames[platform] || 'your website';
+      var platformStepMap = {
+        wordpress: ['Log into your WordPress dashboard','Install the free plugin WPCode — Insert Headers and Footers','Go to Code Snippets then Header and Footer','Paste the widget code in the Footer section','Click Save Changes'],
+        wix: ['Log into Wix and open your site editor','Click Settings then Custom Code then Add Custom Code','Paste the widget code, name it Netify Chat, load location: Body - end','Click Apply then Publish'],
+        squarespace: ['Log into Squarespace','Go to Settings then Advanced then Code Injection','Paste the widget code in the Footer section','Click Save'],
+        webflow: ['Open your Webflow project then Project Settings then Custom Code','Paste the widget code in the Footer Code section','Click Save Changes then Publish'],
+        shopify: ['Shopify Admin then Online Store then Themes then Actions then Edit Code','Open theme.liquid and find the closing body tag near the bottom','Paste the widget code just before the closing body tag','Click Save'],
+        godaddy: ['Log into GoDaddy Website Builder','Go to Settings then Custom Code or use an HTML widget in your footer','Paste the widget code and save','Publish your site'],
+        custom: ['Open your main HTML file usually index.html','Find the closing body tag near the bottom','Paste the widget code just before the closing body tag','Save and upload to your server'],
+        other: ['Find the Custom Code or Footer Scripts section in your platform settings','Paste the widget code there','Save and publish']
+      };
+      var tempLoginMap = {
+        wordpress: 'Go to Users then Add New. Create a user with email netifybuilds@gmail.com and role: Administrator. Share the temporary password with Eli. Delete the account after setup.',
+        wix: 'Go to Settings then Roles and Permissions then Invite People. Invite netifybuilds@gmail.com with Admin role. Remove access anytime after setup.',
+        squarespace: 'Go to Settings then Permissions then Invite Contributor. Invite netifybuilds@gmail.com as an Administrator.',
+        webflow: 'Go to Project Settings then Collaborators then Invite. Invite netifybuilds@gmail.com with Editor access.',
+        shopify: 'Go to Settings then Users and Permissions then Add Staff. Invite netifybuilds@gmail.com with full permissions.',
+        godaddy: 'Go to My Account then Delegate Access then Grant Access. Enter netifybuilds@gmail.com.',
+        custom: 'Share your FTP credentials or cPanel login using the secure form below.',
+        other: 'Create a temporary admin account in your platform settings and share it using the secure form below.'
+      };
+      var steps = platformStepMap[platform] || platformStepMap['other'];
+
       html += '<div style="font-size:15px;font-weight:700;color:#0f172a;margin-bottom:6px;">Step 1 — Install your bot</div>';
-      html += '<div style="font-size:13px;color:#64748b;line-height:1.6;margin-bottom:16px;">Paste this code before the closing <code>&lt;/body&gt;</code> tag on your website, or send it to your web developer. Takes about 2 minutes.</div>';
-      html += '<div style="background:#0f172a;border-radius:10px;padding:14px 16px;margin-bottom:16px;position:relative;">';
+      html += '<div style="font-size:13px;color:#64748b;line-height:1.6;margin-bottom:12px;">Copy your widget code then pick how you want to install it on ' + platformName + '.</div>';
+      html += '<div style="background:#0f172a;border-radius:10px;padding:14px 16px;margin-bottom:14px;position:relative;">';
       html += '<div style="font-family:monospace;font-size:11px;color:#4ade80;white-space:pre-wrap;word-break:break-all;line-height:1.6;">';
       html += escHtml('<!-- Netify Builds Chat Widget -->\n<script>\nwindow.__nb={bizKey:\'' + baseKey + '\',bizName:' + JSON.stringify((infoData && infoData.bizName) || bizName) + ',botName:' + JSON.stringify((infoData && infoData.botName) || bizName + ' Assistant') + ',accentColor:\'' + ((infoData && infoData.botColor) || '#0A2540') + '\',backend:\'https://botbuilder-backend-production.up.railway.app\',leadEmail:' + JSON.stringify((infoData && infoData.email) || '') + '};\n<\/script>\n<script src="https://netifybuilds.com/widget-loader.js"><\/script>');
       html += '</div>';
       html += '<button onclick="navigator.clipboard.writeText(this.previousElementSibling.textContent).then(function(){var b=document.getElementById(\'copyInstallBtn\');b.textContent=\'Copied!\';setTimeout(function(){b.textContent=\'Copy Code\';},2000);})" id="copyInstallBtn" style="position:absolute;top:10px;right:10px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.7);border-radius:6px;padding:4px 10px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;">Copy Code</button>';
       html += '</div>';
+
+      // Install options
+      html += '<div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px;">';
+
+      // Option 1: DIY
+      html += '<details style="background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:12px;overflow:hidden;">';
+      html += '<summary style="padding:13px 16px;cursor:pointer;font-size:13px;font-weight:600;color:#0f172a;display:flex;align-items:center;gap:8px;list-style:none;">📋 Do it yourself on ' + platformName + '</summary>';
+      html += '<div style="padding:0 16px 14px;border-top:1px solid #e2e8f0;"><ol style="margin:12px 0 0 16px;display:flex;flex-direction:column;gap:6px;">';
+      steps.forEach(function(step) { html += '<li style="font-size:13px;color:#334155;line-height:1.5;">' + escHtml(step) + '</li>'; });
+      html += '</ol></div></details>';
+
+      // Option 2: Temp login
+      html += '<details style="background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:12px;overflow:hidden;">';
+      html += '<summary style="padding:13px 16px;cursor:pointer;font-size:13px;font-weight:600;color:#0f172a;display:flex;align-items:center;gap:8px;list-style:none;">👤 Give Eli temporary access</summary>';
+      html += '<div style="padding:12px 16px 14px;border-top:1px solid #e2e8f0;font-size:13px;color:#334155;line-height:1.6;">' + escHtml(tempLoginMap[platform] || tempLoginMap['other']) + '</div></details>';
+
+      // Option 3: Share login securely
+      html += '<details style="background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:12px;overflow:hidden;">';
+      html += '<summary style="padding:13px 16px;cursor:pointer;font-size:13px;font-weight:600;color:#0f172a;display:flex;align-items:center;gap:8px;list-style:none;">🔐 Share your login with Eli securely</summary>';
+      html += '<div style="padding:12px 16px 14px;border-top:1px solid #e2e8f0;">';
+      html += '<p style="font-size:12px;color:#64748b;margin-bottom:10px;">Sends directly to Eli. Never stored on our servers. Change your password after setup if you prefer.</p>';
+      html += '<div style="display:flex;flex-direction:column;gap:8px;">';
+      html += '<input id="cred_user" placeholder="Username or email" style="padding:9px 12px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:13px;font-family:inherit;outline:none;width:100%;" />';
+      html += '<input id="cred_pass" type="password" placeholder="Password" style="padding:9px 12px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:13px;font-family:inherit;outline:none;width:100%;" />';
+      html += '<input id="cred_url" placeholder="Login URL (e.g. yoursite.com/wp-admin)" style="padding:9px 12px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:13px;font-family:inherit;outline:none;width:100%;" />';
+      html += '<button onclick="sendCredentials()" style="background:#0A2540;color:white;border:none;border-radius:8px;padding:10px 16px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;">Send to Eli securely</button>';
+      html += '</div></div></details>';
+
+      // Option 4: Schedule call
+      html += '<a href="https://calendly.com/netifybuilds/30min" target="_blank" style="display:flex;align-items:center;gap:12px;background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:12px;padding:13px 16px;text-decoration:none;">';
+      html += '<span style="font-size:18px;">📅</span><div style="flex:1;"><div style="font-size:13px;font-weight:600;color:#0f172a;">Schedule a 30-min install call with Eli</div><div style="font-size:12px;color:#64748b;">We do it together on Google Meet — you share your screen, Eli walks you through it</div></div>';
+      html += '<svg style="width:16px;height:16px;stroke:#94a3b8;fill:none;stroke-width:2;stroke-linecap:round;flex-shrink:0;" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></a>';
+
+      html += '</div>';
+
       html += '<div style="font-size:15px;font-weight:700;color:#0f172a;margin-bottom:6px;">Step 2 — Activate when ready</div>';
-      html += '<div style="font-size:13px;color:#64748b;line-height:1.6;margin-bottom:16px;">Once the bot is on your website and you\'re happy with it, hit Activate. That\'s when your subscription starts and the bot goes live for visitors.</div>';
+      html += '<div style="font-size:13px;color:#64748b;line-height:1.6;margin-bottom:16px;">Once the bot is on your website and you are happy with it, hit Activate. That is when your subscription starts and the bot goes live.</div>';
       html += '<button onclick="activateBot(&quot;' + escHtml(baseKey) + '&quot;)" id="activateBtn" style="background:#16a34a;color:white;border:none;padding:12px 24px;border-radius:99px;font-size:14px;font-weight:700;cursor:pointer;">Activate My Bot</button>';
       html += '</div></div></div>';
     } else {
@@ -751,6 +811,23 @@ function logSMSJob(bizKey) {
     document.getElementById('smsJobPhone').value = '';
     document.getElementById('smsJobType').value = '';
   }).catch(function() { alert('Error logging job. Try again.'); });
+}
+
+async function sendCredentials() {
+  var user = document.getElementById('cred_user');
+  var pass = document.getElementById('cred_pass');
+  var url = document.getElementById('cred_url');
+  if (!user || !user.value.trim() || !pass || !pass.value) { alert('Please enter your username and password.'); return; }
+  try {
+    await fetch(BACKEND + '/send-credentials', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ bizKey: currentKey, username: user.value.trim(), password: pass.value, loginUrl: url ? url.value.trim() : '' })
+    });
+    var status = document.getElementById('credStatus');
+    if (status) status.style.display = 'block';
+    user.value = ''; pass.value = '';
+  } catch(e) { alert('Could not send. Please email directly to netifybuilds@gmail.com'); }
 }
 
 async function activateBot(bizKey) {

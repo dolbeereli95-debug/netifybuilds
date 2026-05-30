@@ -187,6 +187,20 @@ textarea.short { min-height: 70px; }
         </div>
         <div class="form-group"><label>Website URL <span class="opt">optional</span></label><input type="text" name="website" id="obWebsiteInput" placeholder="www.smithhvac.com" /><div style="font-size:11px;color:#b45309;margin-top:5px;">⚠ Please verify this is your correct website URL, Google occasionally links the wrong site.</div></div>
         <div class="form-group">
+          <label>Website Platform <span style="font-size:11px;font-weight:400;color:#64748b;">so we know how to install your bot</span></label>
+          <select name="platform" style="width:100%;padding:11px 13px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:14px;font-family:inherit;background:white;color:#0f172a;outline:none;">
+            <option value="">Select your platform</option>
+            <option value="wordpress">WordPress</option>
+            <option value="wix">Wix</option>
+            <option value="squarespace">Squarespace</option>
+            <option value="webflow">Webflow</option>
+            <option value="shopify">Shopify</option>
+            <option value="godaddy">GoDaddy Website Builder</option>
+            <option value="custom">Custom / Developer built</option>
+            <option value="other">Other / Not sure</option>
+          </select>
+        </div>
+        <div class="form-group">
           <label>Main services</label>
           <textarea name="services" placeholder="e.g. AC repair, furnace installation, tune-ups, emergency service..."></textarea>
         </div>
@@ -792,6 +806,7 @@ textarea.short { min-height: 70px; }
         email:            v('email'),
         phone:            v('phone'),
         website:          v('website') !== 'Not provided' ? v('website') : '',
+        platform:         v('platform') || '',
         industry:         v('industry'),
         area:             v('area'),
         hours:            v('hours'),
