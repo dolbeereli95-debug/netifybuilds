@@ -2029,7 +2029,7 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
       btn.textContent = 'Sending...'; btn.style.opacity = '0.6';
       var f = e.target;
       try {
-        await fetch(BACKEND + '/lead', {
+        var res = await fetch(BACKEND + '/lead', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -2044,7 +2044,11 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
             conversation: 'Demo request from ' + f.demoName.value + ' at ' + f.demoBiz.value + ' (' + f.demoIndustry.value + ')'
           })
         });
-      } catch(err) {}
+        if (!res.ok) {
+          var errData = await res.json().catch(function(){return {};});
+          console.error('Demo form error:', res.status, errData);
+        }
+      } catch(err) { console.error('Demo form fetch error:', err); }
       demoForm.style.display = 'none';
       document.getElementById('demoSuccess').style.display = 'block';
     });
