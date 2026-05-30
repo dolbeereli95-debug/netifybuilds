@@ -2046,7 +2046,7 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
         });
         if (!res.ok) {
           var errData = await res.json().catch(function(){return {};});
-          console.error('Demo form error:', res.status, errData);
+          console.error('Demo form error:', res.status, JSON.stringify(errData));
         }
       } catch(err) { console.error('Demo form fetch error:', err); }
       demoForm.style.display = 'none';
