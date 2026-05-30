@@ -440,7 +440,7 @@ function renderPortal(bizKey, reviewData, analyticsData, convData, infoData) {
         html += '<div style="font-size:13px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + escHtml(leadName) + '</div>';
         html += '<div style="display:flex;align-items:center;gap:4px;flex-shrink:0;">';
         if (isLead) html += '<span style="background:#dcfce7;color:#15803d;font-size:10px;font-weight:700;padding:2px 6px;border-radius:99px;">Lead</span>';
-        html += '<button onclick="event.stopPropagation();deleteConversation(\'' + escHtml(baseKey) + '\',' + idx + ')" style="background:none;border:none;color:#cbd5e1;cursor:pointer;padding:2px;font-size:14px;line-height:1;" title="Delete">×</button>';
+        html += '<button onclick="event.stopPropagation();deleteConversation(\'' + escHtml(baseKey) + '\',' + idx + ')" style="background:none;border:none;color:#94a3b8;cursor:pointer;padding:2px 4px;font-size:16px;font-weight:700;line-height:1;" title="Delete this conversation">×</button>';
         html += '</div></div>';
         html += '<div style="font-size:12px;color:var(--soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + escHtml(preview) + '</div>';
         html += '<div style="font-size:11px;color:var(--muted);margin-top:3px;">' + date + '</div>';
@@ -493,12 +493,12 @@ function renderPortal(bizKey, reviewData, analyticsData, convData, infoData) {
       html += '}';
       html += 'function deleteConversation(bizKey,idx){';
       html += '  if(!confirm("Delete this conversation?"))return;';
-      html += '  fetch("' + BACKEND + '/delete-conversation/"+bizKey+"/"+idx,{method:"DELETE",headers:{"Content-Type":"application/json"}})';
+      html += '  fetch("https://botbuilder-backend-production.up.railway.app/delete-conversation/"+bizKey+"/"+idx,{method:"DELETE"})';
       html += '  .then(function(){location.reload();}).catch(function(){alert("Could not delete.");});';
       html += '}';
       html += 'function clearInbox(bizKey){';
       html += '  if(!confirm("Clear all conversations? This cannot be undone."))return;';
-      html += '  fetch("' + BACKEND + '/clear-conversations/"+bizKey,{method:"DELETE"})';
+      html += '  fetch("https://botbuilder-backend-production.up.railway.app/clear-conversations/"+bizKey,{method:"DELETE"})';
       html += '  .then(function(){location.reload();}).catch(function(){alert("Could not clear.");});';
       html += '}';
       html += '</scr' + 'ipt>';
