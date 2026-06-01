@@ -1261,6 +1261,20 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
           </select>
         </div>
       </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div>
+          <label style="display:block;font-size:12px;font-weight:600;color:rgba(255,255,255,0.6);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.06em;">City / Service Area</label>
+          <input name="demoLocation" placeholder="Dayton, OH" style="width:100%;padding:11px 14px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:10px;color:white;font-size:14px;font-family:inherit;outline:none;box-sizing:border-box;" onfocus="this.style.borderColor='rgba(147,197,253,0.5)'" onblur="this.style.borderColor='rgba(255,255,255,0.12)'" />
+        </div>
+        <div>
+          <label style="display:block;font-size:12px;font-weight:600;color:rgba(255,255,255,0.6);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.06em;">Business Hours</label>
+          <input name="demoHours" placeholder="Mon–Fri 8am–5pm" style="width:100%;padding:11px 14px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:10px;color:white;font-size:14px;font-family:inherit;outline:none;box-sizing:border-box;" onfocus="this.style.borderColor='rgba(147,197,253,0.5)'" onblur="this.style.borderColor='rgba(255,255,255,0.12)'" />
+        </div>
+      </div>
+      <div>
+        <label style="display:block;font-size:12px;font-weight:600;color:rgba(255,255,255,0.6);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.06em;">Top 2–3 Services</label>
+        <input name="demoServices" placeholder="AC repair, furnace install, maintenance plans" style="width:100%;padding:11px 14px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:10px;color:white;font-size:14px;font-family:inherit;outline:none;box-sizing:border-box;" onfocus="this.style.borderColor='rgba(147,197,253,0.5)'" onblur="this.style.borderColor='rgba(255,255,255,0.12)'" />
+      </div>
       <div>
         <label style="display:block;font-size:12px;font-weight:600;color:rgba(255,255,255,0.6);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.06em;">Website <span style="font-weight:400;text-transform:none;letter-spacing:0;opacity:0.6;">optional</span></label>
         <input name="demoWebsite" placeholder="www.yoursite.com" style="width:100%;padding:11px 14px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:10px;color:white;font-size:14px;font-family:inherit;outline:none;box-sizing:border-box;" onfocus="this.style.borderColor='rgba(147,197,253,0.5)'" onblur="this.style.borderColor='rgba(255,255,255,0.12)'" />
@@ -2029,19 +2043,18 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
       btn.textContent = 'Sending...'; btn.style.opacity = '0.6';
       var f = e.target;
       try {
-        var res = await fetch(BACKEND + '/lead', {
+        var res = await fetch(BACKEND + '/demo-request', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            bizKey: 'netify_demo_request',
             name: f.demoName.value,
             phone: f.demoPhone.value,
-            jobType: 'Demo Request, ' + f.demoIndustry.value + ', ' + f.demoBiz.value + (f.demoWebsite.value ? ', ' + f.demoWebsite.value : ''),
-            urgency: 'Normal',
-            businessEmail: 'dolbeereli95@gmail.com',
-            businessName: 'Netify Builds',
-            ownerPhone: '+19373671847',
-            conversation: 'Demo request from ' + f.demoName.value + ' at ' + f.demoBiz.value + ' (' + f.demoIndustry.value + ')'
+            bizName: f.demoBiz.value,
+            industry: f.demoIndustry.value,
+            location: f.demoLocation ? f.demoLocation.value : '',
+            hours: f.demoHours ? f.demoHours.value : '',
+            services: f.demoServices ? f.demoServices.value : '',
+            website: f.demoWebsite ? f.demoWebsite.value : ''
           })
         });
         if (!res.ok) {
