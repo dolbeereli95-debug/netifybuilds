@@ -2851,7 +2851,7 @@ function copyAndChat(btn, question) {
           var displayReply = lead.cleanReply || "Thanks! We've got your info and someone will be reaching out soon.";
           addMsg(displayReply, 'bot');
           messages.push({ role: 'assistant', content: displayReply });
-          fetch(BACKEND_URL + '/lead', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: lead.name, phone: lead.phone, jobType: lead.jobType, urgency: lead.urgency, businessEmail: LEAD_EMAIL, businessName: BIZ_NAME, conversation: messages.slice(-20) }) }).catch(function(){});
+          fetch(BACKEND_URL + '/lead', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: lead.name, phone: lead.phone, jobType: lead.jobType, urgency: lead.urgency, businessEmail: LEAD_EMAIL, businessName: BIZ_NAME, bizKey: BIZ_KEY, conversation: messages.slice(-20) }) }).catch(function(){});
           fetch(BACKEND_URL + '/log-analytics', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ bizKey: BIZ_KEY, bizName: BIZ_NAME, event: 'lead' }) }).catch(function(){});
           fetch(BACKEND_URL + '/log-conversation', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ bizKey: BIZ_KEY, bizName: BIZ_NAME, messages: messages.slice(-20), leadCaptured: true, leadName: lead.name, leadPhone: lead.phone, leadJobType: lead.jobType, timestamp: new Date().toISOString() }) }).catch(function(){});
         } else {

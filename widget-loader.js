@@ -311,7 +311,7 @@
           fetch(BACKEND_URL + '/lead', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name: lead.name, phone: lead.phone, jobType: lead.jobType, urgency: lead.urgency, businessEmail: LEAD_EMAIL, businessName: BIZ_NAME, conversation: messages.slice(-20) })
+            body: JSON.stringify({ name: lead.name, phone: lead.phone, jobType: lead.jobType, urgency: lead.urgency, businessEmail: LEAD_EMAIL, businessName: BIZ_NAME, bizKey: BIZ_KEY, conversation: messages.slice(-20) })
           }).catch(function() {});
           logAnalytics('lead');
           // Log conversation with lead details
