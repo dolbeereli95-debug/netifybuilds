@@ -269,7 +269,11 @@
     var match = reply.match(/LEAD[\s_]?CAPTURED[\s]*[|][\s]*([^|\n]*)[|][\s]*([^|\n]*)[|][\s]*([^|\n]*)[|][\s]*([^|\n\r]*)/i);
     if (!match) return null;
     var name = match[1].trim();
-    var phone = match[2].trim().replace(/[^\d\s\-\(\)\+\.]/g, '').trim();
+    var rawPhone = match[2].trim();
+    var digits = rawPhone.replace(/[^\d]/g, '');
+    var phone = digits.length === 10 ? '(' + digits.substring(0,3) + ') ' + digits.substring(3,6) + '-' + digits.substring(6) :
+                digits.length === 11 && digits[0] === '1' ? '(' + digits.substring(1,4) + ') ' + digits.substring(4,7) + '-' + digits.substring(7) :
+                rawPhone;
     if (!name && !phone) return null;
     var triggerIdx = reply.search(/LEAD[\s_]?CAPTURED/i);
     return { name: name||'Not provided', phone: phone||'Not provided', jobType: match[3].trim()||'Not specified', urgency: match[4].trim()||'Not specified', cleanReply: triggerIdx > 0 ? reply.substring(0, triggerIdx).trim() : '' };
