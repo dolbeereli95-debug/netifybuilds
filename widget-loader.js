@@ -44,6 +44,7 @@
   var isOpen = false;
   var leadCaptured = false;
   var greetingSent = false;
+  var currentChatType = 'question';
   var isAdminMode = false;
 
   var style2 = document.createElement('style');
@@ -134,6 +135,7 @@
   var nbContextReplies = _nbQuickReplies;
 
   window._nbShowChat = function(type) {
+    currentChatType = type || 'question';
     type = type || 'question';
     var home = document.getElementById('nb-home-screen');
     var chat = document.getElementById('nb-chat-screen');
@@ -290,7 +292,7 @@
       var res = await fetch(BACKEND_URL + '/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: messages.slice(-10), systemPrompt: SYSTEM_PROMPT, bizKey: BIZ_KEY || '', isAdminSession: false })
+        body: JSON.stringify({ messages: messages.slice(-10), systemPrompt: SYSTEM_PROMPT, bizKey: BIZ_KEY || '', isAdminSession: false, chatType: currentChatType })
       });
       var data = {};
       try { data = await res.json(); } catch(e) {}

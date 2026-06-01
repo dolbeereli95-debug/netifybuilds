@@ -2640,6 +2640,7 @@ function copyAndChat(btn, question) {
   };
 
   window._nbShowChat = function(type) {
+    currentChatType = type || 'question';
     type = type || 'question';
     var home = document.getElementById('nb-home-screen');
     var chat = document.getElementById('nb-chat-screen');
@@ -2729,6 +2730,7 @@ function copyAndChat(btn, question) {
   var isOpen = false;
   var leadCaptured = false;
   var greetingSent = false;
+  var currentChatType = 'question';
   var isAdminMode = false;
   var hasEditsThisSession = false;
 
@@ -2839,7 +2841,7 @@ function copyAndChat(btn, question) {
     var typing = showTyping();
     try {
       var trimmedMessages = messages.slice(-10);
-      var res = await fetch(BACKEND_URL + '/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ messages: trimmedMessages, systemPrompt: SYSTEM_PROMPT, bizKey: BIZ_KEY || '', isAdminSession: isAdminMode }) });
+      var res = await fetch(BACKEND_URL + '/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ messages: trimmedMessages, systemPrompt: SYSTEM_PROMPT, bizKey: BIZ_KEY || '', isAdminSession: isAdminMode, chatType: currentChatType }) });
       var data = {};
       try { data = await res.json(); } catch(jsonErr) { data = {}; }
       var reply = (data && (data.reply || data.error)) || 'Sorry, something went wrong. Please try again.';
