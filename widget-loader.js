@@ -271,12 +271,12 @@
     var name = match[1].trim();
     var rawPhone = match[2].trim();
     var digits = rawPhone.replace(/[^\d]/g, '');
-    var phone = digits.length === 10 ? '(' + digits.substring(0,3) + ') ' + digits.substring(3,6) + '-' + digits.substring(6) :
-                digits.length === 11 && digits[0] === '1' ? '(' + digits.substring(1,4) + ') ' + digits.substring(4,7) + '-' + digits.substring(7) :
-                rawPhone;
+    if (digits.length === 11 && digits[0] === '1') digits = digits.substring(1);
+    if (digits.length !== 10) return { invalid: true, name: name };
+    var phone = '(' + digits.substring(0,3) + ') ' + digits.substring(3,6) + '-' + digits.substring(6);
     if (!name && !phone) return null;
     var triggerIdx = reply.search(/LEAD[\s_]?CAPTURED/i);
-    return { name: name||'Not provided', phone: phone||'Not provided', jobType: match[3].trim()||'Not specified', urgency: match[4].trim()||'Not specified', cleanReply: triggerIdx > 0 ? reply.substring(0, triggerIdx).trim() : '' };
+    return { name: name||'Not provided', phone: phone, jobType: match[3].trim()||'Not specified', urgency: match[4].trim()||'Not specified', cleanReply: triggerIdx > 0 ? reply.substring(0, triggerIdx).trim() : '' };
   }
 
   async function sendMessage() {
@@ -309,7 +309,12 @@
       try { typing.remove(); } catch(e) {}
       if (!leadCaptured && reply.includes('LEAD_CAPTURED|')) {
         var lead = parseLead(reply);
-        if (lead && lead.phone && lead.phone !== 'Not provided') {
+        if (lead && lead.invalid) {
+          // Invalid phone number — show message asking to re-enter
+          var invalidMsg = "Just want to make sure I got that right — could you double check that phone number for me?";
+          addMsg(invalidMsg, 'bot');
+          messages.push({ role: 'assistant', content: invalidMsg });
+        } else if (lead && lead.phone && lead.phone !== 'Not provided') {
           leadCaptured = true;
           var displayReply = lead.cleanReply || "Thanks! We've got your info and someone will be reaching out soon.";
           addMsg(displayReply, 'bot');
