@@ -435,7 +435,7 @@ function renderPortal(bizKey, reviewData, analyticsData, convData, infoData) {
         var preview = lastUserMsg ? lastUserMsg.content.substring(0, 45) + (lastUserMsg.content.length > 45 ? '...' : '') : 'No messages';
         var leadName = conv.leadName || (conv.leadCaptured ? 'Lead' : 'Visitor');
         var isLead = conv.leadCaptured;
-        html += '<div class="inbox-item" id="inbox-item-' + idx + '" onclick="selectInboxItem(' + idx + ')" style="padding:12px 14px;border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.1s;position:relative;' + (idx === 0 ? 'background:var(--off);' : '') + '">';
+        html += '<div class="inbox-item" id="inbox-item-' + idx + '" data-idx="' + idx + '" style="padding:12px 14px;border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.1s;position:relative;' + (idx === 0 ? 'background:var(--off);' : '') + '">';
         html += '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:3px;gap:6px;">';
         html += '<div style="font-size:13px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + escHtml(leadName) + '</div>';
         html += '<div style="display:flex;align-items:center;gap:4px;flex-shrink:0;">';
@@ -483,7 +483,6 @@ function renderPortal(bizKey, reviewData, analyticsData, convData, infoData) {
       html += '</div>';
 
       html += '<div id="nb-inbox-data" style="display:none;" data-threads="' + escHtml(JSON.stringify(threadData)) + '"></div>';
-      html += '<scr' + 'ipt>try{var d=document.getElementById("nb-inbox-data");if(d)window._inboxThreads=JSON.parse(d.getAttribute("data-threads"));}catch(e){}</scr' + 'ipt>';
       // inbox functions are in main script
     }
 
@@ -833,6 +832,9 @@ function renderPortal(bizKey, reviewData, analyticsData, convData, infoData) {
 
   document.getElementById('portalContent').className = '';
   document.getElementById('portalContent').innerHTML = html;
+  // Init inbox thread data from hidden element
+  try { var d = document.getElementById('nb-inbox-data'); if (d) window._inboxThreads = JSON.parse(d.getAttribute('data-threads')); } catch(e) {}
+  attachInboxClicks();
 }
 
 async function resolveFeedback(index, resolved, btn) {
@@ -876,18 +878,57 @@ function logSMSJob(bizKey) {
     if (thread && window._inboxThreads && window._inboxThreads[idx]) thread.innerHTML = window._inboxThreads[idx];
   }
 
+  function attachInboxClicks() {
+    var list = document.getElementById('inbox-list');
+    if (!list) return;
+    list.addEventListener('click', function(e) {
+      var item = e.target.closest('.inbox-item');
+      if (!item) return;
+      // Don't trigger if clicking the delete button
+      if (e.target.closest('button')) return;
+      var idx = parseInt(item.getAttribute('data-idx'));
+      if (!isNaN(idx)) selectInboxItem(idx);
+    });
+  }
+
+  var _nbConfirmCallback = null;
+
+  function nbConfirm(title, msg, btnLabel, btnColor, callback) {
+    document.getElementById('nb-confirm-title').textContent = title;
+    document.getElementById('nb-confirm-msg').textContent = msg;
+    var btn = document.getElementById('nb-confirm-ok-btn');
+    btn.textContent = btnLabel || 'Confirm';
+    btn.style.background = btnColor || '#ef4444';
+    _nbConfirmCallback = callback;
+    var modal = document.getElementById('nb-confirm-modal');
+    modal.style.display = 'flex';
+  }
+
+  function nbConfirmOk() {
+    document.getElementById('nb-confirm-modal').style.display = 'none';
+    if (_nbConfirmCallback) _nbConfirmCallback();
+    _nbConfirmCallback = null;
+  }
+
+  function nbConfirmCancel() {
+    document.getElementById('nb-confirm-modal').style.display = 'none';
+    _nbConfirmCallback = null;
+  }
+
   function deleteConversation(bizKey, idx) {
-    if (!confirm('Delete this conversation?')) return;
-    fetch('https://botbuilder-backend-production.up.railway.app/delete-conversation/' + bizKey + '/' + idx, { method: 'DELETE' })
-      .then(function() { location.reload(); })
-      .catch(function() { alert('Could not delete. Try again.'); });
+    nbConfirm('Delete conversation?', 'This conversation will be permanently removed from your inbox.', 'Delete', '#ef4444', function() {
+      fetch('https://botbuilder-backend-production.up.railway.app/delete-conversation/' + bizKey + '/' + idx, { method: 'DELETE' })
+        .then(function() { location.reload(); })
+        .catch(function() { nbConfirm('Error', 'Could not delete. Please try again.', 'OK', '#64748b', function(){}); });
+    });
   }
 
   function clearInbox(bizKey) {
-    if (!confirm('Clear all conversations? This cannot be undone.')) return;
-    fetch('https://botbuilder-backend-production.up.railway.app/clear-conversations/' + bizKey, { method: 'DELETE' })
-      .then(function() { location.reload(); })
-      .catch(function() { alert('Could not clear. Try again.'); });
+    nbConfirm('Clear all conversations?', 'This will permanently remove all conversations from your inbox. This cannot be undone.', 'Clear All', '#ef4444', function() {
+      fetch('https://botbuilder-backend-production.up.railway.app/clear-conversations/' + bizKey, { method: 'DELETE' })
+        .then(function() { location.reload(); })
+        .catch(function() { nbConfirm('Error', 'Could not clear. Please try again.', 'OK', '#64748b', function(){}); });
+    });
   }
 
 async function sendCredentials() {
@@ -1010,5 +1051,17 @@ function escHtml(str) {
 }
 </script>
 
+
+  <!-- Custom confirm modal -->
+  <div id="nb-confirm-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9999;align-items:center;justify-content:center;padding:20px;">
+    <div style="background:white;border-radius:16px;padding:24px;max-width:300px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,0.25);">
+      <div style="font-size:15px;font-weight:700;color:#0f172a;margin-bottom:6px;" id="nb-confirm-title">Are you sure?</div>
+      <div style="font-size:13px;color:#64748b;line-height:1.5;margin-bottom:20px;" id="nb-confirm-msg"></div>
+      <div style="display:flex;gap:8px;">
+        <button onclick="nbConfirmCancel()" style="flex:1;padding:10px;border:1.5px solid #e2e8f0;border-radius:10px;background:white;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;color:#64748b;">Cancel</button>
+        <button onclick="nbConfirmOk()" id="nb-confirm-ok-btn" style="flex:1;padding:10px;border:none;border-radius:10px;background:#ef4444;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;color:white;">Delete</button>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
