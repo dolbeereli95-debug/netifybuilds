@@ -59,7 +59,7 @@ nav {
 
 /* ── STATS ── */
 .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 28px; }
-@media (max-width: 600px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } .portal { padding: 20px 16px; } .stat-card { padding: 16px; } .stat-num { font-size: 1.6rem; } .leads-table th, .leads-table td { padding: 10px 12px; font-size: 13px; } }
+@media (max-width: 600px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } .portal { padding: 20px 16px; } .stat-card { padding: 16px; } .stat-num { font-size: 1.6rem; } .leads-table th, .leads-table td { padding: 10px 12px; font-size: 13px; } .inbox-grid { grid-template-columns: 1fr !important; } #inbox-list { max-height: 260px !important; border-right: none !important; border-bottom: 1px solid var(--border); } #inbox-thread { min-height: 300px; } }
 @media (max-width: 380px) { .stats-grid { grid-template-columns: 1fr; } }
 .stat-card { background: white; border-radius: var(--radius); padding: 22px 20px; border: 1px solid var(--border); box-shadow: 0 2px 12px rgba(0,0,0,0.04); position: relative; overflow: hidden; transition: box-shadow 0.2s, transform 0.2s; }
 .stat-card:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.08); transform: translateY(-1px); }
@@ -425,7 +425,7 @@ function renderPortal(bizKey, reviewData, analyticsData, convData, infoData) {
     if (conversations.length === 0) {
       html += '<div class="leads-wrap" style="margin-bottom:24px;"><div class="empty-state">No conversations yet. They appear here when visitors chat with your bot.</div></div>';
     } else {
-      html += '<div style="display:grid;grid-template-columns:280px 1fr;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:24px;background:white;min-height:420px;">';
+      html += '<div style="display:grid;grid-template-columns:280px 1fr;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:24px;background:white;min-height:420px;" class="inbox-grid">';
 
       // Left panel — conversation list
       html += '<div id="inbox-list" style="border-right:1px solid var(--border);overflow-y:auto;max-height:520px;">';
@@ -483,25 +483,8 @@ function renderPortal(bizKey, reviewData, analyticsData, convData, infoData) {
       html += '</div>';
 
       html += '<div id="nb-inbox-data" style="display:none;" data-threads="' + escHtml(JSON.stringify(threadData)) + '"></div>';
-      html += '<scr' + 'ipt>';
-      html += 'try{var d=document.getElementById("nb-inbox-data");if(d)window._inboxThreads=JSON.parse(d.getAttribute("data-threads"));}catch(e){}';
-      html += 'function selectInboxItem(idx){';
-      html += '  document.querySelectorAll(".inbox-item").forEach(function(el){el.style.background="";});';
-      html += '  var item=document.getElementById("inbox-item-"+idx);if(item)item.style.background="var(--off)";';
-      html += '  var thread=document.getElementById("inbox-thread");';
-      html += '  if(thread&&window._inboxThreads&&window._inboxThreads[idx])thread.innerHTML=window._inboxThreads[idx];';
-      html += '}';
-      html += 'function deleteConversation(bizKey,idx){';
-      html += '  if(!confirm("Delete this conversation?"))return;';
-      html += '  fetch("https://botbuilder-backend-production.up.railway.app/delete-conversation/"+bizKey+"/"+idx,{method:"DELETE"})';
-      html += '  .then(function(){location.reload();}).catch(function(){alert("Could not delete.");});';
-      html += '}';
-      html += 'function clearInbox(bizKey){';
-      html += '  if(!confirm("Clear all conversations? This cannot be undone."))return;';
-      html += '  fetch("https://botbuilder-backend-production.up.railway.app/clear-conversations/"+bizKey,{method:"DELETE"})';
-      html += '  .then(function(){location.reload();}).catch(function(){alert("Could not clear.");});';
-      html += '}';
-      html += '</scr' + 'ipt>';
+      html += '<scr' + 'ipt>try{var d=document.getElementById("nb-inbox-data");if(d)window._inboxThreads=JSON.parse(d.getAttribute("data-threads"));}catch(e){}</scr' + 'ipt>';
+      // inbox functions are in main script
     }
 
     // Update bot
@@ -884,6 +867,28 @@ function logSMSJob(bizKey) {
     document.getElementById('smsJobType').value = '';
   }).catch(function() { alert('Error logging job. Try again.'); });
 }
+
+  function selectInboxItem(idx) {
+    document.querySelectorAll('.inbox-item').forEach(function(el) { el.style.background = ''; });
+    var item = document.getElementById('inbox-item-' + idx);
+    if (item) item.style.background = 'var(--off)';
+    var thread = document.getElementById('inbox-thread');
+    if (thread && window._inboxThreads && window._inboxThreads[idx]) thread.innerHTML = window._inboxThreads[idx];
+  }
+
+  function deleteConversation(bizKey, idx) {
+    if (!confirm('Delete this conversation?')) return;
+    fetch('https://botbuilder-backend-production.up.railway.app/delete-conversation/' + bizKey + '/' + idx, { method: 'DELETE' })
+      .then(function() { location.reload(); })
+      .catch(function() { alert('Could not delete. Try again.'); });
+  }
+
+  function clearInbox(bizKey) {
+    if (!confirm('Clear all conversations? This cannot be undone.')) return;
+    fetch('https://botbuilder-backend-production.up.railway.app/clear-conversations/' + bizKey, { method: 'DELETE' })
+      .then(function() { location.reload(); })
+      .catch(function() { alert('Could not clear. Try again.'); });
+  }
 
 async function sendCredentials() {
   var user = document.getElementById('cred_user');
