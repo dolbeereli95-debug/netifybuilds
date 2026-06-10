@@ -2907,10 +2907,30 @@ function copyAndChat(btn, question) {
   document.getElementById('nb-send').addEventListener('click', sendMessage);
   document.getElementById('nb-input').addEventListener('focus', function() {
     if (window.innerWidth <= 768) {
-      setTimeout(function() {
-        var box2 = document.getElementById('nb-chat-box');
-        if (box2) box2.scrollIntoView({ behavior: 'smooth', block: 'end' });
-      }, 300);
+      if (window.visualViewport) {
+        var vpHandler = function() {
+          var box2 = document.getElementById('nb-chat-box');
+          if (!box2) return;
+          var vv = window.visualViewport;
+          var keyboardHeight = window.innerHeight - vv.height;
+          if (keyboardHeight > 100) {
+            box2.style.bottom = (keyboardHeight + 8) + 'px';
+          } else {
+            box2.style.bottom = '96px';
+          }
+        };
+        window.visualViewport.addEventListener('resize', vpHandler);
+        window.visualViewport.addEventListener('scroll', vpHandler);
+        document.getElementById('nb-input')._vpHandler = vpHandler;
+      }
+    }
+  });
+  document.getElementById('nb-input').addEventListener('blur', function() {
+    var box2 = document.getElementById('nb-chat-box');
+    if (box2) box2.style.bottom = '96px';
+    if (window.visualViewport && this._vpHandler) {
+      window.visualViewport.removeEventListener('resize', this._vpHandler);
+      window.visualViewport.removeEventListener('scroll', this._vpHandler);
     }
   });
   document.getElementById('nb-input').addEventListener('keypress', function(e){ if(e.key==='Enter') sendMessage(); });

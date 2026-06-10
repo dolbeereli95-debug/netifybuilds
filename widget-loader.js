@@ -377,12 +377,33 @@
 
   document.getElementById('nb-send').addEventListener('click', sendMessage);
   document.getElementById('nb-input').addEventListener('focus', function() {
-    // Prevent page from scrolling when keyboard opens on iOS
     if (window.innerWidth <= 768) {
-      setTimeout(function() {
-        var box = document.getElementById('nb-chat-box');
-        if (box) box.scrollIntoView({ behavior: 'smooth', block: 'end' });
-      }, 300);
+      // Use visualViewport API to reposition widget above keyboard
+      if (window.visualViewport) {
+        var handler = function() {
+          var box = document.getElementById('nb-chat-box');
+          if (!box) return;
+          var vv = window.visualViewport;
+          var keyboardHeight = window.innerHeight - vv.height;
+          if (keyboardHeight > 100) {
+            box.style.bottom = (keyboardHeight + 8) + 'px';
+          } else {
+            box.style.bottom = '96px';
+          }
+        };
+        window.visualViewport.addEventListener('resize', handler);
+        window.visualViewport.addEventListener('scroll', handler);
+        // Store handler for cleanup on blur
+        document.getElementById('nb-input')._vpHandler = handler;
+      }
+    }
+  });
+  document.getElementById('nb-input').addEventListener('blur', function() {
+    var box = document.getElementById('nb-chat-box');
+    if (box) box.style.bottom = '96px';
+    if (window.visualViewport && this._vpHandler) {
+      window.visualViewport.removeEventListener('resize', this._vpHandler);
+      window.visualViewport.removeEventListener('scroll', this._vpHandler);
     }
   });
   document.getElementById('nb-input').addEventListener('keypress', function(e) { if (e.key === 'Enter') sendMessage(); });
