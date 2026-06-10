@@ -2664,9 +2664,16 @@ function copyAndChat(btn, question) {
   function nbLockScroll() {
     nbScrollY = window.scrollY;
     document.body.style.overflow = 'hidden';
+    document.body.style.position = 'fixed';
+    document.body.style.top = '-' + nbScrollY + 'px';
+    document.body.style.width = '100%';
   }
   function nbUnlockScroll() {
     document.body.style.overflow = '';
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.width = '';
+    window.scrollTo(0, nbScrollY);
   }
 
   window._nbCloseWidget = function() {
@@ -2763,7 +2770,7 @@ function copyAndChat(btn, question) {
     isOpen = true;
     btn.style.display = 'none';
     box.classList.add('open');
-    if (window.innerWidth <= 480) { nbLockScroll(); }
+    if (window.innerWidth <= 768) { nbLockScroll(); }
     pill.classList.remove('visible');
     setTimeout(function(){ box.classList.add('visible'); }, 10);
     var home = document.getElementById('nb-home-screen');
@@ -2780,7 +2787,7 @@ function copyAndChat(btn, question) {
 
   function closeChat() {
     isOpen = false;
-    if (window.innerWidth <= 480) { nbUnlockScroll(); }
+    if (window.innerWidth <= 768) { nbUnlockScroll(); }
     if (messages.length > 0) {
       fetch(BACKEND_URL + '/log-conversation', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ bizKey: BIZ_KEY, bizName: BIZ_NAME, messages: messages.slice(-20), leadCaptured: leadCaptured, timestamp: new Date().toISOString() }) }).catch(function(){});
       fetch(BACKEND_URL + '/log-analytics', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ bizKey: BIZ_KEY, bizName: BIZ_NAME, event: 'conversation' }) }).catch(function(){});
@@ -2898,6 +2905,14 @@ function copyAndChat(btn, question) {
   }
 
   document.getElementById('nb-send').addEventListener('click', sendMessage);
+  document.getElementById('nb-input').addEventListener('focus', function() {
+    if (window.innerWidth <= 768) {
+      setTimeout(function() {
+        var box2 = document.getElementById('nb-chat-box');
+        if (box2) box2.scrollIntoView({ behavior: 'smooth', block: 'end' });
+      }, 300);
+    }
+  });
   document.getElementById('nb-input').addEventListener('keypress', function(e){ if(e.key==='Enter') sendMessage(); });
 
 })();

@@ -162,8 +162,8 @@
   };
 
   var nbScrollY = 0;
-  function nbLockScroll() { nbScrollY = window.scrollY; document.body.style.overflow = 'hidden'; }
-  function nbUnlockScroll() { document.body.style.overflow = ''; }
+  function nbLockScroll() { nbScrollY = window.scrollY; document.body.style.overflow = 'hidden'; document.body.style.position = 'fixed'; document.body.style.top = '-' + nbScrollY + 'px'; document.body.style.width = '100%'; }
+  function nbUnlockScroll() { document.body.style.overflow = ''; document.body.style.position = ''; document.body.style.top = ''; document.body.style.width = ''; window.scrollTo(0, nbScrollY); }
 
   function logAnalytics(event, data) {
     fetch(BACKEND_URL + '/log-analytics', {
@@ -184,7 +184,7 @@
       logAnalytics('conversation');
     }
     isOpen = false;
-    if (window.innerWidth <= 480) { nbUnlockScroll(); }
+    if (window.innerWidth <= 768) { nbUnlockScroll(); }
     box.classList.remove('visible');
     btn.style.display = 'flex';
     btn.classList.remove('open');
@@ -246,7 +246,7 @@
 
   function closeChat() {
     isOpen = false;
-    if (window.innerWidth <= 480) { nbUnlockScroll(); }
+    if (window.innerWidth <= 768) { nbUnlockScroll(); }
     box.classList.remove('visible');
     btn.style.display = 'flex';
     btn.classList.remove('open');
@@ -376,6 +376,15 @@
   }
 
   document.getElementById('nb-send').addEventListener('click', sendMessage);
+  document.getElementById('nb-input').addEventListener('focus', function() {
+    // Prevent page from scrolling when keyboard opens on iOS
+    if (window.innerWidth <= 768) {
+      setTimeout(function() {
+        var box = document.getElementById('nb-chat-box');
+        if (box) box.scrollIntoView({ behavior: 'smooth', block: 'end' });
+      }, 300);
+    }
+  });
   document.getElementById('nb-input').addEventListener('keypress', function(e) { if (e.key === 'Enter') sendMessage(); });
 
   if (AUTO_OPEN_DELAY && typeof AUTO_OPEN_DELAY === 'number') {
