@@ -95,6 +95,7 @@ nav{background:var(--navy);padding:0 28px;height:56px;display:flex;align-items:c
   <span class="nav-logo">Netify <span>Builds.</span></span>
   <span class="nav-badge">Admin Only</span>
   <button onclick="showDemoGenerator()" style="background:rgba(59,130,246,0.15);border:1px solid rgba(59,130,246,0.3);color:#93C5FD;font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;cursor:pointer;font-family:inherit;">⚡ Generate Demo</button>
+  <button onclick="downloadBackup()" style="background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.3);color:#6EE7B7;font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;cursor:pointer;font-family:inherit;">⬇ Backup Data</button>
 </nav>
 
 <!-- LOGIN -->
@@ -422,6 +423,20 @@ document.getElementById('editModal').addEventListener('click', function(e) {
 });
 
 // ── DEMO GENERATOR ──
+  async function downloadBackup() {
+    try {
+      const res = await fetch(BACKEND + '/admin/backup?secret=' + encodeURIComponent(ADMIN_SECRET));
+      if (!res.ok) { alert('Backup failed'); return; }
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'netify-backup-' + new Date().toISOString().split('T')[0] + '.json';
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch(e) { alert('Backup error: ' + e.message); }
+  }
+
 function showDemoGenerator() {
   editingKey = null;
   document.getElementById('modalTitle').textContent = '⚡ Generate Demo Bot';

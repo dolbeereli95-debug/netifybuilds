@@ -416,6 +416,63 @@ function renderPortal(bizKey, reviewData, analyticsData, convData, infoData) {
     html += botStatus;
     html += '</div>';
 
+    // ── BOT UPDATE REQUEST ──
+    html += '<div class="section-title"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Update Your Bot</div>';
+    html += '<div style="background:#f8fafc;border:1.5px solid var(--border);border-radius:14px;padding:20px;margin-bottom:24px;">';
+    html += '<p style="font-size:13px;color:var(--soft);margin-bottom:16px;line-height:1.6;">Need to update your hours, add a service, or change anything about your bot? Submit a request and Eli will update it same day.</p>';
+    html += '<div style="display:flex;flex-direction:column;gap:10px;">';
+    html += '<select id="updateType" style="padding:10px 12px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-family:inherit;outline:none;background:white;color:var(--text);">';
+    html += '<option value="">What do you want to update?</option>';
+    html += '<option value="hours">Business hours</option>';
+    html += '<option value="services">Services offered</option>';
+    html += '<option value="faq">Add a FAQ / common question</option>';
+    html += '<option value="area">Service area</option>';
+    html += '<option value="tone">Bot tone or personality</option>';
+    html += '<option value="pricing">Pricing information</option>';
+    html += '<option value="other">Something else</option>';
+    html += '</select>';
+    html += '<textarea id="updateDetails" placeholder="Describe what you want changed..." style="padding:10px 12px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-family:inherit;outline:none;resize:vertical;min-height:80px;"></textarea>';
+    html += '<button onclick="submitBotUpdate()" style="background:var(--navy);color:white;border:none;border-radius:10px;padding:11px 20px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;align-self:flex-start;">Send Update Request</button>';
+    html += '<div id="updateStatus" style="display:none;font-size:13px;color:#16a34a;font-weight:600;">Request sent! Eli will update your bot same day.</div>';
+    html += '</div></div>';
+
+    // ── FAQ EDITOR ──
+    var currentFaqs = (infoData && infoData.faqs) ? infoData.faqs : '';
+    var faqList = currentFaqs ? currentFaqs.split('\n').filter(function(f){return f.trim();}) : [];
+
+    html += '<div class="section-title"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>FAQ Editor</div>';
+    html += '<div style="background:#f8fafc;border:1.5px solid var(--border);border-radius:14px;padding:20px;margin-bottom:24px;">';
+    html += '<p style="font-size:13px;color:var(--soft);margin-bottom:16px;line-height:1.6;">Add questions and answers your bot should know. Each line is one FAQ. Changes take effect after Eli regenerates your bot (usually same day).</p>';
+
+    // Existing FAQs
+    html += '<div id="faqList" style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px;">';
+    if (faqList.length > 0) {
+      faqList.forEach(function(faq, idx) {
+        html += '<div class="faq-item" data-idx="' + idx + '" style="display:flex;align-items:center;gap:8px;background:white;border:1.5px solid var(--border);border-radius:10px;padding:10px 14px;">';
+        html += '<span style="flex:1;font-size:13px;color:var(--text);line-height:1.5;">' + escHtml(faq) + '</span>';
+        html += '<button onclick="deleteFaqItem(' + idx + ')" style="background:none;border:none;color:#94a3b8;cursor:pointer;font-size:18px;font-weight:700;padding:0 4px;flex-shrink:0;" title="Remove">×</button>';
+        html += '</div>';
+      });
+    } else {
+      html += '<div style="font-size:13px;color:var(--muted);padding:8px 0;">No FAQs added yet. Add your first one below.</div>';
+    }
+    html += '</div>';
+
+    // Add new FAQ
+    html += '<div style="display:flex;gap:8px;">';
+    html += '<input id="newFaqInput" placeholder="e.g. Do you offer emergency service? Yes, we offer 24/7 emergency service." style="flex:1;padding:10px 12px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-family:inherit;outline:none;" />';
+    html += '<button onclick="addFaqItem()" style="background:var(--navy);color:white;border:none;border-radius:10px;padding:10px 16px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap;">+ Add</button>';
+    html += '</div>';
+    html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-top:14px;">';
+    html += '<span style="font-size:12px;color:var(--muted);">Changes are saved and sent to Eli to regenerate your bot.</span>';
+    html += '<button onclick="saveFaqs(currentKey)" style="background:#16a34a;color:white;border:none;border-radius:10px;padding:10px 20px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;">Save FAQs</button>';
+    html += '</div>';
+    html += '<div id="faqSaveStatus" style="display:none;font-size:12px;color:#16a34a;font-weight:600;margin-top:10px;">FAQs saved! Eli will regenerate your bot same day.</div>';
+    html += '</div>';
+
+    // Store FAQs in window for JS manipulation
+    html += '<div id="nb-faq-data" style="display:none;" data-faqs="' + escHtml(JSON.stringify(faqList)) + '"></div>';
+
     // ── INBOX ──
     html += '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">';
     html += '<div class="section-title" style="margin-bottom:0;"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>Inbox <span style="font-size:11px;font-weight:400;color:var(--muted);">' + conversations.length + ' conversations</span></div>';
@@ -786,7 +843,8 @@ function renderPortal(bizKey, reviewData, analyticsData, convData, infoData) {
     var campaignListFormat = (infoData && infoData.campaignListFormat) || null;
 
     html += '<div class="stats-grid">';
-    html += '<div class="stat-card"><div class="stat-label">Campaigns sent</div><div class="stat-num">0</div><div class="stat-sub">All time</div></div>';
+    var campaignsSent = (analyticsData && analyticsData.campaigns) || 0;
+    html += '<div class="stat-card"><div class="stat-label">Campaigns sent</div><div class="stat-num">' + campaignsSent + '</div><div class="stat-sub">All time</div></div>';
     html += '<div class="stat-card"><div class="stat-label">Next campaign</div><div class="stat-num" style="font-size:1.2rem;">TBD</div><div class="stat-sub">Eli will confirm timing</div></div>';
     html += '<div class="stat-card"><div class="stat-label">Included per year</div><div class="stat-num">4</div><div class="stat-sub">One per quarter</div></div>';
     html += '</div>';
@@ -832,9 +890,11 @@ function renderPortal(bizKey, reviewData, analyticsData, convData, infoData) {
 
   document.getElementById('portalContent').className = '';
   document.getElementById('portalContent').innerHTML = html;
-  // Init inbox thread data from hidden element
+  // Init inbox thread data
   try { var d = document.getElementById('nb-inbox-data'); if (d) window._inboxThreads = JSON.parse(d.getAttribute('data-threads')); } catch(e) {}
   attachInboxClicks();
+  // Init FAQ editor
+  initFaqEditor();
 }
 
 async function resolveFeedback(index, resolved, btn) {
@@ -929,6 +989,72 @@ function logSMSJob(bizKey) {
         .then(function() { location.reload(); })
         .catch(function() { nbConfirm('Error', 'Could not clear. Please try again.', 'OK', '#64748b', function(){}); });
     });
+  }
+
+  // FAQ Editor functions
+  var _faqItems = [];
+  function initFaqEditor() {
+    try { var d = document.getElementById('nb-faq-data'); if (d) _faqItems = JSON.parse(d.getAttribute('data-faqs')); } catch(e) { _faqItems = []; }
+  }
+
+  function renderFaqList() {
+    var list = document.getElementById('faqList');
+    if (!list) return;
+    if (_faqItems.length === 0) {
+      list.innerHTML = '<div style="font-size:13px;color:var(--muted);padding:8px 0;">No FAQs added yet. Add your first one below.</div>';
+      return;
+    }
+    list.innerHTML = _faqItems.map(function(faq, idx) {
+      return '<div class="faq-item" style="display:flex;align-items:center;gap:8px;background:white;border:1.5px solid var(--border);border-radius:10px;padding:10px 14px;">'
+        + '<span style="flex:1;font-size:13px;color:var(--text);line-height:1.5;">' + faq.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</span>'
+        + '<button onclick="deleteFaqItem(' + idx + ')" style="background:none;border:none;color:#94a3b8;cursor:pointer;font-size:18px;font-weight:700;padding:0 4px;" title="Remove">×</button>'
+        + '</div>';
+    }).join('');
+  }
+
+  function addFaqItem() {
+    var input = document.getElementById('newFaqInput');
+    if (!input || !input.value.trim()) return;
+    _faqItems.push(input.value.trim());
+    input.value = '';
+    renderFaqList();
+  }
+
+  function deleteFaqItem(idx) {
+    _faqItems.splice(idx, 1);
+    renderFaqList();
+  }
+
+  async function saveFaqs(bizKey) {
+    var status = document.getElementById('faqSaveStatus');
+    try {
+      var newFaqText = _faqItems.join('\n');
+      await fetch(BACKEND + '/update-faqs', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ bizKey: bizKey, faqs: newFaqText })
+      });
+      if (status) status.style.display = 'block';
+    } catch(e) { alert('Could not save FAQs. Try again.'); }
+  }
+
+  async function submitBotUpdate() {
+    var type = document.getElementById('updateType');
+    var details = document.getElementById('updateDetails');
+    var status = document.getElementById('updateStatus');
+    if (!type || !type.value) { alert('Please select what you want to update.'); return; }
+    if (!details || !details.value.trim()) { alert('Please describe what you want changed.'); return; }
+    var bizName = document.querySelector('.biz-name') ? document.querySelector('.biz-name').textContent : currentKey;
+    try {
+      await fetch(BACKEND + '/bot-update-request', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ bizKey: currentKey, bizName, updateType: type.value, details: details.value.trim() })
+      });
+      if (status) status.style.display = 'block';
+      type.value = '';
+      details.value = '';
+    } catch(e) { alert('Could not send. Try again or email netifybuilds@gmail.com'); }
   }
 
 async function sendCredentials() {

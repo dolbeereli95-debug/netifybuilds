@@ -25,18 +25,18 @@ body { font-family: 'Inter', sans-serif; background: var(--off-white); color: va
 .trust-bar { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; padding: 20px 24px 0; }
 .trust-item { display: flex; align-items: center; gap: 7px; font-size: 13px; color: var(--text-soft); font-weight: 500; }
 .trust-item svg { width: 15px; height: 15px; stroke: var(--blue); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
-.form-wrap { max-width: 620px; margin: 0 auto; padding: 40px 24px 60px; }
+.form-wrap { max-width: 640px; margin: 0 auto; padding: 40px 24px 80px; }
 .form-box { background: white; border-radius: 20px; padding: 40px; border: 1.5px solid var(--border); box-shadow: 0 8px 40px rgba(0,0,0,0.06); }
 @media (max-width: 480px) { .form-box { padding: 24px 18px; } }
-.form-divider { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-soft); margin: 28px 0 18px; display: flex; align-items: center; gap: 10px; }
+.form-divider { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-soft); margin: 36px 0 20px; display: flex; align-items: center; gap: 10px; }
 .form-divider::before, .form-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 .form-divider:first-child { margin-top: 0; }
-.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px; }
 @media (max-width: 520px) { .form-row { grid-template-columns: 1fr; } }
-.form-group { margin-bottom: 14px; }
-label { display: block; font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
-label .opt { font-weight: 400; color: var(--text-soft); }
-input, select, textarea { width: 100%; padding: 12px 15px; border: 1.5px solid var(--border); border-radius: 10px; font-family: 'Inter', sans-serif; font-size: 14px; color: var(--text); background: white; outline: none; transition: border-color 0.2s; line-height: 1.5; }
+.form-group { margin-bottom: 16px; }
+label { display: block; font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 7px; line-height: 1.4; }
+label .opt { font-weight: 400; color: var(--text-soft); font-size: 12px; }
+input, select, textarea { width: 100%; padding: 12px 15px; border: 1.5px solid var(--border); border-radius: 10px; font-family: 'Inter', sans-serif; font-size: 14px; color: var(--text); background: white; outline: none; transition: border-color 0.2s, box-shadow 0.2s; line-height: 1.5; }
 input:focus, select:focus, textarea:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(59,130,246,0.08); }
 textarea { resize: vertical; min-height: 90px; }
 textarea.short { min-height: 70px; }
@@ -55,14 +55,15 @@ textarea.short { min-height: 70px; }
 .footer a { font-size: 13px; color: var(--text-soft); text-decoration: none; }
 
 /* Bundle builder cards */
-.pkg-card { display: flex; align-items: flex-start; gap: 14px; padding: 16px; background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 14px; cursor: pointer; transition: all 0.2s; margin-bottom: 10px; user-select: none; }
+.pkg-card { display: flex; align-items: flex-start; gap: 14px; padding: 16px 18px; background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 14px; cursor: pointer; transition: all 0.2s; margin-bottom: 10px; user-select: none; }
+.pkg-card:hover { border-color: #bfdbfe; background: #f8fafc; }
 .pkg-card.selected { border-color: #2563eb; background: #eff6ff; }
 .pkg-check { width: 22px; height: 22px; border-radius: 6px; border: 2px solid #cbd5e1; background: white; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; transition: all 0.2s; }
 .pkg-card.selected .pkg-check { background: #2563eb; border-color: #2563eb; }
 .pkg-check svg { display: none; }
 .pkg-card.selected .pkg-check svg { display: block; }
 .pkg-title { font-size: 14px; font-weight: 700; color: #0f172a; }
-.pkg-desc { font-size: 12px; color: #64748b; margin-top: 3px; line-height: 1.5; }
+.pkg-desc { font-size: 12px; color: #64748b; margin-top: 3px; line-height: 1.55; }
 .pkg-price { font-size: 14px; font-weight: 800; color: #2563eb; white-space: nowrap; }
 </style>
 </head>
@@ -167,6 +168,8 @@ textarea.short { min-height: 70px; }
 
       <!-- BOT FIELDS -->
       <div id="bot-fields" style="display:none;">
+
+        <!-- Section: Your Business -->
         <div class="form-divider">Your Business</div>
         <div class="form-group">
           <label>Industry</label>
@@ -185,10 +188,33 @@ textarea.short { min-height: 70px; }
           <div><label>Service Area</label><input type="text" name="area" id="obAreaInput" placeholder="Columbus, OH and surrounding" /></div>
           <div><label>Business Hours</label><input type="text" name="hours" id="obHoursInput" placeholder="Mon–Fri 8am–6pm" /></div>
         </div>
-        <div class="form-group"><label>Website URL <span class="opt">optional</span></label><input type="text" name="website" id="obWebsiteInput" placeholder="www.smithhvac.com" /><div style="font-size:11px;color:#b45309;margin-top:5px;">⚠ Please verify this is your correct website URL, Google occasionally links the wrong site.</div></div>
         <div class="form-group">
-          <label>Website Platform <span style="font-size:11px;font-weight:400;color:#64748b;">so we know how to install your bot</span></label>
-          <select name="platform" style="width:100%;padding:11px 13px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:14px;font-family:inherit;background:white;color:#0f172a;outline:none;">
+          <label>Main Services</label>
+          <textarea name="services" placeholder="e.g. AC repair, furnace installation, tune-ups, emergency service..."></textarea>
+        </div>
+        <div class="form-group">
+          <label>Common Customer Questions <span class="opt">optional but recommended</span></label>
+          <textarea name="faqs" placeholder="e.g. Do you offer emergency service? What areas do you cover? How much does a tune-up cost?"></textarea>
+        </div>
+        <div class="form-group">
+          <label>What sets you apart? <span class="opt">optional</span></label>
+          <textarea name="differentiators" class="short" placeholder="e.g. Family owned 20 years, same-day service, 5-star rated..."></textarea>
+        </div>
+        <div class="form-row">
+          <div><label>Emergency / after-hours number <span class="opt">optional</span></label><input type="text" name="emergency" placeholder="(555) 123-4567" /></div>
+          <div><label>Licenses or certifications <span class="opt">optional</span></label><input type="text" name="licensing" placeholder="e.g. Licensed &amp; insured in Ohio" /></div>
+        </div>
+
+        <!-- Section: Website -->
+        <div class="form-divider">Your Website</div>
+        <div class="form-group">
+          <label>Website URL <span class="opt">optional</span></label>
+          <input type="text" name="website" id="obWebsiteInput" placeholder="www.smithhvac.com" />
+          <div style="font-size:11px;color:#b45309;margin-top:5px;">⚠ Please verify this is your correct website URL — Google occasionally links the wrong site.</div>
+        </div>
+        <div class="form-group">
+          <label>Website Platform <span class="opt">so we know how to install your bot</span></label>
+          <select name="platform" style="width:100%;padding:12px 15px;border:1.5px solid var(--border);border-radius:10px;font-size:14px;font-family:inherit;background:white;color:var(--text);outline:none;">
             <option value="">Select your platform</option>
             <option value="wordpress">WordPress</option>
             <option value="wix">Wix</option>
@@ -200,45 +226,34 @@ textarea.short { min-height: 70px; }
             <option value="other">Other / Not sure</option>
           </select>
         </div>
-        <div class="form-group">
-          <label>Main services</label>
-          <textarea name="services" placeholder="e.g. AC repair, furnace installation, tune-ups, emergency service..."></textarea>
-        </div>
-        <div class="form-group">
-          <label>Common customer questions</label>
-          <textarea name="faqs" placeholder="e.g. Do you offer emergency service? What areas do you cover? How much does a tune-up cost?"></textarea>
-        </div>
-        <div class="form-group">
-          <label>What sets you apart? <span class="opt">optional</span></label>
-          <textarea name="differentiators" class="short" placeholder="e.g. Family owned 20 years, same-day service, 5-star rated..."></textarea>
-        </div>
-        <div class="form-row">
-          <div><label>Emergency / after-hours number <span class="opt">optional</span></label><input type="text" name="emergency" placeholder="(555) 123-4567" /></div>
-          <div><label>Licenses or certifications <span class="opt">optional</span></label><input type="text" name="licensing" placeholder="e.g. Licensed &amp; insured in Ohio" /></div>
-        </div>
+
+        <!-- Section: Bot Preferences -->
+        <div class="form-divider">Bot Preferences</div>
         <div class="form-group">
           <label>What should your bot collect from visitors?</label>
           <select name="leadCapture" id="leadCaptureSelect">
-            <option value="name_phone">Name and phone (you call them back) (HVAC, plumbing, contractors)</option>
-            <option value="name_email">Name and email (you follow up digitally) (law, real estate, consulting)</option>
+            <option value="name_phone">Name and phone — you call them back (HVAC, plumbing, contractors)</option>
+            <option value="name_email">Name and email — you follow up digitally (law, real estate, consulting)</option>
             <option value="name_email_date">Name, email, and preferred date (dental, salons, gyms, vets)</option>
             <option value="reservation">Name, date, time, party size (restaurants, event spaces)</option>
             <option value="email_only">Email only (retail, product sellers, ecommerce)</option>
           </select>
         </div>
-        <div class="form-group">
-          <label>Bot tone</label>
-          <select name="tone">
-            <option value="Friendly and casual">Friendly &amp; casual</option>
-            <option value="Professional and formal">Professional &amp; formal</option>
-            <option value="Warm and empathetic">Warm &amp; empathetic</option>
-            <option value="Straight to the point">Straight to the point</option>
-            <option value="Upbeat and energetic">Upbeat &amp; energetic</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Bot name <span class="opt">optional</span></label>
-          <input type="text" name="botPersonality" placeholder="e.g. Aria, Max , or leave blank to use your business name" />
+        <div class="form-row">
+          <div>
+            <label>Bot tone</label>
+            <select name="tone">
+              <option value="Friendly and casual">Friendly &amp; casual</option>
+              <option value="Professional and formal">Professional &amp; formal</option>
+              <option value="Warm and empathetic">Warm &amp; empathetic</option>
+              <option value="Straight to the point">Straight to the point</option>
+              <option value="Upbeat and energetic">Upbeat &amp; energetic</option>
+            </select>
+          </div>
+          <div>
+            <label>Bot name <span class="opt">optional</span></label>
+            <input type="text" name="botPersonality" placeholder="e.g. Aria, Max, or leave blank" />
+          </div>
         </div>
         <div class="form-group">
           <label>Bot color <span class="opt">optional</span></label>
