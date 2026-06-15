@@ -814,6 +814,24 @@ function renderPortal(bizKey, reviewData, analyticsData, convData, infoData) {
     html += '</div>'; // end review section
   }
 
+  // -- ACTIVATE SECTION for non-bot plans (review-only, campaign-only) --
+  if (!showBot) {
+    var isActivatedNonBot = infoData && infoData.activated;
+    var activatedAtNonBot = infoData && infoData.activatedAt ? new Date(infoData.activatedAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : null;
+    if (!isActivatedNonBot) {
+      html += '<div style="background:#fffbeb;border:2px solid #fcd34d;border-radius:var(--radius);padding:24px;margin-bottom:24px;">';
+      html += '<div style="font-size:15px;font-weight:700;color:#0f172a;margin-bottom:6px;">Activate your subscription</div>';
+      html += '<div style="font-size:13px;color:#64748b;line-height:1.6;margin-bottom:16px;">Everything is set up and ready to go. Hit Activate to start your subscription &#8212; you won&#39;t be charged until you do.</div>';
+      html += '<button onclick="activateBot(&quot;' + escHtml(baseKey) + '&quot;)" id="activateBtn" style="background:#16a34a;color:white;border:none;padding:12px 24px;border-radius:99px;font-size:14px;font-weight:700;cursor:pointer;">Activate Now</button>';
+      html += '</div>';
+    } else {
+      html += '<div style="background:#f0fdf4;border:1.5px solid #86efac;border-radius:var(--radius);padding:16px 20px;margin-bottom:24px;display:flex;align-items:center;gap:10px;">';
+      html += '<svg style="width:18px;height:18px;stroke:#16a34a;fill:none;stroke-width:2.5;flex-shrink:0;" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>';
+      html += '<div style="font-size:13px;font-weight:600;color:#15803d;">Subscription active' + (activatedAtNonBot ? ' since ' + activatedAtNonBot : '') + '.</div>';
+      html += '</div>';
+    }
+  }
+
   // ======================================
   // -- MISSED CALL TEXT-BACK SECTION --
   // ======================================
