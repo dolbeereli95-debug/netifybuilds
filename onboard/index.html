@@ -330,6 +330,29 @@ textarea.short { min-height: 70px; }
           </div>
           <div style="font-size:11px;color:#64748b;">Selected: <span id="obReviewColorPreview" style="font-weight:600;color:#2563eb;">#2563eb</span></div>
         </div>
+        <div class="form-group">
+          <label>Do you use a CRM or job management app? <span class="opt">optional</span></label>
+          <select name="crmType" id="obCrmType" onchange="obToggleCrmAutoSend()">
+            <option value="">No CRM / I track jobs manually</option>
+            <option value="jobber">Jobber</option>
+            <option value="housecall_pro">Housecall Pro</option>
+            <option value="servicetitan">ServiceTitan</option>
+            <option value="fieldedge">FieldEdge</option>
+            <option value="google_sheets">Google Sheets</option>
+            <option value="zapier">Other (I use Zapier)</option>
+          </select>
+        </div>
+        <div id="obAutoSendWrap" style="display:none;">
+          <div style="background:#f0fdf4;border:1.5px solid #86efac;border-radius:12px;padding:16px 18px;margin-top:4px;">
+            <div style="font-size:13px;font-weight:700;color:#15803d;margin-bottom:6px;">Auto-Send add-on available</div>
+            <div style="font-size:13px;color:#374151;line-height:1.6;margin-bottom:12px;">We can connect your CRM so review requests fire automatically after every completed job — no manual sending needed. <strong>$50/month add-on.</strong></div>
+            <label style="display:flex;align-items:center;gap:10px;cursor:pointer;">
+              <input type="checkbox" name="autoSend" id="obAutoSend" style="width:16px;height:16px;accent-color:#16a34a;cursor:pointer;" />
+              <span style="font-size:13px;color:#15803d;font-weight:600;">Yes, add Auto-Send for $50/month</span>
+            </label>
+          </div>
+        </div>
+        <input type="hidden" name="crmAutoSend" id="obCrmAutoSendValue" value="false" />
       </div>
 
       <!-- CAMPAIGN FIELDS -->
@@ -586,6 +609,28 @@ textarea.short { min-height: 70px; }
   window.obPickBotColor = obPickBotColor;
   window.obPickReviewColor = obPickReviewColor;
 
+  function obToggleCrmAutoSend() {
+    var crm = document.getElementById('obCrmType');
+    var wrap = document.getElementById('obAutoSendWrap');
+    var compatible = ['jobber','housecall_pro','servicetitan','fieldedge','google_sheets','zapier'];
+    if (crm && wrap) {
+      var show = compatible.indexOf(crm.value) !== -1;
+      wrap.style.display = show ? 'block' : 'none';
+      if (!show) {
+        document.getElementById('obAutoSend').checked = false;
+        document.getElementById('obCrmAutoSendValue').value = 'false';
+      }
+    }
+  }
+  window.obToggleCrmAutoSend = obToggleCrmAutoSend;
+
+  // Keep hidden input in sync with checkbox
+  document.addEventListener('change', function(e) {
+    if (e.target && e.target.id === 'obAutoSend') {
+      document.getElementById('obCrmAutoSendValue').value = e.target.checked ? 'true' : 'false';
+    }
+  });
+
   // ── GOOGLE PLACES (New API 2025) ──
   var obBizTimer = null;
 
@@ -838,6 +883,8 @@ textarea.short { min-height: 70px; }
         googleReviewLink: v('googleReviewLink'),
         alertEmail:       v('alertEmail'),
         reviewColor:      v('reviewColor'),
+        crmType:          v('crmType'),
+        autoSend:         v('crmAutoSendValue') === 'true',
         campaignListSize: v('campaignListSize'),
         campaignListFormat: v('campaignListFormat'),
         extraCampaigns:   v('extraCampaigns'),

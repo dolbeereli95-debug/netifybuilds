@@ -1604,6 +1604,30 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
                   </div>
                 </div>
               </div>
+                <div class="form-group" id="obCrmWrap" style="display:none;">
+                  <label>Do you use a CRM or job management app? <span class="opt">optional</span></label>
+                  <select name="crmType" id="mainCrmType" onchange="mainToggleCrmAutoSend()">
+                    <option value="">No CRM / I track jobs manually</option>
+                    <option value="jobber">Jobber</option>
+                    <option value="housecall_pro">Housecall Pro</option>
+                    <option value="servicetitan">ServiceTitan</option>
+                    <option value="fieldedge">FieldEdge</option>
+                    <option value="google_sheets">Google Sheets</option>
+                    <option value="zapier">Other (I use Zapier)</option>
+                  </select>
+                </div>
+                <div id="mainAutoSendWrap" style="display:none;">
+                  <div style="background:#f0fdf4;border:1.5px solid #86efac;border-radius:12px;padding:16px 18px;margin-top:4px;">
+                    <div style="font-size:13px;font-weight:700;color:#15803d;margin-bottom:6px;">Auto-Send add-on available</div>
+                    <div style="font-size:13px;color:#374151;line-height:1.6;margin-bottom:12px;">We can connect your CRM so review requests fire automatically after every completed job. <strong>$50/month add-on.</strong></div>
+                    <label style="display:flex;align-items:center;gap:10px;cursor:pointer;">
+                      <input type="checkbox" name="autoSend" id="mainAutoSend" style="width:16px;height:16px;accent-color:#16a34a;cursor:pointer;" />
+                      <span style="font-size:13px;color:#15803d;font-weight:600;">Yes, add Auto-Send for $50/month</span>
+                    </label>
+                  </div>
+                </div>
+                <input type="hidden" name="crmAutoSend" id="mainCrmAutoSendValue" value="false" />
+              </div>
 
               <!-- CAMPAIGN FIELDS — shown when reactivation campaign is in bundle -->
               <div id="campaignFormFields" style="display:none;">
@@ -2290,6 +2314,39 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
         '#nb-input-box:focus-within { border-color: ' + hex + ' !important; box-shadow: 0 0 0 3px ' + hex + '15 !important; }';
     }
   }
+
+  // Show CRM field when review product is selected
+  function mainShowCrmIfReview() {
+    var hasReview = document.querySelector('[data-product="review"]') && document.querySelector('[data-product="review"]').classList.contains('selected');
+    var wrap = document.getElementById('obCrmWrap');
+    if (wrap) wrap.style.display = hasReview ? 'block' : 'none';
+    if (!hasReview) {
+      mainToggleCrmAutoSend();
+    }
+  }
+  function mainToggleCrmAutoSend() {
+    var crm = document.getElementById('mainCrmType');
+    var wrap = document.getElementById('mainAutoSendWrap');
+    var compatible = ['jobber','housecall_pro','servicetitan','fieldedge','google_sheets','zapier'];
+    if (crm && wrap) {
+      var show = compatible.indexOf(crm.value) !== -1;
+      wrap.style.display = show ? 'block' : 'none';
+      if (!show) {
+        var cb = document.getElementById('mainAutoSend');
+        if (cb) cb.checked = false;
+        var hid = document.getElementById('mainCrmAutoSendValue');
+        if (hid) hid.value = 'false';
+      }
+    }
+  }
+
+  document.addEventListener('change', function(e) {
+    if (e.target && e.target.id === 'mainAutoSend') {
+      var hid = document.getElementById('mainCrmAutoSendValue');
+      if (hid) hid.value = e.target.checked ? 'true' : 'false';
+    }
+  });
+
   function pickBrandColor(hex, el) {
     document.getElementById('brandColorValue').value = hex;
     var prev = document.getElementById('brandColorPreview');
@@ -2476,9 +2533,11 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
           tone: v('tone'),
           botPersonality: v('botPersonality'),
           botColor: v('botColor'),
-          reviewColor: v('brandColor') || v('botColor'),
           googleReviewLink: v('googleLink') || v('googleReviewLink'),
           alertEmail: v('alertEmail'),
+          reviewColor: document.getElementById('brandColorValue') ? document.getElementById('brandColorValue').value : '#2563eb',
+          crmType: v('crmType'),
+          autoSend: (function(){ var cb = document.getElementById('mainAutoSend'); return cb && cb.checked; })(),
           campaignListSize: v('campaignListSize'),
           campaignListFormat: v('campaignListFormat'),
           hearAbout: v('hearAbout'),

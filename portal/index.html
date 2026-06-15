@@ -781,6 +781,39 @@ function renderPortal(bizKey, reviewData, analyticsData, convData, infoData) {
     html += '<a href="https://botbuilder-backend-production.up.railway.app/send-page/' + escHtml(baseKey) + '" target="_blank" style="display:block;text-align:center;padding:12px;background:var(--navy);color:white;border-radius:10px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;font-weight:700;text-decoration:none;">Open Quick Send Page -></a>';
     html += '<p style="font-size:11px;color:var(--muted);text-align:center;margin-top:8px;">Bookmark this page on your phone home screen for one-tap access after jobs</p>';
     html += '</div>';
+
+    // Auto-send webhook section
+    var hasAutoSend = infoData && infoData.autoSend;
+    if (hasAutoSend) {
+      var webhookUrl = 'https://botbuilder-backend-production.up.railway.app/crm-webhook/' + escHtml(baseKey);
+      html += '<div class="section-title"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12l2 2 4-4"/></svg>Auto-Send — Active</div>';
+      html += '<div style="background:#f0fdf4;border:1.5px solid #86efac;border-radius:var(--radius);padding:20px 24px;margin-bottom:24px;">';
+      html += '<p style="font-size:13px;color:#15803d;font-weight:600;margin-bottom:8px;">Your webhook URL</p>';
+      html += '<p style="font-size:12px;color:#374151;margin-bottom:12px;line-height:1.6;">Paste this URL into Zapier as a Webhook POST action. When a job is marked complete in your CRM, the review SMS fires automatically 30 minutes later.</p>';
+      html += '<div style="background:white;border:1px solid #86efac;border-radius:10px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px;">';
+      html += '<code style="font-size:11px;color:#15803d;font-family:monospace;word-break:break-all;flex:1;">' + webhookUrl + '</code>';
+      html += '<button onclick="navigator.clipboard.writeText(\'' + webhookUrl + '\').then(function(){var b=document.getElementById(\'copyWebhookBtn\');b.textContent=\'Copied!\';setTimeout(function(){b.textContent=\'Copy\';},2000);})" id="copyWebhookBtn" style="background:#16a34a;color:white;border:none;border-radius:8px;padding:6px 12px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;flex-shrink:0;">Copy</button>';
+      html += '</div>';
+      html += '<details style="cursor:pointer;">';
+      html += '<summary style="font-size:13px;font-weight:600;color:#15803d;list-style:none;">How to set up in Zapier</summary>';
+      html += '<ol style="margin:12px 0 0 16px;display:flex;flex-direction:column;gap:6px;">';
+      html += '<li style="font-size:13px;color:#374151;">Go to zapier.com and create a new Zap</li>';
+      html += '<li style="font-size:13px;color:#374151;">Trigger: choose your CRM app and select the "Job Completed" or "Invoice Paid" event</li>';
+      html += '<li style="font-size:13px;color:#374151;">Action: search for "Webhooks by Zapier" and select POST</li>';
+      html += '<li style="font-size:13px;color:#374151;">Paste your webhook URL above into the URL field</li>';
+      html += '<li style="font-size:13px;color:#374151;">Map your customer name field to "customerName" and phone to "customerPhone"</li>';
+      html += '<li style="font-size:13px;color:#374151;">Turn on the Zap — review requests will fire automatically after every completed job</li>';
+      html += '</ol>';
+      html += '<p style="font-size:12px;color:#6b7280;margin-top:10px;">Using Google Sheets? Use the "New Row" trigger in Google Sheets instead of a CRM app.</p>';
+      html += '</details>';
+      html += '</div>';
+    } else {
+      html += '<div style="background:#fffbeb;border:1.5px solid #fcd34d;border-radius:var(--radius);padding:18px 20px;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">';
+      html += '<div><div style="font-size:13px;font-weight:700;color:#0f172a;margin-bottom:4px;">Auto-Send — Not Active</div>';
+      html += '<div style="font-size:13px;color:#64748b;">Connect your CRM or Google Sheets to send review requests automatically after every job. $50/month add-on.</div></div>';
+      html += '<a href="mailto:netifybuilds@gmail.com?subject=Auto-Send%20Add-On&body=Hi%20Eli%2C%20I%20would%20like%20to%20set%20up%20the%20Auto-Send%20add-on%20for%20my%20account." style="background:var(--navy);color:white;padding:10px 18px;border-radius:10px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;font-weight:700;text-decoration:none;white-space:nowrap;">Add for $50/mo</a>';
+      html += '</div>';
+    }
     html += '<div class="section-title" style="' + (negativeFeedback.length > 0 ? 'color:#dc2626;' : '') + '"><svg viewBox="0 0 24 24" style="' + (negativeFeedback.length > 0 ? 'stroke:#dc2626;' : '') + '"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>Private Feedback' + (negativeFeedback.length > 0 ? ' <span style="background:#fee2e2;color:#dc2626;font-size:11px;padding:2px 8px;border-radius:99px;font-weight:700;">' + negativeFeedback.length + '</span>' : '') + '</div>';
     if (negativeFeedback.length > 0) {
       var unresolvedCnt = negativeFeedback.filter(function(fb){ return !fb.resolved; }).length;
