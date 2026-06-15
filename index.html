@@ -2324,7 +2324,7 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
       mainToggleCrmAutoSend();
     }
   }
-  function mainToggleCrmAutoSend() {
+  window.mainToggleCrmAutoSend = function mainToggleCrmAutoSend() {
     var crm = document.getElementById('mainCrmType');
     var wrap = document.getElementById('mainAutoSendWrap');
     var compatible = ['jobber','housecall_pro','servicetitan','fieldedge','google_sheets','zapier'];
@@ -2470,6 +2470,8 @@ footer { background: var(--navy-deep); color: white; padding: 64px 24px 40px; }
     document.getElementById('formReveal').style.display = 'block';
     document.getElementById('botFormFields').style.display = activePlan.bot ? 'block' : 'none';
     document.getElementById('reviewFormFields').style.display = activePlan.review ? 'block' : 'none';
+    var crmWrap = document.getElementById('obCrmWrap'); if (crmWrap) crmWrap.style.display = activePlan.review ? 'block' : 'none';
+    if (!activePlan.review) { var cb = document.getElementById('mainAutoSend'); if (cb) cb.checked = false; var hid = document.getElementById('mainCrmAutoSendValue'); if (hid) hid.value = 'false'; document.getElementById('mainAutoSendWrap').style.display = 'none'; }
     document.getElementById('campaignFormFields').style.display = activePlan.campaign ? 'block' : 'none';
     // Set hidden fields
     var planParts = [];
