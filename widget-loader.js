@@ -129,7 +129,7 @@
       '</div>' +
       '<div id="nb-messages"></div>' +
       '<div id="nb-quick-replies"></div>' +
-      '<div id="nb-input-row"><div id="nb-input-box"><input id="nb-input" placeholder="Type a message..." autocomplete="off" /><button id="nb-send"><svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button></div><div id="nb-chat-foot">Powered by Netify Builds</div></div>' +
+      '<div id="nb-trial-banner" style="display:none;padding:6px 14px 0;"><div style="background:#FFF7ED;border:1.5px solid #FED7AA;border-radius:10px;padding:7px 12px;display:flex;align-items:center;justify-content:space-between;"><span id="nb-trial-text" style="font-size:11.5px;font-weight:600;color:#C2410C;"></span></div></div><div id="nb-input-row"><div id="nb-input-box"><input id="nb-input" placeholder="Type a message..." autocomplete="off" /><button id="nb-send"><svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button></div><div id="nb-chat-foot">Powered by Netify Builds</div></div>' +
     '</div>';
   document.body.appendChild(box);
 
@@ -309,10 +309,45 @@
       var data = {};
       try { data = await res.json(); } catch(e) {}
       var reply = (data && data.reply) || '';
-      if (!reply && data && data.error && data.error.includes('not yet activated')) {
+      // Handle trial exhausted
+      if (!reply && data && data.error === 'trial_exhausted') {
+        try { typing.remove(); } catch(e) {}
+        // Disable input and show locked state
+        var inputEl = document.getElementById('nb-input');
+        var sendEl = document.getElementById('nb-send');
+        if (inputEl) { inputEl.disabled = true; inputEl.placeholder = 'Activate to continue...'; }
+        if (sendEl) { sendEl.disabled = true; sendEl.style.opacity = '0.4'; }
+        var banner = document.getElementById('nb-trial-banner');
+        var bannerText = document.getElementById('nb-trial-text');
+        if (banner && bannerText) {
+          bannerText.textContent = '0 trial messages remaining';
+          banner.style.display = 'block';
+          banner.querySelector('div').style.background = '#FEF2F2';
+          banner.querySelector('div').style.borderColor = '#FECACA';
+          bannerText.style.color = '#DC2626';
+        }
+        addMsg('You\'ve used all your trial messages. Log into your client portal and hit Activate to go live!', 'bot');
+        input.disabled = false;
+        return;
+      } else if (!reply && data && data.error && data.error.includes('not yet activated')) {
         reply = "This bot isn't live yet. The business owner still needs to activate it. Check back soon!";
       } else if (!reply) {
         reply = 'Sorry, something went wrong. Please try again.';
+      }
+      // Show trial countdown banner if applicable
+      if (typeof data.trialRemaining === 'number') {
+        var banner = document.getElementById('nb-trial-banner');
+        var bannerText = document.getElementById('nb-trial-text');
+        if (banner && bannerText) {
+          banner.style.display = 'block';
+          var left = data.trialRemaining;
+          bannerText.textContent = left + ' trial message' + (left === 1 ? '' : 's') + ' remaining';
+          if (left <= 2) {
+            banner.querySelector('div').style.background = '#FEF2F2';
+            banner.querySelector('div').style.borderColor = '#FECACA';
+            bannerText.style.color = '#DC2626';
+          }
+        }
       }
       try { typing.remove(); } catch(e) {}
       if (!leadCaptured && reply.includes('LEAD_CAPTURED|')) {
