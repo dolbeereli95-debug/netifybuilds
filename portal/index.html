@@ -1084,9 +1084,13 @@ async function activateBot(bizKey) {
       body: JSON.stringify({ bizKey: bizKey })
     });
     var data = await res.json();
-    if (data.success) {
+    if (data.checkoutUrl) {
+      // Redirect to Stripe Checkout
+      window.location.href = data.checkoutUrl;
+    } else if (data.success) {
+      // Already activated or no Stripe yet — just refresh portal
       sessionStorage.setItem('nb_post_activate', '1');
-      window.location.href = 'https://buy.stripe.com/PLACEHOLDER';
+      fetchPortalData(bizKey);
     } else {
       alert('Something went wrong. Email netifybuilds@gmail.com');
       if (btn) { btn.textContent = 'Activate My Bot'; btn.disabled = false; }
