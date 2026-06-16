@@ -279,21 +279,28 @@ function showLogin() { document.getElementById('signupView').style.display='none
 
 function login() {
   var key = document.getElementById('resellerKeyInput').value.trim().toLowerCase();
-  if (!key) return;
   var err = document.getElementById('loginError');
   err.style.display='none';
+  if (!key) { err.textContent='Please enter your access code.'; err.style.display='block'; return; }
+  var btn = document.querySelector('#loginView .btn-primary');
+  if (btn) { btn.textContent = 'Signing in...'; btn.disabled = true; }
   fetch(BACKEND + '/reseller-login', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ resellerKey: key }) })
     .then(function(r){return r.json();})
     .then(function(data){
+      if (btn) { btn.textContent = 'Sign In →'; btn.disabled = false; }
       if (data.success) {
         currentResellerKey = key;
         localStorage.setItem('nb_reseller_key', key);
         renderDashboard(data);
       } else {
-        err.textContent = data.error || 'Access code not found.';
+        err.textContent = data.error || 'Access code not found. Check your welcome email.';
         err.style.display='block';
       }
-    }).catch(function(){ err.textContent='Could not connect. Try again.'; err.style.display='block'; });
+    }).catch(function(){
+      if (btn) { btn.textContent = 'Sign In →'; btn.disabled = false; }
+      err.textContent='Could not connect. Try again.';
+      err.style.display='block';
+    });
 }
 
 async function signup() {
@@ -304,9 +311,12 @@ async function signup() {
   var err = document.getElementById('signupError');
   if (!name || !email) { err.textContent='Name and email are required.'; err.style.display='block'; return; }
   err.style.display='none';
+  var btn = document.querySelector('#signupView .btn-primary');
+  if (btn) { btn.textContent = 'Creating account...'; btn.disabled = true; }
   try {
     var res = await fetch(BACKEND + '/reseller-signup', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ name, email, agencyName: agency, website }) });
     var data = await res.json();
+    if (btn) { btn.textContent = 'Create Free Account →'; btn.disabled = false; }
     if (data.success) {
       currentResellerKey = data.resellerKey;
       localStorage.setItem('nb_reseller_key', data.resellerKey);
@@ -318,7 +328,7 @@ async function signup() {
       err.textContent = data.error || 'Something went wrong.';
       err.style.display='block';
     }
-  } catch(e) { err.textContent='Could not connect. Try again.'; err.style.display='block'; }
+  } catch(e) { if (btn) { btn.textContent = 'Create Free Account →'; btn.disabled = false; } err.textContent='Could not connect. Try again.'; err.style.display='block'; }
 }
 
 document.getElementById('resellerKeyInput').addEventListener('keypress', function(e){ if(e.key==='Enter') login(); });
