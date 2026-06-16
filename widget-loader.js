@@ -36,6 +36,41 @@
           _nbQuickReplies.question.unshift('Book an appointment');
           _nbQuickReplies.question = _nbQuickReplies.question.slice(0, 4);
         }
+
+        // Auto-scan page for reseller bots that haven't been set up yet
+        if (cfg.whiteLabel && !data.siteScanned && !data.clientSetupCompletedAt) {
+          setTimeout(function() {
+            try {
+              // Extract visible text from the page, skip scripts/styles/nav/footer
+              var skipTags = ['SCRIPT','STYLE','NOSCRIPT','SVG','IFRAME','NAV','FOOTER'];
+              var walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+                acceptNode: function(node) {
+                  var p = node.parentElement;
+                  while (p) {
+                    if (skipTags.indexOf(p.tagName) !== -1) return NodeFilter.FILTER_REJECT;
+                    if (p.id === 'nb-widget-container') return NodeFilter.FILTER_REJECT;
+                    p = p.parentElement;
+                  }
+                  return node.textContent.trim() ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+                }
+              });
+              var texts = [];
+              var node;
+              while ((node = walker.nextNode()) && texts.length < 300) {
+                var t = node.textContent.trim();
+                if (t.length > 3) texts.push(t);
+              }
+              var pageText = texts.join(' ').replace(/\s+/g, ' ').substring(0, 8000);
+              if (pageText.length > 100) {
+                fetch(BACKEND_URL + '/reseller-scan-site', {
+                  method: 'POST',
+                  headers: {'Content-Type': 'application/json'},
+                  body: JSON.stringify({ bizKey: BIZ_KEY, pageText: pageText, pageUrl: window.location.href })
+                }).catch(function() {});
+              }
+            } catch(e) {}
+          }, 1500);
+        }
       })
       .catch(function() {});
   }
@@ -117,7 +152,7 @@
           '<div class="nb-btn-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>' +
         '</button>' +
       '</div>' +
-      '<div id="nb-home-footer">Powered by Netify Builds</div>' +
+      '<div id="nb-home-footer">' + (window.__nb && window.__nb.whiteLabel ? '' : 'Powered by Netify Builds') + '</div>' +
     '</div>' +
     '<div id="nb-chat-screen">' +
       '<div id="nb-chat-top">' +
@@ -129,7 +164,7 @@
       '</div>' +
       '<div id="nb-messages"></div>' +
       '<div id="nb-quick-replies"></div>' +
-      '<div id="nb-trial-banner" style="display:none;padding:6px 14px 0;"><div style="background:#FFF7ED;border:1.5px solid #FED7AA;border-radius:10px;padding:7px 12px;display:flex;align-items:center;justify-content:space-between;"><span id="nb-trial-text" style="font-size:11.5px;font-weight:600;color:#C2410C;"></span></div></div><div id="nb-input-row"><div id="nb-input-box"><input id="nb-input" placeholder="Type a message..." autocomplete="off" /><button id="nb-send"><svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button></div><div id="nb-chat-foot">Powered by Netify Builds</div></div>' +
+      '<div id="nb-trial-banner" style="display:none;padding:6px 14px 0;"><div style="background:#FFF7ED;border:1.5px solid #FED7AA;border-radius:10px;padding:7px 12px;display:flex;align-items:center;justify-content:space-between;"><span id="nb-trial-text" style="font-size:11.5px;font-weight:600;color:#C2410C;"></span></div></div><div id="nb-input-row"><div id="nb-input-box"><input id="nb-input" placeholder="Type a message..." autocomplete="off" /><button id="nb-send"><svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button></div><div id="nb-chat-foot">' + (window.__nb && window.__nb.whiteLabel ? '' : 'Powered by Netify Builds') + '</div></div>' +
     '</div>';
   document.body.appendChild(box);
 

@@ -902,7 +902,7 @@ function renderPortal(bizKey, reviewData, analyticsData, convData, infoData) {
 
     html += '<div style="background:white;border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;margin-bottom:24px;">';
     html += '<div style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:8px;">How it works</div>';
-    html += '<div style="font-size:13px;color:var(--soft);line-height:1.75;">Each quarter we write a professional SMS campaign for your past customer list, send it to you for approval, then send it out. Replies come back as leads automatically -- you do nothing.</div>';
+    html += '<div style="font-size:13px;color:var(--soft);line-height:1.75;">Each quarter a seasonal SMS campaign fires automatically to your past customer list based on your industry. Replies come back as leads automatically -- you do nothing.</div>';
     html += '</div>';
 
     if (campaignListSize || campaignListFormat) {
@@ -913,10 +913,22 @@ function renderPortal(bizKey, reviewData, analyticsData, convData, infoData) {
       html += '</div>';
     }
 
-    html += '<div style="background:#f0fdf4;border:1.5px solid #86efac;border-radius:var(--radius);padding:16px 20px;margin-bottom:24px;">';
-    html += '<div style="font-size:13px;font-weight:600;color:#15803d;margin-bottom:4px;">Ready to get started?</div>';
-    html += '<div style="font-size:13px;color:#374151;line-height:1.6;">Reply to your onboarding email with your customer list (spreadsheet, CSV, or export from your CRM) and Eli will get everything set up before your first campaign.</div>';
-    html += '</div>';
+    // Customer list upload section
+    var hasList = infoData && infoData.campaignContacts && infoData.campaignContacts.length > 0;
+    if (hasList) {
+      html += '<div style="background:#f0fdf4;border:1.5px solid #86efac;border-radius:var(--radius);padding:16px 20px;margin-bottom:24px;">';
+      html += '<div style="font-size:13px;font-weight:600;color:#15803d;margin-bottom:4px;">Customer list loaded</div>';
+      html += '<div style="font-size:13px;color:#374151;line-height:1.6;">' + (infoData.campaignContacts.length) + ' contacts ready for your next campaign. Campaigns fire automatically each quarter.</div>';
+      html += '</div>';
+    } else {
+      html += '<div style="background:#fffbeb;border:1.5px solid #fcd34d;border-radius:var(--radius);padding:20px;margin-bottom:24px;">';
+      html += '<div style="font-size:14px;font-weight:700;color:#0f172a;margin-bottom:6px;">Upload your customer list</div>';
+      html += '<div style="font-size:13px;color:#64748b;line-height:1.6;margin-bottom:14px;">Paste your past customer names and phone numbers below, one per line. Format: Name, Phone (e.g. John Smith, 937-555-0182). Or just phone numbers if you do not have names.</div>';
+      html += '<textarea id="campaignListInput" placeholder="John Smith, 937-555-0182\nJane Doe, 937-555-0183\n937-555-0184" style="width:100%;padding:12px;border:1.5px solid #e2e8f0;border-radius:10px;font-family:monospace;font-size:12px;min-height:120px;resize:vertical;outline:none;margin-bottom:10px;"></textarea>';
+      html += '<button onclick="uploadCampaignList('' + escHtml(baseKey) + '')" style="background:var(--navy);color:white;border:none;padding:11px 20px;border-radius:10px;font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;">Save Customer List</button>';
+      html += '<div id="campaignListStatus" style="display:none;font-size:13px;color:#16a34a;font-weight:600;margin-top:10px;">List saved! Your campaigns are ready to fire.</div>';
+      html += '</div>';
+    }
 
     html += '</div>'; // end campaign section
   }
@@ -1184,6 +1196,38 @@ function dismissAppBanner() {
   try { localStorage.setItem('nb_app_dismissed', '1'); } catch(e) {}
   var banner = document.getElementById('appInstallBanner');
   if (banner) banner.style.display = 'none';
+}
+
+async function uploadCampaignList(bizKey) {
+  var input = document.getElementById('campaignListInput');
+  var status = document.getElementById('campaignListStatus');
+  if (!input || !input.value.trim()) { alert('Please paste your customer list first.'); return; }
+  var lines = input.value.trim().split('\n').filter(function(l) { return l.trim(); });
+  var contacts = lines.map(function(line) {
+    var parts = line.split(',').map(function(p) { return p.trim(); });
+    if (parts.length >= 2) {
+      return { name: parts[0], phone: parts.slice(1).join(',').trim() };
+    } else {
+      return { name: '', phone: parts[0] };
+    }
+  }).filter(function(c) { return c.phone; });
+  if (contacts.length === 0) { alert('No valid contacts found. Use format: Name, Phone or just phone numbers.'); return; }
+  try {
+    var res = await fetch(BACKEND + '/upload-campaign-list', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ bizKey: bizKey, contacts: contacts })
+    });
+    var data = await res.json();
+    if (data.success) {
+      if (status) status.style.display = 'block';
+      setTimeout(function() { fetchPortalData(bizKey); }, 1500);
+    } else {
+      alert('Something went wrong. Email netifybuilds@gmail.com');
+    }
+  } catch(e) {
+    alert('Could not save. Email netifybuilds@gmail.com');
+  }
 }
 
 function logout() {
