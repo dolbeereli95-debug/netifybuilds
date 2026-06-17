@@ -170,7 +170,7 @@ label{display:block;font-size:13px;font-weight:600;color:#374151;margin-bottom:5
 <div class="modal-overlay" id="newBotModal">
   <div class="modal">
     <h2>Create a New Bot</h2>
-    <p>Fill in what you know. You can send a setup link to your client for the rest.</p>
+    <p>Enter your client's business name and pick their brand color. You'll get an embed code to paste on their site, plus a setup link to send your client so they can fill in their business details.</p>
     <div class="form-group">
       <label>Client business name *</label>
       <input class="input" id="nb_bizName" placeholder="Smith HVAC" />
@@ -220,7 +220,7 @@ label{display:block;font-size:13px;font-weight:600;color:#374151;margin-bottom:5
 <div class="modal-overlay" id="embedModal">
   <div class="modal">
     <h2>Embed Code</h2>
-    <p>Paste this before the closing <code>&lt;/body&gt;</code> tag on your client's website.</p>
+    <p>Paste this before the closing <code>&lt;/body&gt;</code> tag on your client's website. The bot will appear right away but show a friendly "coming soon" message until you activate it — your client won't see any errors.</p>
     <div class="code-block">
       <pre id="embedCodeText"></pre>
       <button class="copy-btn" onclick="copyEmbed()">Copy</button>
@@ -234,7 +234,7 @@ label{display:block;font-size:13px;font-weight:600;color:#374151;margin-bottom:5
 <div class="modal-overlay" id="setupLinkModal">
   <div class="modal">
     <h2>Client Setup Link</h2>
-    <p>Send this link to your client. They fill out their business info and the bot updates automatically.</p>
+    <p>Send this link to your client. They fill out their hours, services, FAQs, and contact info. The bot learns from it automatically — you don't need to do anything else.</p>
     <div class="code-block">
       <pre id="setupLinkText" style="color:#93C5FD;"></pre>
       <button class="copy-btn" onclick="copySetupLink()">Copy</button>
@@ -381,6 +381,16 @@ function renderDashboard(data) {
   html += '</div>';
 
   // Bots
+  // How it works — shown only when they have no bots yet or always as a guide
+  html += '<div style="background:#EFF6FF;border:1.5px solid #BFDBFE;border-radius:var(--radius);padding:20px 24px;margin-bottom:24px;">';
+  html += '<div style="font-size:13px;font-weight:700;color:#1D4ED8;margin-bottom:14px;letter-spacing:0.02em;text-transform:uppercase;">How it works</div>';
+  html += '<div style="display:flex;flex-direction:column;gap:12px;">';
+  html += '<div style="display:flex;gap:12px;align-items:flex-start;"><div style="width:24px;height:24px;border-radius:50%;background:#2563EB;color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">1</div><div style="font-size:13px;color:#1e40af;line-height:1.6;"><strong>Create a bot</strong> — Click "+ New Bot", enter your client business name and pick their brand color. Takes 30 seconds.</div></div>';
+  html += '<div style="display:flex;gap:12px;align-items:flex-start;"><div style="width:24px;height:24px;border-radius:50%;background:#2563EB;color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">2</div><div style="font-size:13px;color:#1e40af;line-height:1.6;"><strong>Install the embed code</strong> — Paste the code before the closing &lt;/body&gt; tag on your client site. The bot appears immediately but shows a "coming soon" message until activated.</div></div>';
+  html += '<div style="display:flex;gap:12px;align-items:flex-start;"><div style="width:24px;height:24px;border-radius:50%;background:#2563EB;color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">3</div><div style="font-size:13px;color:#1e40af;line-height:1.6;"><strong>Send the client setup link</strong> — Your client fills out their business info (hours, services, FAQs). The bot automatically learns from it. Or use "Scan Site" to pre-fill it from their website.</div></div>';
+  html += '<div style="display:flex;gap:12px;align-items:flex-start;"><div style="width:24px;height:24px;border-radius:50%;background:#2563EB;color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">4</div><div style="font-size:13px;color:#1e40af;line-height:1.6;"><strong>Activate</strong> — Once the client is happy, hit Activate. $150 one-time + $100/month starts. The bot goes fully live instantly.</div></div>';
+  html += '</div></div>';
+
   html += '<div class="section-header"><div class="section-title">Your Bots</div></div>';
 
   if (bots.length === 0) {
@@ -417,9 +427,9 @@ function renderDashboard(data) {
       if (!bot.activated) {
         html += '<button class="btn-sm btn-activate" onclick="openActivateModal(\'' + escHtml(bot.bizKey) + '\',\'' + escHtml(bot.bizName || bot.bizKey) + '\')">Activate — $150</button>';
       }
-      html += '<button class="btn-sm btn-link" onclick="openSetupLink(\'' + escHtml(bot.bizKey) + '\')">Client Setup Link</button>';
+      html += '<button class="btn-sm btn-link" onclick="openSetupLink(\'' + escHtml(bot.bizKey) + '\')" title="Send this link to your client to fill in their business info">Client Setup Link</button>';
       if (!bot.activated) {
-        html += '<button class="btn-sm btn-copy" onclick="scanSite(\'' + escHtml(bot.bizKey) + '\')">Scan Site</button>';
+        html += '<button class="btn-sm btn-copy" onclick="scanSite(\'' + escHtml(bot.bizKey) + '\')" title="Scan their website to auto-fill the setup form">Scan Site</button>';
       }
       html += '<button class="btn-sm btn-copy" onclick="openEmbedCode(\'' + escHtml(bot.bizKey) + '\',\'' + escHtml(bot.bizName || '') + '\')">Embed Code</button>';
       html += '</div></div>';
