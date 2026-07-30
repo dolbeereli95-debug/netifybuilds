@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SMS Consent & Opt-In Process — Netify Builds</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--navy:#0A2540;--blue:#3B82F6;--text:#0F172A;--soft:#64748B;--border:#E2E8F0;--off:#F8FAFC;--green:#16A34A}
+body{font-family:'Inter',sans-serif;color:var(--text);background:white;line-height:1.7}
+nav{background:var(--navy);padding:0 24px;height:56px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:1.1rem;color:white;text-decoration:none}
+.nav-logo span{color:#93C5FD}
+nav a.back{font-size:13px;color:rgba(255,255,255,0.5);text-decoration:none}
+.wrap{max-width:760px;margin:0 auto;padding:56px 24px 80px}
+h1{font-family:'Plus Jakarta Sans',sans-serif;font-size:2rem;font-weight:800;color:var(--text);margin-bottom:6px;letter-spacing:-0.02em}
+.meta{font-size:13px;color:var(--soft);margin-bottom:40px}
+h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:1.1rem;font-weight:700;color:var(--text);margin:36px 0 12px}
+p{font-size:15px;color:#334155;margin-bottom:14px}
+ul{margin:8px 0 14px 20px;display:flex;flex-direction:column;gap:6px}
+li{font-size:15px;color:#334155}
+strong{color:var(--text);font-weight:600}
+.highlight{background:var(--off);border:1px solid var(--border);border-radius:12px;padding:20px 24px;margin:20px 0}
+a{color:var(--blue)}
+
+/* MOCKUP FORM */
+.mockup-wrap{background:var(--off);border:1px solid var(--border);border-radius:16px;padding:32px;margin:24px 0}
+.mockup-label{font-size:12px;font-weight:700;color:var(--soft);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:16px}
+.mockup-form{background:white;border:1px solid var(--border);border-radius:12px;padding:28px;max-width:440px}
+.mockup-title{font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:1rem;color:var(--text);margin-bottom:4px}
+.mockup-sub{font-size:13px;color:var(--soft);margin-bottom:20px}
+.field-group{margin-bottom:16px}
+.field-label{font-size:13px;font-weight:600;color:var(--text);margin-bottom:6px;display:block}
+.field-input{width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;color:var(--soft);background:#fafafa}
+.consent-box{display:flex;align-items:flex-start;gap:10px;background:#EFF6FF;border:1px solid #BFDBFE;border-radius:10px;padding:14px 16px;margin:20px 0}
+.consent-checkbox{width:18px;height:18px;border:2px solid var(--blue);border-radius:4px;flex-shrink:0;margin-top:2px;position:relative}
+.consent-checkbox::after{content:'✓';position:absolute;top:-3px;left:2px;color:var(--blue);font-weight:800;font-size:14px}
+.consent-text{font-size:13px;color:#334155;line-height:1.6}
+.submit-btn{background:var(--navy);color:white;border:none;padding:12px 20px;border-radius:8px;font-weight:700;font-size:14px;width:100%;margin-top:4px}
+
+.step-list{counter-reset:step;display:flex;flex-direction:column;gap:16px;margin:20px 0}
+.step{display:flex;gap:16px;align-items:flex-start}
+.step-num{counter-increment:step;background:var(--navy);color:white;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0}
+.step-num::before{content:counter(step)}
+.step-text{font-size:14px;color:#334155;padding-top:3px}
+
+.contact-card{background:var(--off);border:1px solid var(--border);border-radius:16px;padding:24px 28px;margin-top:48px}
+.contact-card h3{font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:700;margin-bottom:6px}
+.contact-card p{font-size:14px;color:var(--soft);margin:0}
+footer{background:var(--navy);color:rgba(255,255,255,0.4);text-align:center;padding:24px;font-size:13px}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../" class="nav-logo">Netify <span>Builds.</span></a>
+  <a href="../" class="back">← Back to home</a>
+</nav>
+<div class="wrap">
+  <h1>SMS Consent & Opt-In Process</h1>
+  <p class="meta">How businesses using Netify Builds collect SMS consent from their customers</p>
+
+  <p>Netify Builds provides a Reactivation Campaign service that allows local service businesses (HVAC, pest control, landscaping, pool service, and similar industries) to send seasonal SMS reminders to their own past customers. This page documents exactly how consent is collected before any customer is added to a messaging list.</p>
+
+  <div class="highlight">
+    <strong>Important:</strong> Netify Builds does not collect consent directly from end consumers. Consent is collected by our business clients at the point of service, using the process described below. Businesses confirm they have an existing relationship and proper consent from every contact before submitting a list to us.
+  </div>
+
+  <h2>How Consent Is Collected</h2>
+  <div class="step-list">
+    <div class="step"><div class="step-num"></div><div class="step-text">A customer hires a local service business (for example, an HVAC company) for a repair, installation, or maintenance visit.</div></div>
+    <div class="step"><div class="step-num"></div><div class="step-text">During the service visit or checkout process, the business collects the customer's name and phone number on an intake form, invoice, or service agreement.</div></div>
+    <div class="step"><div class="step-num"></div><div class="step-text">The form includes a clear, unchecked consent checkbox (shown in the mockup below) that the customer must actively check to opt in to text message reminders.</div></div>
+    <div class="step"><div class="step-num"></div><div class="step-text">Only customers who checked this box are included in the business's list submitted to Netify Builds for seasonal reactivation texts.</div></div>
+    <div class="step"><div class="step-num"></div><div class="step-text">Every message sent includes a clear STOP opt-out instruction, honored immediately and permanently.</div></div>
+  </div>
+
+  <h2>Sample Opt-In Form</h2>
+  <p>Below is a representative mockup of the intake form language and consent checkbox that our business clients are instructed to use when collecting customer information:</p>
+
+  <div class="mockup-wrap">
+    <div class="mockup-label">Example — Service Intake Form</div>
+    <div class="mockup-form">
+      <div class="mockup-title">Service Request Form</div>
+      <div class="mockup-sub">Smith HVAC Co. — New Customer Intake</div>
+
+      <div class="field-group">
+        <label class="field-label">Full Name</label>
+        <div class="field-input">Jane Doe</div>
+      </div>
+      <div class="field-group">
+        <label class="field-label">Phone Number</label>
+        <div class="field-input">(555) 123-4567</div>
+      </div>
+      <div class="field-group">
+        <label class="field-label">Service Needed</label>
+        <div class="field-input">AC Repair</div>
+      </div>
+
+      <div class="consent-box">
+        <div class="consent-checkbox"></div>
+        <div class="consent-text">I would like to receive occasional text message reminders about seasonal maintenance and service offers from Smith HVAC Co. Message and data rates may apply. Message frequency varies. Reply STOP at any time to unsubscribe. Reply HELP for help. View <a href="/privacy">Privacy Policy</a> and <a href="/terms">Terms of Service</a>.</div>
+      </div>
+
+      <div class="submit-btn">Submit Request</div>
+    </div>
+  </div>
+
+  <h2>Required Disclosures</h2>
+  <p>Every opt-in checkbox used by our business clients must include the following disclosures, matching the language shown in the mockup above:</p>
+  <ul>
+    <li>Clear statement that the customer is agreeing to receive text messages</li>
+    <li>"Message and data rates may apply"</li>
+    <li>Message frequency disclosure (e.g. "varies" or a specific cadence)</li>
+    <li>Instructions to reply STOP to opt out</li>
+    <li>Instructions to reply HELP for assistance</li>
+    <li>A link to the Privacy Policy and Terms of Service</li>
+  </ul>
+
+  <h2>Opt-Out Handling</h2>
+  <p>Any recipient may reply <strong>STOP</strong> at any time to immediately and permanently unsubscribe from all future messages. Recipients may reply <strong>START</strong> to a message to re-subscribe, or <strong>HELP</strong> for assistance. All opt-out requests are processed automatically and honored without delay.</p>
+
+  <h2>Business Client Certification</h2>
+  <p>Before any customer list is accepted for a reactivation campaign, the business client must confirm in writing (via our <a href="/terms">Terms of Service</a>) that:</p>
+  <ul>
+    <li>Every contact on the submitted list is an existing customer who has provided consent using a process consistent with the one described on this page</li>
+    <li>No purchased, rented, scraped, or cold contact lists will be submitted</li>
+    <li>The business accepts full legal responsibility for the compliance of any list they submit</li>
+  </ul>
+
+  <div class="contact-card">
+    <h3>Questions about our consent process?</h3>
+    <p>Email <a href="mailto:netifybuilds@gmail.com">netifybuilds@gmail.com</a> or text (937) 367-1847 — Eli responds personally.</p>
+  </div>
+</div>
+<footer>&copy; 2026 Netify Builds. All rights reserved.</footer>
+</body>
+</html>
