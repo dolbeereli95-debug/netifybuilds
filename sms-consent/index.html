@@ -34,8 +34,7 @@ a{color:var(--blue)}
 .field-label{font-size:13px;font-weight:600;color:var(--text);margin-bottom:6px;display:block}
 .field-input{width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;color:var(--soft);background:#fafafa}
 .consent-box{display:flex;align-items:flex-start;gap:10px;background:#EFF6FF;border:1px solid #BFDBFE;border-radius:10px;padding:14px 16px;margin:20px 0}
-.consent-checkbox{width:18px;height:18px;border:2px solid var(--blue);border-radius:4px;flex-shrink:0;margin-top:2px;position:relative}
-.consent-checkbox::after{content:'✓';position:absolute;top:-3px;left:2px;color:var(--blue);font-weight:800;font-size:14px}
+.consent-checkbox{width:18px;height:18px;border:2px solid #94a3b8;border-radius:4px;flex-shrink:0;margin-top:2px;position:relative;background:white}
 .consent-text{font-size:13px;color:#334155;line-height:1.6}
 .submit-btn{background:var(--navy);color:white;border:none;padding:12px 20px;border-radius:8px;font-weight:700;font-size:14px;width:100%;margin-top:4px}
 
@@ -66,12 +65,16 @@ footer{background:var(--navy);color:rgba(255,255,255,0.4);text-align:center;padd
     <strong>Important:</strong> Netify Builds does not collect consent directly from end consumers. Consent is collected by our business clients at the point of service, using the process described below. Businesses confirm they have an existing relationship and proper consent from every contact before submitting a list to us.
   </div>
 
+  <div class="highlight" style="background:#f0fdf4;border-color:#86efac;">
+    <strong>SMS consent is always optional.</strong> Agreeing to receive text messages is never a condition of purchase, service, or account creation. Customers can decline text messages and still receive full service. The consent checkbox is unchecked by default and must be voluntarily checked by the customer.
+  </div>
+
   <h2>How Consent Is Collected</h2>
   <div class="step-list">
     <div class="step"><div class="step-num"></div><div class="step-text">A customer hires a local service business (for example, an HVAC company) for a repair, installation, or maintenance visit.</div></div>
     <div class="step"><div class="step-num"></div><div class="step-text">During the service visit or checkout process, the business collects the customer's name and phone number on an intake form, invoice, or service agreement.</div></div>
-    <div class="step"><div class="step-num"></div><div class="step-text">The form includes a clear, unchecked consent checkbox (shown in the mockup below) that the customer must actively check to opt in to text message reminders.</div></div>
-    <div class="step"><div class="step-num"></div><div class="step-text">Only customers who checked this box are included in the business's list submitted to Netify Builds for seasonal reactivation texts.</div></div>
+    <div class="step"><div class="step-num"></div><div class="step-text">The form includes a clear, <strong>unchecked-by-default</strong> consent checkbox (shown in the mockup below) that the customer may optionally check to opt in to text message reminders. <strong>Checking this box is entirely optional and is never required to receive service, complete a purchase, or create an account.</strong></div></div>
+    <div class="step"><div class="step-num"></div><div class="step-text">Customers who leave the box unchecked still receive full service — they are simply not added to any text messaging list. Only customers who voluntarily check the box are included in the business's list submitted to Netify Builds.</div></div>
     <div class="step"><div class="step-num"></div><div class="step-text">Every message sent includes a clear STOP opt-out instruction, honored immediately and permanently.</div></div>
   </div>
 
@@ -97,9 +100,10 @@ footer{background:var(--navy);color:rgba(255,255,255,0.4);text-align:center;padd
         <div class="field-input">AC Repair</div>
       </div>
 
+      <div style="font-size:12px;font-weight:700;color:#16a34a;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px;">Optional — not required to receive service</div>
       <div class="consent-box">
         <div class="consent-checkbox"></div>
-        <div class="consent-text">I would like to receive occasional text message reminders about seasonal maintenance and service offers from Smith HVAC Co. Message and data rates may apply. Message frequency varies. Reply STOP at any time to unsubscribe. Reply HELP for help. View <a href="/privacy">Privacy Policy</a> and <a href="/terms">Terms of Service</a>.</div>
+        <div class="consent-text"><strong>(Optional)</strong> I would like to receive occasional text message reminders about seasonal maintenance and service offers from Smith HVAC Co. Consent is not a condition of purchase or service. Message and data rates may apply. Message frequency varies. Reply STOP at any time to unsubscribe. Reply HELP for help. View <a href="/privacy">Privacy Policy</a> and <a href="/terms">Terms of Service</a>.</div>
       </div>
 
       <div class="submit-btn">Submit Request</div>
