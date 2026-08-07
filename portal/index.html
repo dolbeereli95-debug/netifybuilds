@@ -114,7 +114,6 @@ nav {
 </nav>
 
 <!-- LOGIN -->
-<script src="https://accounts.google.com/gsi/client" async defer></script>
 
 <div class="login-wrap" id="loginWrap">
   <div class="login-card">
@@ -123,30 +122,6 @@ nav {
     </div>
     <h1>Client Portal</h1>
     <p>Sign in to view your dashboard, leads, and review stats.</p>
-
-    <!-- Google Sign In -->
-    <div id="g_id_onload"
-      data-client_id="968822994959-js3lra786sg48d1t29l5ju5kbio6h6m1.apps.googleusercontent.com"
-      data-callback="handleGoogleLogin"
-      data-auto_prompt="false">
-    </div>
-    <div style="display:flex;justify-content:center;width:100%;overflow:hidden;margin-bottom:4px;">
-      <div class="g_id_signin"
-        data-type="standard"
-        data-size="large"
-        data-theme="outline"
-        data-text="sign_in_with"
-        data-shape="rectangular"
-        data-logo_alignment="left"
-        data-width="280">
-      </div>
-    </div>
-
-    <div style="display:flex;align-items:center;gap:12px;margin:16px 0;">
-      <div style="flex:1;height:1px;background:var(--border);"></div>
-      <span style="font-size:12px;color:var(--muted);font-weight:500;white-space:nowrap;">or use access code</span>
-      <div style="flex:1;height:1px;background:var(--border);"></div>
-    </div>
 
     <input class="login-input" id="bizKeyInput" type="text" placeholder="e.g. smithhvac4821" autocomplete="off" />
     <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--soft);cursor:pointer;margin:10px 0 4px;">
@@ -172,49 +147,6 @@ nav {
 var BACKEND = 'https://botbuilder-backend-production.up.railway.app';
 var currentBizKey = '';
 var STORAGE_KEY = 'nb_portal_key';
-
-// -- GOOGLE LOGIN HANDLER --
-async function handleGoogleLogin(response) {
-  var errEl = document.getElementById('loginError');
-  errEl.style.display = 'none';
-  errEl.textContent = '';
-  try {
-    var res = await fetch(BACKEND + '/auth/google', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ credential: response.credential })
-    });
-    var data = await res.json();
-    if (!res.ok || data.error) throw new Error(data.error || 'Login failed');
-    localStorage.setItem(STORAGE_KEY, data.bizKey);
-    fetchPortalData(data.bizKey);
-  } catch(err) {
-    errEl.textContent = err.message || 'Google sign-in failed. Try your access code.';
-    errEl.style.display = 'block';
-  }
-}
-
-// -- GOOGLE LOGIN HANDLER --
-async function handleGoogleLogin(response) {
-  var errEl = document.getElementById('loginError');
-  errEl.style.display = 'none';
-  errEl.textContent = '';
-  try {
-    var res = await fetch(BACKEND + '/auth/google', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ credential: response.credential })
-    });
-    var data = await res.json();
-    if (!res.ok || data.error) throw new Error(data.error || 'Login failed');
-    localStorage.setItem(STORAGE_KEY, data.bizKey);
-    fetchPortalData(data.bizKey);
-  } catch(err) {
-    errEl.textContent = err.message || 'Google sign-in failed. Try your access code.';
-    errEl.style.display = 'block';
-  }
-}
-window.handleGoogleLogin = handleGoogleLogin;
 
 
 // Auto-login if remembered
@@ -259,22 +191,25 @@ async function disconnectCalendar(bizKey) {
 
 async function fetchPortalData(bizKey) {
   try {
-    var [reviewRes, analyticsRes, convRes, infoRes, healthRes] = await Promise.all([
+    var [reviewRes, analyticsRes, convRes, infoRes, healthRes, voiceRes] = await Promise.all([
       fetch(BACKEND + '/review-report/' + bizKey),
       fetch(BACKEND + '/analytics/' + bizKey),
       fetch(BACKEND + '/conversations/' + bizKey),
       fetch(BACKEND + '/client-info/' + bizKey),
-      fetch(BACKEND + '/health-score/' + bizKey)
+      fetch(BACKEND + '/health-score/' + bizKey),
+      fetch(BACKEND + '/voice/data/' + bizKey)
     ]);
     var reviewData = await reviewRes.json();
     var analyticsData = {};
     var convData = {};
     var infoData = {};
+    var clientData = {};
     try { analyticsData = await analyticsRes.json(); } catch(e) {}
     try { convData = await convRes.json(); } catch(e) {}
     try { infoData = await infoRes.json(); } catch(e) {}
     var healthData = {};
     try { healthData = await healthRes.json(); } catch(e) {}
+    try { clientData = await voiceRes.json(); } catch(e) {}
 
     // Validate — infoData only has registeredAt if the key actually exists
     var keyExists = infoData && infoData.registeredAt;
@@ -712,6 +647,22 @@ function renderPortal(bizKey, reviewData, analyticsData, convData, infoData) {
   html += '</div></div>';
     html += '</div>'; // end billing section
     } // end if activated
+
+    // ── WEBSITE PAYMENT (one-time) ──
+    var websitePaid = infoData && infoData.websitePaid;
+    var hasWebsite = infoData && infoData.package && (infoData.package.indexOf('website') !== -1);
+    if (hasWebsite) {
+      html += '<div class="section-title"><svg viewBox="0 0 24 24"><path d="M4 5h16v14H4z" fill="none" stroke="currentColor" stroke-width="2"/><path d="M4 9h16"/></svg>Website</div>';
+      html += '<div style="background:white;border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;margin-bottom:24px;">';
+      if (websitePaid) {
+        html += '<div style="display:flex;align-items:center;gap:10px;"><div style="width:36px;height:36px;border-radius:50%;background:#f0fdf4;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div><div><div style="font-size:14px;font-weight:700;color:var(--navy);">Website payment received</div><div style="font-size:13px;color:var(--soft);margin-top:2px;">Your website build is underway. We will reach out with the first draft.</div></div></div>';
+      } else {
+        html += '<div style="font-size:14px;font-weight:700;color:var(--navy);margin-bottom:6px;">Your Website</div>';
+        html += '<div style="font-size:13px;color:var(--soft);margin-bottom:16px;line-height:1.6;">A professional, mobile-friendly website built for your business, including hosting and unlimited updates. This is a one-time payment to begin your build.</div>';
+        html += '<a href="https://buy.stripe.com/00w00l6P52KC7Tj9PAdfG01" target="_blank" style="display:inline-block;background:var(--navy);color:white;text-decoration:none;padding:12px 24px;border-radius:10px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;font-weight:700;">Pay for your Website -></a>';
+      }
+      html += '</div>';
+    }
     html += '<div style="background:white;border-radius:var(--radius);border:1px solid var(--border);overflow:hidden;margin-bottom:28px;">';
     html += '<div style="padding:16px 24px;border-bottom:1px solid var(--border);"><div style="font-size:13px;color:var(--soft);">Changed your hours, added a service, or updated pricing? Tell us and we will update your bot within 24 hours.</div></div>';
     html += '<div style="padding:20px 24px;">';
@@ -925,12 +876,97 @@ function renderPortal(bizKey, reviewData, analyticsData, convData, infoData) {
       html += '<div style="font-size:14px;font-weight:700;color:#0f172a;margin-bottom:6px;">Upload your customer list</div>';
       html += '<div style="font-size:13px;color:#64748b;line-height:1.6;margin-bottom:14px;">Paste your past customer names and phone numbers below, one per line. Format: Name, Phone (e.g. John Smith, 937-555-0182). Or just phone numbers if you do not have names.</div>';
       html += '<textarea id="campaignListInput" placeholder="John Smith, 937-555-0182\nJane Doe, 937-555-0183\n937-555-0184" style="width:100%;padding:12px;border:1.5px solid #e2e8f0;border-radius:10px;font-family:monospace;font-size:12px;min-height:120px;resize:vertical;outline:none;margin-bottom:10px;"></textarea>';
-      html += '<button onclick="uploadCampaignList('' + escHtml(baseKey) + '')" style="background:var(--navy);color:white;border:none;padding:11px 20px;border-radius:10px;font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;">Save Customer List</button>';
+      html += '<button onclick="uploadCampaignList(\'' + escHtml(baseKey) + '\')" style="background:var(--navy);color:white;border:none;padding:11px 20px;border-radius:10px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;font-weight:700;cursor:pointer;">Save Customer List</button>';
       html += '<div id="campaignListStatus" style="display:none;font-size:13px;color:#16a34a;font-weight:600;margin-top:10px;">List saved! Your campaigns are ready to fire.</div>';
       html += '</div>';
     }
 
+    // Last campaign sent info + manual trigger
+    var lastSent = infoData && infoData.lastCampaignSentAt ? new Date(infoData.lastCampaignSentAt).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : null;
+    var totalSent = infoData && infoData.campaignsSentTotal || 0;
+    html += '<div style="background:white;border:1.5px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:24px;">';
+    html += '<div style="font-size:14px;font-weight:700;color:var(--navy);margin-bottom:12px;">Campaign History</div>';
+    if (lastSent) {
+      html += '<div style="font-size:13px;color:#374151;margin-bottom:6px;">Last campaign sent: <strong>' + lastSent + '</strong> (' + (infoData.lastCampaignSentCount || 0) + ' customers reached)</div>';
+      html += '<div style="font-size:13px;color:#374151;margin-bottom:16px;">Total campaigns sent: <strong>' + totalSent + '</strong></div>';
+    } else {
+      html += '<div style="font-size:13px;color:#64748b;margin-bottom:16px;">No campaigns have been sent yet. Campaigns fire automatically each quarter.</div>';
+    }
+    html += '<div style="font-size:13px;font-weight:600;color:#374151;margin-bottom:8px;">Send a campaign now</div>';
+    html += '<div style="font-size:12px;color:#64748b;margin-bottom:10px;">This will send your current seasonal message to all contacts on your list immediately.</div>';
+    html += '<button onclick="triggerCampaignNow(\'' + escHtml(baseKey) + '\')" style="background:var(--navy);color:white;border:none;padding:11px 20px;border-radius:10px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;font-weight:700;cursor:pointer;">Send Campaign Now</button>';
+    html += '<div id="campaignTriggerStatus" style="display:none;font-size:13px;font-weight:600;margin-top:10px;"></div>';
+    html += '</div>';
+
     html += '</div>'; // end campaign section
+  }
+
+  // ── VOICE SYSTEM SECTION ──
+  if (clientData && clientData.voiceNumber) {
+    html += '<div style="background:white;border:1.5px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:24px;">';
+    html += '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">';
+    html += '<div style="font-size:15px;font-weight:700;color:var(--navy);">AI Phone System</div>';
+    html += '<div style="background:#f0fdf4;border:1px solid #86efac;border-radius:99px;padding:4px 12px;font-size:11px;font-weight:700;color:#15803d;">Active</div>';
+    html += '</div>';
+    html += '<div style="background:#f8fafc;border-radius:10px;padding:16px;margin-bottom:16px;">';
+    html += '<div style="font-size:12px;color:#64748b;margin-bottom:4px;">Your business phone number</div>';
+    html += '<div style="font-size:1.4rem;font-weight:800;color:var(--navy);letter-spacing:0.02em;">' + escHtml(clientData.voiceNumber || '') + '</div>';
+    html += '<div style="font-size:12px;color:#64748b;margin-top:4px;">Use this number on your website, Google Business, and marketing materials</div>';
+    html += '</div>';
+    html += '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px;">';
+    html += '<div style="background:#f8fafc;border-radius:10px;padding:14px;text-align:center;"><div style="font-size:1.4rem;font-weight:800;color:var(--navy);">' + (clientData.totalCalls || 0) + '</div><div style="font-size:11px;color:#64748b;">Total calls</div></div>';
+    html += '<div style="background:#f0fdf4;border-radius:10px;padding:14px;text-align:center;"><div style="font-size:1.4rem;font-weight:800;color:#15803d;">' + (clientData.filteredCalls || 0) + '</div><div style="font-size:11px;color:#64748b;">Spam filtered</div></div>';
+    html += '<div style="background:#f8fafc;border-radius:10px;padding:14px;text-align:center;"><div style="font-size:1.4rem;font-weight:800;color:var(--navy);">' + ((clientData.voicemails || []).length) + '</div><div style="font-size:11px;color:#64748b;">Voicemails</div></div>';
+    html += '</div>';
+    html += '<div style="margin-bottom:16px;">';
+    html += '<label style="display:block;font-size:13px;font-weight:600;color:#374151;margin-bottom:5px;">Forward calls to</label>';
+    html += '<div style="display:flex;gap:8px;">';
+    html += '<input id="voiceForwardInput" type="tel" value="' + escHtml(clientData.voiceForwardNumber || '') + '" placeholder="937-555-0182" style="flex:1;padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;font-family:inherit;font-size:14px;outline:none;">';
+    html += '<button onclick="saveVoiceForward(\'' + escHtml(baseKey) + '\')" style="background:var(--navy);color:white;border:none;padding:10px 16px;border-radius:10px;font-weight:700;font-size:13px;cursor:pointer;">Save</button>';
+    html += '</div></div>';
+    html += '<div style="display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-top:1px solid var(--border);">';
+    html += '<div><div style="font-size:13px;font-weight:600;color:#374151;">IVR Menu (Press 1/2/3)</div><div style="font-size:12px;color:#64748b;">Greets callers with options for quote, emergency, or message</div></div>';
+    html += '<input type="checkbox" id="ivrToggle" ' + (clientData.voiceIvrEnabled ? 'checked' : '') + ' onchange="saveIvrToggle(\'' + escHtml(baseKey) + '\')" style="width:20px;height:20px;accent-color:var(--navy);cursor:pointer;">';
+    html += '</div>';
+    // Whitelist management
+    html += '<div style="margin-top:16px;border-top:1px solid var(--border);padding-top:16px;">';
+    html += '<div style="font-size:13px;font-weight:700;color:#374151;margin-bottom:4px;">Trusted Callers</div>';
+    html += '<div style="font-size:12px;color:#64748b;margin-bottom:10px;">Add contacts who should always get through without screening — suppliers, partners, employees.</div>';
+    var whitelist = clientData.whitelist || [];
+    if (whitelist.length > 0) {
+      whitelist.forEach(function(w, idx) {
+        html += '<div style="display:flex;align-items:center;justify-content:space-between;background:#f8fafc;border-radius:8px;padding:8px 12px;margin-bottom:6px;">';
+        html += '<div style="font-size:13px;color:#374151;">' + escHtml(w.name || w.phone || '') + (w.name && w.phone ? ' <span style="color:#94a3b8;">(' + escHtml(w.phone) + ')</span>' : '') + '</div>';
+        html += '<button onclick="removeWhitelist(\'' + escHtml(baseKey) + '\',' + idx + ')" style="background:none;border:none;color:#ef4444;font-size:12px;cursor:pointer;font-weight:600;">Remove</button>';
+        html += '</div>';
+      });
+    } else {
+      html += '<div style="font-size:13px;color:#94a3b8;margin-bottom:10px;">No trusted callers added yet.</div>';
+    }
+    html += '<div style="display:flex;gap:8px;margin-top:8px;">';
+    html += '<input id="whitelistName" placeholder="Name (e.g. Dave at Ferguson)" style="flex:1;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;font-family:inherit;outline:none;">';
+    html += '<input id="whitelistPhone" placeholder="Phone (optional)" style="flex:1;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;font-family:inherit;outline:none;">';
+    html += '<button onclick="addWhitelist(\'' + escHtml(baseKey) + '\')" style="background:var(--navy);color:white;border:none;padding:9px 14px;border-radius:8px;font-weight:700;font-size:12px;cursor:pointer;">Add</button>';
+    html += '</div></div>';
+
+    if (clientData.voicemails && clientData.voicemails.length > 0) {
+      html += '<div style="margin-top:16px;border-top:1px solid var(--border);padding-top:16px;">';
+      html += '<div style="font-size:13px;font-weight:700;color:#374151;margin-bottom:10px;">Recent Voicemails</div>';
+      clientData.voicemails.slice(0, 5).forEach(function(vm) {
+        var typeColor = vm.callType === 'CUSTOMER' ? '#16a34a' : (vm.callType === 'VENDOR' || vm.callType === 'SPAM') ? '#ef4444' : '#64748b';
+        var date = vm.time ? new Date(vm.time).toLocaleDateString('en-US',{month:'short',day:'numeric'}) : '';
+        html += '<div style="background:#f8fafc;border-radius:10px;padding:12px 14px;margin-bottom:8px;">';
+        html += '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">';
+        html += '<div style="font-size:11px;font-weight:700;color:' + typeColor + ';">' + (vm.callType || 'Processing') + '</div>';
+        html += '<div style="font-size:11px;color:#94a3b8;">' + date + '</div>';
+        html += '</div>';
+        if (vm.summary) html += '<div style="font-size:13px;color:#374151;line-height:1.5;">' + escHtml(vm.summary) + '</div>';
+        if (vm.action) html += '<div style="font-size:12px;color:#3b82f6;margin-top:4px;font-weight:600;">' + escHtml(vm.action) + '</div>';
+        html += '</div>';
+      });
+      html += '</div>';
+    }
+    html += '</div>';
   }
 
   // -- APP INSTALL BANNER --
@@ -1196,6 +1232,92 @@ function dismissAppBanner() {
   try { localStorage.setItem('nb_app_dismissed', '1'); } catch(e) {}
   var banner = document.getElementById('appInstallBanner');
   if (banner) banner.style.display = 'none';
+}
+
+async function addWhitelist(bizKey) {
+  var name = document.getElementById('whitelistName').value.trim();
+  var phone = document.getElementById('whitelistPhone').value.trim();
+  if (!name && !phone) { alert('Enter a name or phone number.'); return; }
+  try {
+    var res = await fetch(BACKEND + '/voice/whitelist/' + bizKey, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'add', name, phone })
+    });
+    var data = await res.json();
+    if (data.success) {
+      document.getElementById('whitelistName').value = '';
+      document.getElementById('whitelistPhone').value = '';
+      fetchPortalData(bizKey);
+    }
+  } catch(e) { alert('Could not save. Try again.'); }
+}
+
+async function removeWhitelist(bizKey, index) {
+  if (!confirm('Remove this trusted caller?')) return;
+  try {
+    var res = await fetch(BACKEND + '/voice/whitelist/' + bizKey, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'remove', index })
+    });
+    var data = await res.json();
+    if (data.success) fetchPortalData(bizKey);
+  } catch(e) { alert('Could not remove. Try again.'); }
+}
+
+async function saveVoiceForward(bizKey) {
+  var input = document.getElementById('voiceForwardInput');
+  if (!input) return;
+  try {
+    var res = await fetch(BACKEND + '/voice/settings/' + bizKey, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ forwardNumber: input.value.trim() })
+    });
+    var data = await res.json();
+    if (data.success) alert('Forward number saved!');
+  } catch(e) { alert('Could not save. Try again.'); }
+}
+
+async function saveIvrToggle(bizKey) {
+  var toggle = document.getElementById('ivrToggle');
+  if (!toggle) return;
+  try {
+    await fetch(BACKEND + '/voice/settings/' + bizKey, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ivrEnabled: toggle.checked })
+    });
+  } catch(e) {}
+}
+
+async function triggerCampaignNow(bizKey) {
+  var status = document.getElementById('campaignTriggerStatus');
+  if (!status) return;
+  if (!confirm('Send a campaign to your entire customer list now?')) return;
+  status.style.display = 'block';
+  status.style.color = '#64748b';
+  status.textContent = 'Sending...';
+  try {
+    var res = await fetch(BACKEND + '/trigger-campaign-now', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ bizKey: bizKey, secret: '' })
+    });
+    var data = await res.json();
+    if (data.success) {
+      status.style.color = '#16a34a';
+      status.textContent = 'Campaign sent to ' + data.sent + ' customers.';
+      setTimeout(function() { fetchPortalData(bizKey); }, 2000);
+    } else {
+      status.style.color = '#ef4444';
+      status.textContent = data.error || 'Something went wrong.';
+    }
+  } catch(e) {
+    status.style.color = '#ef4444';
+    status.textContent = 'Could not connect. Try again.';
+  }
 }
 
 async function uploadCampaignList(bizKey) {

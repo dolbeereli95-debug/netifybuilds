@@ -120,6 +120,19 @@ textarea.short { min-height: 70px; }
 
       <input type="hidden" name="package" id="packageHidden" value="" />
 
+      <div class="pkg-card" id="pkg_website_card" onclick="obToggleProduct('website')">
+        <div class="pkg-check">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div style="flex:1;">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;">
+            <div class="pkg-title">Website</div>
+            <div class="pkg-price" id="pkg_website_price">$500/mo</div>
+          </div>
+          <div class="pkg-desc">A professional, mobile-friendly website built for your business, plus hosting and unlimited updates.</div>
+        </div>
+      </div>
+
       <div class="pkg-card" id="pkg_bot_card" onclick="obToggleProduct('bot')">
         <div class="pkg-check">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
@@ -165,6 +178,57 @@ textarea.short { min-height: 70px; }
         <div style="font-size:14px;font-weight:800;color:#15803d;" id="obBundleTotal"></div>
       </div>
       <div id="obNothingSelected" style="display:none;margin-top:6px;margin-bottom:8px;font-size:13px;color:#dc2626;font-weight:600;">Please select at least one product to continue.</div>
+
+      <!-- WEBSITE FIELDS -->
+      <div id="website-fields" style="display:none;">
+        <div class="form-divider">About Your Website</div>
+        <div class="form-group">
+          <label>What industry is your business in?</label>
+          <input type="text" name="websiteIndustry" placeholder="e.g. HVAC, landscaping, pool service" />
+        </div>
+        <div class="form-group">
+          <label>Do you have a current website? <span class="opt">if so, paste the link</span></label>
+          <input type="text" name="websiteCurrent" placeholder="www.yourbusiness.com or 'none yet'" />
+        </div>
+        <div class="form-group">
+          <label>Do you already own a domain name?</label>
+          <select name="websiteDomain">
+            <option value="">Select...</option>
+            <option value="yes">Yes, I own my domain</option>
+            <option value="no">No, I need one</option>
+            <option value="unsure">Not sure</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>What pages do you want? <span class="opt">check all that apply</span></label>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;">
+            <label style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:500;padding:6px 12px;border:1.5px solid #e2e8f0;border-radius:8px;cursor:pointer;"><input type="checkbox" name="websitePages" value="Home" style="width:15px;height:15px;accent-color:#3b82f6;"> Home</label>
+            <label style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:500;padding:6px 12px;border:1.5px solid #e2e8f0;border-radius:8px;cursor:pointer;"><input type="checkbox" name="websitePages" value="About" style="width:15px;height:15px;accent-color:#3b82f6;"> About</label>
+            <label style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:500;padding:6px 12px;border:1.5px solid #e2e8f0;border-radius:8px;cursor:pointer;"><input type="checkbox" name="websitePages" value="Services" style="width:15px;height:15px;accent-color:#3b82f6;"> Services</label>
+            <label style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:500;padding:6px 12px;border:1.5px solid #e2e8f0;border-radius:8px;cursor:pointer;"><input type="checkbox" name="websitePages" value="Contact" style="width:15px;height:15px;accent-color:#3b82f6;"> Contact</label>
+            <label style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:500;padding:6px 12px;border:1.5px solid #e2e8f0;border-radius:8px;cursor:pointer;"><input type="checkbox" name="websitePages" value="Gallery" style="width:15px;height:15px;accent-color:#3b82f6;"> Photo Gallery</label>
+            <label style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:500;padding:6px 12px;border:1.5px solid #e2e8f0;border-radius:8px;cursor:pointer;"><input type="checkbox" name="websitePages" value="Reviews" style="width:15px;height:15px;accent-color:#3b82f6;"> Reviews</label>
+            <label style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:500;padding:6px 12px;border:1.5px solid #e2e8f0;border-radius:8px;cursor:pointer;"><input type="checkbox" name="websitePages" value="Booking" style="width:15px;height:15px;accent-color:#3b82f6;"> Online Booking</label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Do you have a logo and brand colors? <span class="opt">we can create these if not</span></label>
+          <select name="websiteBranding">
+            <option value="">Select...</option>
+            <option value="have both">I have a logo and colors</option>
+            <option value="logo only">I have a logo but no set colors</option>
+            <option value="need both">I need a logo and colors made</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Any websites you like the look of? <span class="opt">optional</span></label>
+          <input type="text" name="websiteInspiration" placeholder="Paste any links, or describe the style you want" />
+        </div>
+        <div class="form-group">
+          <label>Anything else we should know? <span class="opt">optional</span></label>
+          <textarea name="websiteNotes" rows="2" placeholder="Special features, specific content, anything on your mind" style="width:100%;padding:11px 13px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:14px;font-family:inherit;outline:none;resize:vertical;"></textarea>
+        </div>
+      </div>
 
       <!-- BOT FIELDS -->
       <div id="bot-fields" style="display:none;">
@@ -510,8 +574,8 @@ textarea.short { min-height: 70px; }
   var BACKEND = 'https://botbuilder-backend-production.up.railway.app';
 
   // ── BUNDLE BUILDER ──
-  var obSelected = { bot: false, review: false, campaign: false };
-  var obBasePrices = { bot: 250, review: 100, campaign: 200 };
+  var obSelected = { website: false, bot: false, review: false, campaign: false };
+  var obBasePrices = { website: 500, bot: 250, review: 100, campaign: 200 };
 
   function obToggleProduct(key) {
     obSelected[key] = !obSelected[key];
@@ -526,7 +590,7 @@ textarea.short { min-height: 70px; }
     var isBundle = count >= 2;
     var total = 0;
 
-    ['bot','review','campaign'].forEach(function(k) {
+    ['website','bot','review','campaign'].forEach(function(k) {
       var price = isBundle ? Math.round(obBasePrices[k] * 0.85) : obBasePrices[k];
       var el = document.getElementById('pkg_' + k + '_price');
       if (el) el.textContent = '$' + price + '/mo';
@@ -540,16 +604,25 @@ textarea.short { min-height: 70px; }
 
     // Set hidden package field
     var pkg = '';
-    if (obSelected.bot && obSelected.review && obSelected.campaign) pkg = 'all';
-    else if (obSelected.bot && obSelected.review) pkg = 'bundle';
-    else if (obSelected.bot && obSelected.campaign) pkg = 'bot_campaign';
-    else if (obSelected.review && obSelected.campaign) pkg = 'review_campaign';
-    else if (obSelected.bot) pkg = 'faq';
-    else if (obSelected.review) pkg = 'review';
-    else if (obSelected.campaign) pkg = 'campaign';
+    var parts = [];
+    if (obSelected.website) parts.push('website');
+    if (obSelected.bot) parts.push('bot');
+    if (obSelected.review) parts.push('review');
+    if (obSelected.campaign) parts.push('campaign');
+    // Preserve legacy package keys for existing combos, use joined keys otherwise
+    if (obSelected.bot && obSelected.review && obSelected.campaign && !obSelected.website) pkg = 'all';
+    else if (obSelected.bot && obSelected.review && !obSelected.website && !obSelected.campaign) pkg = 'bundle';
+    else if (obSelected.bot && obSelected.campaign && !obSelected.website && !obSelected.review) pkg = 'bot_campaign';
+    else if (obSelected.review && obSelected.campaign && !obSelected.website && !obSelected.bot) pkg = 'review_campaign';
+    else if (obSelected.bot && parts.length === 1) pkg = 'faq';
+    else if (obSelected.review && parts.length === 1) pkg = 'review';
+    else if (obSelected.campaign && parts.length === 1) pkg = 'campaign';
+    else if (obSelected.website && parts.length === 1) pkg = 'website';
+    else pkg = parts.join('_');
     document.getElementById('packageHidden').value = pkg;
 
     // Show/hide form sections
+    document.getElementById('website-fields').style.display = obSelected.website ? 'block' : 'none';
     document.getElementById('bot-fields').style.display = obSelected.bot ? 'block' : 'none';
     document.getElementById('review-fields').style.display = obSelected.review ? 'block' : 'none';
     document.getElementById('campaign-fields').style.display = obSelected.campaign ? 'block' : 'none';

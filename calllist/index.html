@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Netify Builds — GA + TX Call Tracker</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--navy:#0A2540;--blue:#3B82F6;--green:#16a34a;--red:#ef4444;--yellow:#f59e0b;--bg:#0d0d10;--card:#16161a;--border:#222228;--text:#e2e8f0;--soft:#64748b}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:0 0 80px}
+.header{background:#111115;border-bottom:1px solid var(--border);padding:14px 20px;position:sticky;top:0;z-index:100}
+.header-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.header h1{font-size:15px;font-weight:700;color:white}
+.header-stats{display:flex;gap:14px}
+.hstat{text-align:center}
+.hstat-num{font-size:16px;font-weight:800;color:white;line-height:1}
+.hstat-label{font-size:9px;color:var(--soft);text-transform:uppercase;letter-spacing:0.06em}
+.hstat.green .hstat-num{color:#4ade80}
+.hstat.yellow .hstat-num{color:#fbbf24}
+.filters{display:flex;gap:6px;flex-wrap:wrap;overflow-x:auto}
+.filter-btn{padding:4px 10px;border-radius:99px;font-size:10px;font-weight:700;border:1px solid var(--border);background:transparent;color:var(--soft);cursor:pointer;white-space:nowrap}
+.filter-btn.active{background:var(--blue);color:white;border-color:var(--blue)}
+.search-wrap{padding:8px 20px;border-bottom:1px solid var(--border);background:#111115}
+.search-input{width:100%;padding:7px 12px;background:var(--card);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:12px;outline:none}
+.section{padding:10px 16px 2px}
+.section-label{font-size:9px;font-weight:700;color:var(--soft);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px;padding:6px 0 2px;display:flex;align-items:center;gap:8px}
+.tz-est{color:#f59e0b}
+.tz-cst{color:#a78bfa}
+.call-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:6px;position:relative}
+.call-card.status-called{opacity:0.28}
+.call-card.status-no{opacity:0.2}
+.call-card.status-callback{border-color:#f59e0b44;background:#18130a}
+.call-card.status-warm{border-color:#16a34a55;background:#0a180d}
+.card-row1{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:4px}
+.card-name{font-size:13px;font-weight:700;color:white;flex:1;line-height:1.3}
+.card-tags{display:flex;gap:4px;flex-wrap:wrap;flex-shrink:0}
+.tag{font-size:9px;font-weight:800;padding:2px 7px;border-radius:99px}
+.tag-hvac{background:#1e3a5f;color:#60a5fa}
+.tag-pool{background:#0f2d1f;color:#4ade80}
+.tag-pest{background:#2d1f0f;color:#fb923c}
+.tag-landscape{background:#1a2d0f;color:#a3e635}
+.tag-plumbing{background:#2d1a2d;color:#e879f9}
+.tag-pitch{background:#1e1f3a;color:#a78bfa;font-size:9px}
+.tag-small{background:#0f2d0f;color:#4ade80;font-size:8px}
+.card-meta{font-size:10px;color:var(--soft);margin-bottom:4px;display:flex;gap:8px;flex-wrap:wrap}
+.card-phone{font-size:11px;margin-bottom:4px}
+.card-phone a{color:var(--blue);text-decoration:none;font-family:monospace}
+.card-phone.lookup a{color:#f59e0b}
+.card-why{font-size:11px;color:#4b5563;line-height:1.5;margin-bottom:6px;font-style:italic}
+.priority-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:3px}
+.priority-high{background:#4ade80}
+.priority-med{background:#fbbf24}
+.card-actions{display:flex;gap:5px;flex-wrap:wrap}
+.action-btn{padding:4px 9px;border-radius:6px;font-size:10px;font-weight:700;border:none;cursor:pointer;font-family:inherit}
+.btn-called{background:#1e293b;color:#64748b}
+.btn-callback{background:#2d1f00;color:#fbbf24}
+.btn-warm{background:#0f2d1f;color:#4ade80}
+.btn-no{background:#1a0f0f;color:#ef4444}
+.callback-row{display:flex;gap:6px;margin-top:6px}
+.cb-input{flex:1;padding:4px 8px;background:#1e1e25;border:1px solid var(--border);border-radius:6px;font-size:11px;color:var(--text);outline:none;font-family:inherit}
+.cb-save{padding:4px 10px;background:var(--blue);color:white;border:none;border-radius:6px;font-size:10px;font-weight:700;cursor:pointer}
+.notes-input{width:100%;padding:5px 8px;background:#1e1e25;border:1px solid var(--border);border-radius:6px;font-size:11px;color:var(--text);outline:none;font-family:inherit;resize:none;margin-top:6px}
+.status-pill{position:absolute;top:10px;right:10px;font-size:9px;font-weight:800;padding:2px 7px;border-radius:99px}
+.pill-warm{background:#0f2d1f;color:#4ade80}
+.pill-callback{background:#2d1f00;color:#fbbf24}
+.pill-no{background:#2d0f0f;color:#f87171}
+.add-btn{position:fixed;bottom:20px;right:20px;background:var(--blue);color:white;border:none;border-radius:99px;padding:11px 18px;font-size:12px;font-weight:700;cursor:pointer;box-shadow:0 4px 20px rgba(59,130,246,0.4);z-index:50}
+.tip{background:#16130a;border:1px solid #f59e0b33;border-radius:10px;padding:12px 14px;margin:12px 16px;font-size:12px;color:#fbbf24;line-height:1.6}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:999;align-items:center;justify-content:center;padding:20px}
+.modal.open{display:flex}
+.modal-box{background:#16161a;border:1px solid var(--border);border-radius:14px;padding:20px;max-width:380px;width:100%}
+.modal-box h2{font-size:14px;font-weight:700;color:white;margin-bottom:12px}
+.modal-input{width:100%;padding:8px 10px;background:#1e1e25;border:1px solid var(--border);border-radius:7px;color:var(--text);font-size:12px;outline:none;margin-bottom:7px;font-family:inherit}
+.modal-btn{width:100%;padding:9px;background:var(--blue);color:white;border:none;border-radius:7px;font-weight:700;font-size:12px;cursor:pointer;margin-bottom:6px}
+.modal-cancel{width:100%;padding:9px;background:transparent;color:var(--soft);border:1px solid var(--border);border-radius:7px;font-weight:600;font-size:12px;cursor:pointer}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <h1>GA + TX Call Tracker</h1>
+    <div class="header-stats">
+      <div class="hstat green"><div class="hstat-num" id="sWarm">0</div><div class="hstat-label">Warm</div></div>
+      <div class="hstat yellow"><div class="hstat-num" id="sCb">0</div><div class="hstat-label">Callback</div></div>
+      <div class="hstat"><div class="hstat-num" id="sCalled">0</div><div class="hstat-label">Called</div></div>
+      <div class="hstat"><div class="hstat-num" id="sLeft">0</div><div class="hstat-label">Left</div></div>
+    </div>
+  </div>
+  <div class="filters">
+    <button class="filter-btn active" onclick="setFilter('all',this)">All</button>
+    <button class="filter-btn" onclick="setFilter('warm',this)">Warm</button>
+    <button class="filter-btn" onclick="setFilter('callback',this)">Callback</button>
+    <button class="filter-btn" onclick="setFilter('uncalled',this)">Uncalled</button>
+    <button class="filter-btn" onclick="setFilter('ga',this)">Georgia</button>
+    <button class="filter-btn" onclick="setFilter('tx',this)">Texas</button>
+    <button class="filter-btn" onclick="setFilter('high',this)">High Priority</button>
+  </div>
+</div>
+
+<div class="search-wrap">
+  <input class="search-input" id="searchInput" placeholder="Search by name or city..." oninput="renderCards()">
+</div>
+
+<div class="tip">Tap the amber phone number to look it up on Google — that also confirms they're still open and lets you peek at their review count before you dial. Every business here is confirmed small and owner/family-operated.</div>
+
+<div id="cardContainer"></div>
+
+<button class="add-btn" onclick="document.getElementById('addModal').classList.add('open')">+ Add</button>
+
+<div class="modal" id="addModal">
+  <div class="modal-box">
+    <h2>Add a Business</h2>
+    <input id="a_name" class="modal-input" placeholder="Business name *">
+    <input id="a_phone" class="modal-input" placeholder="Phone number">
+    <input id="a_location" class="modal-input" placeholder="City, State">
+    <select id="a_industry" class="modal-input">
+      <option value="hvac">HVAC</option>
+      <option value="pool">Pool</option>
+      <option value="pest">Pest Control</option>
+      <option value="landscape">Landscape</option>
+      <option value="plumbing">Plumbing</option>
+    </select>
+    <select id="a_tz" class="modal-input">
+      <option value="est">Eastern (GA)</option>
+      <option value="cst">Central (TX)</option>
+    </select>
+    <input id="a_why" class="modal-input" placeholder="Why they are a good fit">
+    <button class="modal-btn" onclick="addLead()">Add Business</button>
+    <button class="modal-cancel" onclick="document.getElementById('addModal').classList.remove('open')">Cancel</button>
+  </div>
+</div>
+
+<script>
+var FILTER='all', SEARCH='';
+
+var leads=[
+  // ═══════════ GEORGIA (EST) ═══════════
+  {id:'ga1',name:'Kellco Termite & Pest Control',phone:'',location:'Atlanta, GA',industry:'pest',tz:'est',pitch:'campaigns',priority:'high',why:'Family-owned and operated. Reviews specifically praise personal service from techs Evan and Cody. Small enough that owner is reachable.',notes:'',status:'',callbackTime:''},
+  {id:'ga2',name:'A&A Termite & Pest Control',phone:'',location:'Georgia',industry:'pest',tz:'est',pitch:'campaigns',priority:'high',why:'Family owned and operated since 1967. Nearly 60 years of customers — huge reactivation list. Old-school, likely no chat widget.',notes:'',status:'',callbackTime:''},
+  {id:'ga3',name:'ALF Lawn & Pest Solutions',phone:'',location:'North Georgia',industry:'landscape',tz:'est',pitch:'chat',priority:'high',why:'Small operation, owner built it from passion. Serves North Georgia. Personal owner-operator.',notes:'',status:'',callbackTime:''},
+  {id:'ga4',name:'Collins Landscaping Group',phone:'',location:'Canton, GA',industry:'landscape',tz:'est',pitch:'chat',priority:'med',why:'Small landscaping outfit in Canton. No storefront, owner-run.',notes:'',status:'',callbackTime:''},
+  {id:'ga5',name:'Cobb Air Inc',phone:'',location:'Marietta, GA',industry:'hvac',tz:'est',pitch:'chat',priority:'med',why:'Small independent HVAC in Marietta. Listed in family-owned business directory.',notes:'',status:'',callbackTime:''},
+  {id:'ga6',name:'Cool-Tech HVAC Inc',phone:'',location:'Ball Ground, GA',industry:'hvac',tz:'est',pitch:'chat',priority:'med',why:'Small-town HVAC in Ball Ground. Independent operator, rural area = owner answers.',notes:'',status:'',callbackTime:''},
+  {id:'ga7',name:'Conditioned Air Inc',phone:'',location:'Macon, GA',industry:'hvac',tz:'est',pitch:'campaigns',priority:'med',why:'Established Macon HVAC. Older company, likely a solid customer list.',notes:'',status:'',callbackTime:''},
+  {id:'ga8',name:'Evans Air Conditioning',phone:'',location:'Hapeville, GA',industry:'hvac',tz:'est',pitch:'chat',priority:'med',why:'Small AC repair shop in Hapeville. Owner-operated.',notes:'',status:'',callbackTime:''},
+  {id:'ga9',name:'Bynum & Sons Plumbing',phone:'',location:'Lilburn, GA',industry:'plumbing',tz:'est',pitch:'campaigns',priority:'high',why:'Family plumbing business (& Sons in the name = multi-generation). Lilburn/Lawrenceville. Strong reactivation candidate.',notes:'',status:'',callbackTime:''},
+  {id:'ga10',name:'North Fulton Pest Solutions',phone:'',location:'Alpharetta, GA',industry:'pest',tz:'est',pitch:'campaigns',priority:'high',why:'Family owned 50-year legacy, son Blake took over from his father in 2021. Big customer list, still family-run.',notes:'',status:'',callbackTime:''},
+  {id:'ga11',name:'ARC Pressure Washing Company',phone:'',location:'Buford, GA',industry:'landscape',tz:'est',pitch:'chat',priority:'med',why:'Small exterior cleaning outfit in Buford. Owner-run service business.',notes:'',status:'',callbackTime:''},
+  {id:'ga12',name:'Coat O Color Painting Inc',phone:'',location:'Marietta, GA',industry:'landscape',tz:'est',pitch:'chat',priority:'med',why:'Small painting company, Marietta. Owner-operated trade business.',notes:'',status:'',callbackTime:''},
+  {id:'ga13',name:'Athens Mold Inspection Experts',phone:'',location:'Athens, GA',industry:'pest',tz:'est',pitch:'chat',priority:'med',why:'Niche small inspection business in Athens. Owner personally handles inspections.',notes:'',status:'',callbackTime:''},
+  {id:'ga14',name:'Dahlonega Painting Co',phone:'',location:'Dahlonega, GA',industry:'landscape',tz:'est',pitch:'chat',priority:'med',why:'Small-town painting business. Rural North GA = owner answers the phone.',notes:'',status:'',callbackTime:''},
+  {id:'ga15',name:'Douglas County Roofing',phone:'',location:'Douglasville, GA',industry:'landscape',tz:'est',pitch:'chat',priority:'med',why:'Local roofing outfit in Douglasville. Small operator.',notes:'',status:'',callbackTime:''},
+
+  // ═══════════ TEXAS (CST) — for later ═══════════
+  {id:'tx1',name:'Independent HVAC operators',phone:'',location:'Tyler / Waco, TX',industry:'hvac',tz:'cst',pitch:'chat',priority:'med',why:'Smaller East/Central TX metros (Tyler, Waco, Temple) have many solo HVAC shops. Search "family owned HVAC Tyler TX" on Google Maps and pull the ones with under ~150 reviews.',notes:'RESEARCH: pull 5-10 specific shops here',status:'',callbackTime:''},
+  {id:'tx2',name:'Small pool service — Katy/Sugar Land',phone:'',location:'Katy, TX',industry:'pool',tz:'cst',pitch:'chat',priority:'high',why:'Houston suburbs (Katy, Sugar Land, Pearland) are loaded with owner-run pool routes. Year-round pool season = active businesses. Search "pool service Katy TX owner".',notes:'RESEARCH: pull specific names',status:'',callbackTime:''},
+  {id:'tx3',name:'Small pest control — Central TX',phone:'',location:'San Antonio, TX',industry:'pest',tz:'cst',pitch:'campaigns',priority:'high',why:'Independent (non-ABC) family pest shops around San Antonio and Austin outskirts. Scorpions + fire ants = steady demand. Search "family pest control San Antonio" excluding ABC.',notes:'RESEARCH: pull specific names',status:'',callbackTime:''},
+  {id:'tx4',name:'Landscaping/lawn — Fort Worth area',phone:'',location:'Fort Worth, TX',industry:'landscape',tz:'cst',pitch:'chat',priority:'med',why:'Fort Worth and surrounding (Weatherford, Burleson) have many owner-run lawn crews. Search "owner operated lawn care Fort Worth".',notes:'RESEARCH: pull specific names',status:'',callbackTime:''},
+];
+
+function loadState(){
+  var s=localStorage.getItem('gatxTracker_v1');
+  if(!s)return;
+  try{var st=JSON.parse(s);leads.forEach(function(l){if(st[l.id]){l.status=st[l.id].s||l.status;l.callbackTime=st[l.id].c||'';l.notes=st[l.id].n||l.notes;l.phone=st[l.id].p||l.phone;}});}catch(e){}
+  // load custom leads
+  try{var cu=JSON.parse(localStorage.getItem('gatxCustom_v1')||'[]');cu.forEach(function(c){if(!leads.find(function(l){return l.id===c.id;}))leads.push(c);});}catch(e){}
+}
+function saveState(){
+  var st={};leads.forEach(function(l){st[l.id]={s:l.status,c:l.callbackTime,n:l.notes,p:l.phone};});
+  localStorage.setItem('gatxTracker_v1',JSON.stringify(st));
+  var custom=leads.filter(function(l){return l.id.indexOf('c_')===0;});
+  localStorage.setItem('gatxCustom_v1',JSON.stringify(custom));
+  updateStats();
+}
+function setStatus(id,status){var l=leads.find(function(l){return l.id===id;});if(l){l.status=l.status===status?'':status;saveState();renderCards();}}
+function saveCallback(id){var l=leads.find(function(l){return l.id===id;});var i=document.getElementById('cb_'+id);if(l&&i){l.callbackTime=i.value;saveState();renderCards();}}
+function saveNotes(id){var l=leads.find(function(l){return l.id===id;});var i=document.getElementById('n_'+id);if(l&&i){l.notes=i.value;saveState();}}
+function setFilter(f,btn){FILTER=f;document.querySelectorAll('.filter-btn').forEach(function(b){b.classList.remove('active');});btn.classList.add('active');renderCards();}
+function addLead(){
+  var name=document.getElementById('a_name').value.trim();if(!name)return;
+  leads.push({id:'c_'+Date.now(),name:name,phone:document.getElementById('a_phone').value.trim(),location:document.getElementById('a_location').value.trim(),industry:document.getElementById('a_industry').value,tz:document.getElementById('a_tz').value,pitch:'chat',priority:'med',why:document.getElementById('a_why').value.trim(),notes:'',status:'',callbackTime:''});
+  ['a_name','a_phone','a_location','a_why'].forEach(function(id){document.getElementById(id).value='';});
+  document.getElementById('addModal').classList.remove('open');saveState();renderCards();
+}
+function getPitchLabel(p){var m={chat:'Lead Capture',review:'Review Filter',campaigns:'Reactivation'};return m[p]||p;}
+function buildCard(l){
+  var pill='';
+  if(l.status==='warm')pill='<div class="status-pill pill-warm">WARM</div>';
+  if(l.status==='callback')pill='<div class="status-pill pill-callback">CALLBACK '+(l.callbackTime||'')+'</div>';
+  if(l.status==='no')pill='<div class="status-pill pill-no">NO</div>';
+  var meta=[l.location];
+  var gmapsUrl='https://www.google.com/maps/search/'+encodeURIComponent(l.name+' '+l.location);
+  var phoneHtml=l.phone?'<div class="card-phone"><a href="tel:'+l.phone.replace(/\D/g,'')+'">'+l.phone+'</a></div>':'<div class="card-phone lookup"><a href="'+gmapsUrl+'" target="_blank">Look up # &amp; reviews -></a></div>';
+  return '<div class="call-card status-'+l.status+'" id="card_'+l.id+'">'+pill+
+    '<div class="card-row1"><div style="display:flex;gap:6px;align-items:flex-start;flex:1"><div class="priority-dot priority-'+l.priority+'"></div><div class="card-name">'+l.name+'</div></div><div class="card-tags"><div class="tag tag-'+l.industry+'">'+l.industry.toUpperCase()+'</div><div class="tag tag-pitch">'+getPitchLabel(l.pitch)+'</div><div class="tag tag-small">Owner-run</div></div></div>'+
+    '<div class="card-meta">'+meta.join(' · ')+'</div>'+phoneHtml+
+    (l.why?'<div class="card-why">'+l.why+'</div>':'')+
+    '<div class="card-actions">'+
+    '<button class="action-btn btn-called" onclick="setStatus(\''+l.id+'\',\'called\');event.stopPropagation()">Called</button>'+
+    '<button class="action-btn btn-callback" onclick="setStatus(\''+l.id+'\',\'callback\');event.stopPropagation()">Callback</button>'+
+    '<button class="action-btn btn-warm" onclick="setStatus(\''+l.id+'\',\'warm\');event.stopPropagation()">Warm</button>'+
+    '<button class="action-btn btn-no" onclick="setStatus(\''+l.id+'\',\'no\');event.stopPropagation()">No</button>'+
+    '</div>'+
+    (l.status==='callback'?'<div class="callback-row"><input id="cb_'+l.id+'" class="cb-input" placeholder="e.g. Tomorrow 10am" value="'+(l.callbackTime||'')+'"><button class="cb-save" onclick="saveCallback(\''+l.id+'\');event.stopPropagation()">Save</button></div>':'')+
+    '<textarea id="n_'+l.id+'" class="notes-input" rows="1" placeholder="Notes..." onblur="saveNotes(\''+l.id+'\')" onclick="event.stopPropagation()">'+(l.notes||'')+'</textarea>'+
+    '</div>';
+}
+function renderCards(){
+  SEARCH=document.getElementById('searchInput').value.toLowerCase();
+  var filtered=leads.filter(function(l){
+    if(FILTER==='warm'&&l.status!=='warm')return false;
+    if(FILTER==='callback'&&l.status!=='callback')return false;
+    if(FILTER==='uncalled'&&(l.status==='called'||l.status==='no'))return false;
+    if(FILTER==='ga'&&l.tz!=='est')return false;
+    if(FILTER==='tx'&&l.tz!=='cst')return false;
+    if(FILTER==='high'&&l.priority!=='high')return false;
+    if(SEARCH&&l.name.toLowerCase().indexOf(SEARCH)<0&&l.location.toLowerCase().indexOf(SEARCH)<0)return false;
+    return true;
+  });
+  filtered.sort(function(a,b){var o={warm:0,callback:1,'':2,called:3,no:4};return(o[a.status]||2)-(o[b.status]||2);});
+  var est=filtered.filter(function(l){return l.tz==='est';});
+  var cst=filtered.filter(function(l){return l.tz==='cst';});
+  var html='';
+  if(FILTER==='all'||FILTER==='ga'||FILTER==='uncalled'||FILTER==='high'){
+    if(est.length){html+='<div class="section"><div class="section-label"><span class="tz-est">GEORGIA</span> — Eastern, call now from 8am</div>';est.forEach(function(l){html+=buildCard(l);});html+='</div>';}
+  }
+  if(FILTER==='all'||FILTER==='tx'||FILTER==='uncalled'||FILTER==='high'){
+    if(cst.length){html+='<div class="section"><div class="section-label"><span class="tz-cst">TEXAS</span> — Central, call after 9am your time</div>';cst.forEach(function(l){html+=buildCard(l);});html+='</div>';}
+  }
+  if(FILTER==='warm'||FILTER==='callback'){filtered.forEach(function(l){html+=buildCard(l);});}
+  document.getElementById('cardContainer').innerHTML=html||'<div style="text-align:center;padding:40px;color:var(--soft);font-size:13px;">No results</div>';
+}
+function updateStats(){
+  document.getElementById('sWarm').textContent=leads.filter(function(l){return l.status==='warm';}).length;
+  document.getElementById('sCb').textContent=leads.filter(function(l){return l.status==='callback';}).length;
+  document.getElementById('sCalled').textContent=leads.filter(function(l){return l.status==='called'||l.status==='no';}).length;
+  document.getElementById('sLeft').textContent=leads.filter(function(l){return !l.status;}).length;
+}
+loadState();renderCards();updateStats();
+</script>
+</body>
+</html>
